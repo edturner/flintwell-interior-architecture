@@ -1,0 +1,94 @@
+.main {
+    min-height: 100vh;
+    padding: 0;
+    background: var(--background);
+}
+
+.header {
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-family: var(--font-playfair);
+    font-size: 2rem;
+}
+
+.backLink {
+    font-family: var(--font-space-mono);
+    font-size: 0.9rem;
+}
+
+.heroSlider {
+    width: 100%;
+    margin-bottom: 4rem;
+}
+
+.contentGrid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    gap: 4rem;
+}
+
+.meta {
+    font-family: var(--font-space-mono);
+    font-size: 0.9rem;
+    border-right: 1px solid var(--grid-lines);
+    padding-right: 2rem;
+}
+
+.metaItem {
+    margin-bottom: 2rem;
+}
+
+.narrative p {
+    font-family: Arial, sans-serif;
+    /* Per brief: body text vs specs/headings? Brief said "Body & Specs (Monospace)"... wait. 
+     Brief: "Body & Specs (Monospace): Space Mono or JetBrains Mono. Used for all navigation, specifications, and descriptions. This treats the text as 'data' rather than just stories."
+     
+     Okay, "stories" might mean the narrative IS monospace? "Used for all... descriptions".
+     Wait. "Headings (Serif)... Body & Specs (Monospace)".
+     So yes, narrative should be Monospace too?
+     "This treats the text as 'data' rather than just stories" implies a styilistic choice to make even the story feel like data.
+  */
+    font-family: var(--font-space-mono);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.6rem;
+    max-width: 60ch;
+}
+
+.nextNav {
+    padding: 4rem 2rem;
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid var(--grid-lines);
+    margin-top: 4rem;
+}
+
+.nextLink {
+    font-family: var(--font-space-mono);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .contentGrid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .meta {
+        border-right: none;
+        border-bottom: 1px solid var(--grid-lines);
+        padding-bottom: 2rem;
+        padding-right: 0;
+        display: flex;
+        gap: 2rem;
+    }
+}

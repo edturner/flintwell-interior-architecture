@@ -1,0 +1,62 @@
+.menuButton {
+    background: none;
+    border: none;
+    font-family: var(--font-space-mono);
+    font-size: 1rem;
+    cursor: pointer;
+    color: var(--foreground);
+    z-index: 100;
+    /* Ensure above overlay */
+    position: relative;
+    text-transform: uppercase;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--background);
+    z-index: 90;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Add the grid texture to the menu background too for consistency */
+    background-image:
+        linear-gradient(to right, var(--grid-lines) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-lines) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.navList {
+    list-style: none;
+    text-align: center;
+}
+
+.navItem {
+    margin: 2rem 0;
+}
+
+.navItem a {
+    font-family: var(--font-playfair);
+    font-size: 3rem;
+    color: var(--foreground);
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+.navItem a:hover {
+    opacity: 0.5;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

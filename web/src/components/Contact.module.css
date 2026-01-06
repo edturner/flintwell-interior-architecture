@@ -1,0 +1,114 @@
+.section {
+    display: flex;
+    min-height: 100vh;
+    border-top: 1px solid var(--grid-lines);
+    position: relative;
+    overflow: hidden;
+}
+
+.imageSide {
+    flex: 1;
+    background-color: #f7f7f7;
+    /* Light background */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    border-right: 1px solid var(--grid-lines);
+}
+
+.toolsText {
+    font-family: var(--font-space-mono);
+    color: var(--foreground);
+    opacity: 0.5;
+    letter-spacing: 0.1em;
+    font-size: 0.9rem;
+}
+
+.formSide {
+    flex: 1;
+    background-color: var(--background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem;
+}
+
+.formContainer {
+    width: 100%;
+    max-width: 500px;
+}
+
+.title {
+    font-family: var(--font-playfair);
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    color: var(--foreground);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.field label {
+    font-family: var(--font-space-mono);
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--foreground);
+}
+
+.field input {
+    padding: 1rem;
+    font-family: var(--font-space-mono);
+    font-size: 1rem;
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    color: var(--foreground);
+    transition: border-color 0.3s ease;
+}
+
+.field input:focus {
+    outline: none;
+    border-color: var(--foreground);
+}
+
+.submitButton {
+    margin-top: 1rem;
+    padding: 1.5rem;
+    background: var(--foreground);
+    color: var(--background);
+    border: none;
+    font-family: var(--font-space-mono);
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: opacity 0.3s;
+}
+
+.submitButton:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .section {
+        flex-direction: column;
+    }
+
+    .imageSide {
+        height: 200px;
+        border-right: none;
+        border-bottom: 1px solid var(--grid-lines);
+    }
+}

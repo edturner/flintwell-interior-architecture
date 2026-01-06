@@ -1,0 +1,6 @@
+node_modules
+.next
+.npm
+web/.git_old
+.DS_Store
+Thumbs.db
