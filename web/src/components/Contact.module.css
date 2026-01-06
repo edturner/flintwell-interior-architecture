@@ -16,6 +16,7 @@
     align-items: center;
     padding: 2rem;
     border-right: 1px solid var(--grid-lines);
+    position: relative;
 }
 
 .toolsText {

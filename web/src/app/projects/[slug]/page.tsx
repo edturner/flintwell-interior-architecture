@@ -1,20 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PortableText } from "next-sanity";
 import ComparisonSlider from "@/components/ComparisonSlider";
 import styles from "./page.module.css";
-
-// Mock Data logic (simplified)
-const getProject = (slug: string) => {
-    const projects: Record<string, { title: string; desc: string; location: string }> = {
-        barbican: {
-            title: "The Barbican Flat",
-            location: "London, UK",
-            desc: "A meticulous restoration of a Grade II listed apartment. The challenge was to respect the brutalist concrete while injecting warmth and modern functionality. We utilized a palette of oak and raw steel to bridge the gap."
-        },
-        // fallback
-    };
-    return projects[slug] || projects["barbican"]; // Default to Barbican for demo
-};
+import { client } from "@/sanity/lib/client";
+import { PROJECT_QUERY } from "@/sanity/lib/queries";
+import { urlFor } from "@/sanity/lib/image";
 
 type Props = {
     params: Promise<{ slug: string }>;
@@ -22,17 +13,27 @@ type Props = {
 
 export default async function ProjectPage({ params }: Props) {
     const resolvedParams = await params;
-    const project = getProject(resolvedParams.slug);
+    const project = await client.fetch(PROJECT_QUERY, { slug: resolvedParams.slug });
+
+    if (!project) {
+        notFound();
+    }
 
     return (
         <main className={styles.main}>
+            {/* Debugging Image URL */}
+            {/* {project.mainImage && <img src={urlFor(project.mainImage).width(800).url()} />} */}
+
             <header className={styles.header}>
                 <Link href="/#projects" className={styles.backLink}>[ CLOSE ]</Link>
                 <h1 className={styles.title}>{project.title}</h1>
             </header>
 
             <section className={styles.heroSlider}>
-                <ComparisonSlider />
+                <ComparisonSlider
+                    planImage={project.sliderPlan ? urlFor(project.sliderPlan).url() : undefined}
+                    photoImage={project.sliderReality ? urlFor(project.sliderReality).url() : undefined}
+                />
             </section>
 
             <div className={styles.contentGrid}>
@@ -41,20 +42,27 @@ export default async function ProjectPage({ params }: Props) {
                         <strong>Location</strong><br />{project.location}
                     </div>
                     <div className={styles.metaItem}>
-                        <strong>Year</strong><br />2024
+                        <strong>Year</strong><br />{project.year}
                     </div>
                 </aside>
 
                 <article className={styles.narrative}>
-                    <p>{project.desc}</p>
-                    <p>
-                        The approach was subtractive rather than additive. By stripping back layers of previous renovation, we revealed the honest structure of the building.
-                    </p>
+                    {project.description ? (
+                        <div className="prose">
+                            <PortableText value={project.description} />
+                        </div>
+                    ) : (
+                        <p>{project.tagline}</p>
+                    )}
                 </article>
             </div>
 
             <nav className={styles.nextNav}>
-                <Link href="/projects/highgate" className={styles.nextLink}>[ NEXT PROJECT -&gt; ]</Link>
+                {project.nextProject && (
+                    <Link href={`/projects/${project.nextProject.slug}`} className={styles.nextLink}>
+                        [ NEXT PROJECT -&gt; ]
+                    </Link>
+                )}
             </nav>
         </main>
     );

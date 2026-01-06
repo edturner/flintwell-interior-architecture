@@ -20,10 +20,14 @@ export default function ComparisonSlider({ planImage, photoImage }: ComparisonSl
         <div className={styles.container} ref={containerRef}>
             {/* Background Layer: Finished Photo */}
             <div className={styles.imageLayer}>
-                {/* Placeholder for Photo if no src provided */}
-                <div className={`${styles.placeholder} ${styles.photoPlaceholder}`}>
-                    <span>FINISHED REALITY</span>
-                </div>
+                {photoImage ? (
+                    <img src={photoImage} alt="Finished Reality" className={styles.image} />
+                ) : (
+                    /* Placeholder for Photo if no src provided */
+                    <div className={`${styles.placeholder} ${styles.photoPlaceholder}`}>
+                        <span>FINISHED REALITY</span>
+                    </div>
+                )}
             </div>
 
             {/* Foreground Layer: Floor Plan (Clipped) */}
@@ -31,10 +35,14 @@ export default function ComparisonSlider({ planImage, photoImage }: ComparisonSl
                 className={styles.imageLayer}
                 style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
             >
-                {/* Placeholder for Plan */}
-                <div className={`${styles.placeholder} ${styles.planPlaceholder}`}>
-                    <span>CAD PLAN</span>
-                </div>
+                {planImage ? (
+                    <img src={planImage} alt="CAD Plan" className={styles.image} />
+                ) : (
+                    /* Placeholder for Plan */
+                    <div className={`${styles.placeholder} ${styles.planPlaceholder}`}>
+                        <span>CAD PLAN</span>
+                    </div>
+                )}
             </div>
 
             {/* Slider Handle */}

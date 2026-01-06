@@ -1,28 +1,49 @@
+import Image from "next/image";
 import styles from "./Contact.module.css";
+import { urlFor } from "@/sanity/lib/image";
 
-export default function Contact() {
+interface ContactProps {
+    contactData?: {
+        title: string;
+        toolsText: string;
+        image: any;
+        buttonText: string;
+    }
+}
+
+export default function Contact({ contactData }: ContactProps) {
     return (
         <section id="contact" className={styles.section}>
             {/* Left Side: Light/Clean aesthetic */}
             <div className={styles.imageSide}>
-                <div className={styles.toolsText}>
-                    [ TOOLS OF THE TRADE ]
-                </div>
+                {contactData?.image ? (
+                    <Image
+                        src={urlFor(contactData.image).url()}
+                        alt="Contact us"
+                        fill
+                        style={{ objectFit: 'cover' }}
+                    />
+                ) : (
+                    <div className={styles.toolsText}>
+                        {contactData?.toolsText || '[ TOOLS OF THE TRADE ]'}
+                    </div>
+                )}
             </div>
 
             {/* Right Side: Form */}
             <div className={styles.formSide}>
                 <div className={styles.formContainer}>
-                    <h2 className={styles.title}>LET&apos;S TALK</h2>
+                    <h2 className={styles.title}>{contactData?.title || "LET'S TALK"}</h2>
 
                     <form className={styles.form}>
+                        {/* Fields remain the same */}
                         <div className={styles.field}>
                             <label htmlFor="name">Name</label>
                             <input type="text" id="name" name="name" required />
                         </div>
 
                         <div className={styles.field}>
-                            <label htmlFor="address">Address</label>
+                            <label htmlFor="address">Email Address</label>
                             <input type="text" id="address" name="address" required />
                         </div>
 
@@ -37,7 +58,7 @@ export default function Contact() {
                         </div>
 
                         <button type="submit" className={styles.submitButton}>
-                            [ SEND INQUIRY ]
+                            {contactData?.buttonText || '[ SEND INQUIRY ]'}
                         </button>
                     </form>
                 </div>

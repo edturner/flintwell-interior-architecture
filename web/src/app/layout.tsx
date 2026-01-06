@@ -19,16 +19,23 @@ export const metadata: Metadata = {
   description: "Precision, Process, and Tactility.",
 };
 
-export default function RootLayout({
+import { client } from "@/sanity/lib/client";
+import { FOOTER_QUERY } from "@/sanity/lib/queries";
+
+// ... existing imports
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const footerData = await client.fetch(FOOTER_QUERY);
+
   return (
     <html lang="en">
       <body className={`${playfair.variable} ${spaceMono.variable}`}>
         {children}
-        <Footer />
+        <Footer footerData={footerData} />
       </body>
     </html>
   );

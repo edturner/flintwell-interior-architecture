@@ -1,15 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
+import { client } from "@/sanity/lib/client";
+import { PROJECTS_QUERY } from "@/sanity/lib/queries";
+import { urlFor } from "@/sanity/lib/image";
 import styles from "./page.module.css";
 
-// Mock Data
-const projects = [
-    { id: "barbican", title: "The Barbican Flat", location: "London", size: "1200 Sq Ft", year: "2024" },
-    { id: "highgate", title: "Highgate House", location: "Highgate", size: "2500 Sq Ft", year: "2023" },
-    { id: "hackney", title: "Hackney Loft", location: "London", size: "900 Sq Ft", year: "2025" },
-];
+export default async function Projects() {
+    const projects = await client.fetch(PROJECTS_QUERY);
 
-export default function Projects() {
     return (
         <main className={`grid-technical ${styles.main}`}>
             <header className={styles.header}>
@@ -27,17 +25,24 @@ export default function Projects() {
             </header>
 
             <div className={styles.grid}>
-                {projects.map((project) => (
-                    <Link href={`/projects/${project.id}`} key={project.id} className={styles.card}>
-                        <div className={styles.imagePlaceholder}>
-                            {/* Image would go here */}
+                {projects.map((project: any) => (
+                    <Link href={`/projects/${project.slug}`} key={project._id} className={styles.card}>
+                        <div className={styles.imagePlaceholder} style={{ position: 'relative' }}>
+                            {project.mainImage && (
+                                <Image
+                                    src={urlFor(project.mainImage).width(800).height(600).url()}
+                                    alt={project.title}
+                                    fill
+                                    style={{ objectFit: 'cover' }}
+                                />
+                            )}
                         </div>
                         <div className={styles.info}>
                             <h2 className={styles.projectTitle}>{project.title}</h2>
                             <div className={styles.meta}>
-                                <span>{project.location}</span>
-                                <span>|</span>
-                                <span>{project.size}</span>
+                                {project.location && <span>{project.location}</span>}
+                                {project.location && project.year && <span>|</span>}
+                                {project.year && <span>{project.year}</span>}
                             </div>
                         </div>
                     </Link>
