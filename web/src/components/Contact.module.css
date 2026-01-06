@@ -4,10 +4,15 @@
     border-top: 1px solid var(--grid-lines);
     position: relative;
     overflow: hidden;
+    flex-wrap: wrap;
+    /* Allow wrapping for better responsiveness */
 }
 
 .imageSide {
-    flex: 1;
+    flex: 1 1 40%;
+    /* Base 40% width, allow grow/shrink */
+    min-width: 400px;
+    /* Prevent shrinking below 400px width on desktop */
     background-color: #f7f7f7;
     /* Light background */
     display: flex;
@@ -17,6 +22,8 @@
     padding: 2rem;
     border-right: 1px solid var(--grid-lines);
     position: relative;
+    /* Ensure height allows filling if stacked, or full height if side-by-side */
+    min-height: 400px;
 }
 
 .toolsText {
@@ -28,12 +35,16 @@
 }
 
 .formSide {
-    flex: 1;
+    flex: 1 1 50%;
+    /* Base 50% width */
+    min-width: 350px;
+    /* Ensure form has space */
     background-color: var(--background);
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 4rem;
+    padding: 2rem;
+    /* Reduced padding slightly for better fit */
 }
 
 .formContainer {
@@ -102,14 +113,26 @@
     opacity: 0.9;
 }
 
-@media (max-width: 768px) {
+/* Breakpoint for stacking content */
+@media (max-width: 1024px) {
     .section {
         flex-direction: column;
     }
 
     .imageSide {
-        height: 200px;
+        width: 100%;
+        min-height: 40vh;
+        /* Taller banner on mobile/tablet */
         border-right: none;
         border-bottom: 1px solid var(--grid-lines);
+        flex: none;
+        /* Disable flex scaling in column mode */
+    }
+
+    .formSide {
+        width: 100%;
+        padding: 4rem 2rem;
+        /* More vertical padding */
+        flex: none;
     }
 }

@@ -24,6 +24,7 @@ export default async function SelectedWorks() {
                                     src={urlFor(project.mainImage).width(800).height(600).url()}
                                     alt={project.title}
                                     fill
+                                    sizes="(max-width: 768px) 100vw, 33vw"
                                     style={{ objectFit: 'cover' }}
                                 />
                             )}

@@ -1,0 +1,61 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    padding: 0.75rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    pointer-events: none;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, border-bottom 0.4s ease;
+}
+
+.scrolled {
+    background: rgba(253, 251, 247, 0.85);
+    /* Slightly opaque background matching site theme */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    /* Very subtle border */
+    pointer-events: auto;
+}
+
+.logoContainer {
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.4s ease;
+    /* Remove fixed width to allow logo to size itself by height */
+    /* width: 100px; */
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.logoLink {
+    display: flex;
+    /* Ensures the anchor behaves like a container */
+    height: 100%;
+    align-items: center;
+    cursor: pointer;
+}
+
+.logoVisible {
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.logo {
+    height: 100%;
+    /* Fill container height (40px) */
+    width: auto;
+    /* Maintain aspect ratio */
+    display: block;
+}
+
+.navContainer {
+    pointer-events: auto;
+}

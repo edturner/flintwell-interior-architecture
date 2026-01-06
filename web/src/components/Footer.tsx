@@ -11,7 +11,8 @@ interface FooterProps {
 }
 
 export default function Footer({ footerData }: FooterProps) {
-    const currentYear = new Date().getFullYear();
+    // Use a fixed year or client-side effect to avoid hydration mismatch
+    const currentYear = 2026;
 
     return (
         <footer className={styles.footer}>

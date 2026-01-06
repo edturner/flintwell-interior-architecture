@@ -1,0 +1,147 @@
+.heroSection {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 6rem 2rem 2rem 2rem;
+    /* Added top padding for header space */
+    position: relative;
+    overflow: hidden;
+    /* Prevent scrollbars from animations */
+}
+
+.centerContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 10;
+    width: 100%;
+    flex: 1;
+    /* Take up available vertical space to center properly */
+}
+
+.title,
+.subtitle {
+    pointer-events: auto;
+}
+
+.textHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Shrink the container to the widest naturally unbreakable element (The Title) */
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto 2rem auto;
+}
+
+.title {
+    font-family: "Times New Roman", Times, serif;
+    /* Fluid typography: scales between 3rem and 7rem depending on viewport width */
+    font-size: clamp(3rem, 10vw, 7rem);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+    color: var(--foreground);
+    line-height: 1.1;
+    text-align: center;
+    /* Force title to stay on one line, defining the container width */
+    white-space: nowrap;
+}
+
+.subtitle {
+    font-family: "Times New Roman", Times, serif;
+    /* Fluid typography: scales proportionally with title */
+    font-size: clamp(0.8rem, 2.5vw, 1.5rem);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+    text-align: center;
+    padding-left: 0.4em;
+    /* Optical alignment for letter-spacing */
+    /* Allow wrapping if it exceeds the container width (defined by Title) */
+    white-space: normal;
+    max-width: 100%;
+}
+
+.description {
+    font-family: var(--font-space-mono);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0.9;
+    padding: 0 1rem;
+}
+
+.floatingImageContainer {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    opacity: 0;
+    animation: fadeIn 1.5s ease-out forwards;
+    animation-delay: 0.3s;
+}
+
+.floatingImage {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    /* Maintain aspect ratio */
+    object-fit: cover;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+}
+
+.footerAction {
+    display: flex;
+    justify-content: center;
+    /* Center on mobile, maybe right on desktop? User didn't specify, but overlap issue suggests better flow. Let's keep flex-end if possible but check overlap. */
+    align-items: flex-end;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.startProject {
+    font-family: var(--font-space-mono);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--foreground);
+    text-transform: uppercase;
+    border: 1px solid var(--foreground);
+    padding: 1rem 2rem;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.startProject:hover {
+    background: var(--foreground);
+    color: var(--background);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (min-width: 768px) {
+    .footerAction {
+        justify-content: flex-end;
+    }
+
+    .title {
+        font-size: clamp(4rem, 12vw, 8rem);
+    }
+}
