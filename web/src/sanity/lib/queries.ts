@@ -54,3 +54,10 @@ export const FOOTER_QUERY = groq`*[_type == "footer"][0]{
   instagramUrl,
   copyrightText
 }`;
+
+export const TESTIMONIALS_QUERY = groq`*[_type == "testimonial"]{
+  quote,
+  author,
+  role,
+  image
+}`;
