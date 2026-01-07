@@ -133,6 +133,10 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    padding: 0;
+    line-height: 0;
+    padding-bottom: 3px;
+    /* visual adjustment for text arrow baseline */
 }
 
 .navButton:hover {

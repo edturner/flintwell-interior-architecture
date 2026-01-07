@@ -19,6 +19,9 @@ type Props = {
 export default function Testimonials({ testimonials }: Props) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
+    const [touchStart, setTouchStart] = useState(0);
+    const [touchEnd, setTouchEnd] = useState(0);
+
     if (!testimonials || testimonials.length === 0) return null;
 
     const nextSlide = () => {
@@ -29,6 +32,32 @@ export default function Testimonials({ testimonials }: Props) {
         setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
     };
 
+    const handleTouchStart = (e: React.TouchEvent) => {
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+        const distance = touchStart - touchEnd;
+        const isLeftSwipe = distance > 50;
+        const isRightSwipe = distance < -50;
+
+        if (isLeftSwipe) {
+            nextSlide();
+        }
+        if (isRightSwipe) {
+            prevSlide();
+        }
+
+        // Reset
+        setTouchEnd(0);
+        setTouchStart(0);
+    };
+
     const current = testimonials[currentIndex];
 
     return (
@@ -36,7 +65,12 @@ export default function Testimonials({ testimonials }: Props) {
             <div className={styles.container}>
                 <h2 className={styles.heading}>KIND WORDS FROM CLIENTS</h2>
 
-                <div className={styles.carousel}>
+                <div
+                    className={styles.carousel}
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
+                >
                     <div className={styles.slideContainer}>
                         <div className={styles.content}>
                             <p className={styles.quote}>"{current.quote}"</p>
