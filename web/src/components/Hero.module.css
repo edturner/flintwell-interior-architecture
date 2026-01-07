@@ -2,12 +2,14 @@
     min-height: 100vh;
     /* Ensure it doesn't force scroll if content fits */
     height: 100vh;
+    /* Fallback for mobile browsers */
+    height: 100dvh;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 5rem 2rem 2rem 2rem;
-    /* Reduced top padding */
+    padding: 6rem 1.5rem 1.5rem 1.5rem;
+    /* Reduced side padding for more width */
     position: relative;
     overflow: hidden;
     /* Prevent scrollbars from animations */
@@ -39,15 +41,15 @@
     /* Shrink the container to the widest naturally unbreakable element (The Title) */
     width: fit-content;
     max-width: 100%;
-    margin: 0 auto 1rem auto;
+    margin: 0 auto 0.5rem auto;
     /* Reduced margin */
 }
 
 .title {
     font-family: "Times New Roman", Times, serif;
     /* Fluid typography: scales between 3rem and 7rem depending on viewport width */
-    font-size: clamp(3rem, 9vw, 6.5rem);
-    /* Slightly reduced max size */
+    font-size: clamp(2.8rem, 10vw, 7rem);
+    /* Increased min size to 2.8rem, increased scaler */
     letter-spacing: 0.1em;
     margin-bottom: 0.25rem;
     /* Reduced margin */
@@ -66,7 +68,7 @@
     letter-spacing: 0.4em;
     text-transform: uppercase;
     opacity: 0.9;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     /* Reduced margin */
     text-align: center;
     padding-left: 0.4em;
@@ -78,17 +80,18 @@
 
 .description {
     font-family: var(--font-space-mono);
-    font-size: 0.9rem;
-    line-height: 1.5;
+    font-size: 0.75rem;
+    /* Reduced from 0.8rem */
+    line-height: 1.4;
     /* Slightly tighter line height */
     max-width: 600px;
     margin: 0 auto;
     opacity: 0.9;
-    padding: 0 1rem;
+    padding: 0 0.5rem;
 }
 
 .floatingImageContainer {
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     /* Reduced margin */
     display: flex;
     justify-content: center;
@@ -98,7 +101,8 @@
     animation: fadeIn 1.5s ease-out forwards;
     animation-delay: 0.3s;
     /* Critical for keeping footer in view: constrain image height */
-    max-height: 40vh;
+    max-height: 35vh;
+    /* Reduced from 40vh */
 }
 
 .floatingImage {
@@ -106,8 +110,8 @@
     /* Auto width to maintain aspect ratio with height constraint */
     max-width: 100%;
     height: auto;
-    max-height: 40vh;
-    /* Hard limit on height relative to viewport */
+    max-height: 35vh;
+    /* Reduced from 40vh */
     object-fit: contain;
     /* Ensure it fits */
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
