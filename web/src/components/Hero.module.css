@@ -158,11 +158,37 @@
 }
 
 @media (min-width: 768px) {
+    .heroSection {
+        padding: 5rem 2rem 2rem 2rem;
+    }
+
     .footerAction {
         justify-content: flex-end;
     }
 
     .title {
         font-size: clamp(4rem, 12vw, 8rem);
+    }
+
+    .description {
+        font-size: 0.9rem;
+        padding: 0 1rem;
+    }
+
+    .textHeader {
+        margin-bottom: 1rem;
+    }
+
+    .subtitle {
+        margin-bottom: 1.5rem;
+    }
+
+    .floatingImageContainer {
+        margin-top: 2rem;
+        max-height: 40vh;
+    }
+
+    .floatingImage {
+        max-height: 40vh;
     }
 }
