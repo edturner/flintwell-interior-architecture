@@ -67,6 +67,7 @@
     max-width: 800px;
     display: -webkit-box;
     -webkit-line-clamp: 6;
+    line-clamp: 6;
     /* Limit to 6 lines */
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -159,12 +160,15 @@
         font-size: 1.1rem;
         /* Slightly smaller to fit more text */
         -webkit-line-clamp: 10;
+        line-clamp: 10;
         /* Allow more lines/wrapping on mobile */
     }
 
     .carousel {
         flex-direction: column;
         gap: 1rem;
+        position: relative;
+        /* Ensure absolute positioning works */
     }
 
     .content {
@@ -173,12 +177,29 @@
     }
 
     .navButton {
-        display: none;
+        display: flex;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        background: rgba(0, 0, 0, 0.5);
+        /* Semi-transparent background for visibility */
+        border: none;
+    }
+
+    .navButton:first-child {
+        left: 0;
+    }
+
+    .navButton:last-child {
+        right: 0;
     }
 
     .slideContainer {
         height: 400px;
         /* Slightly taller on mobile since width is constrained */
+        padding: 0 60px;
+        /* Space for buttons */
     }
 
     /* Hide arrows on mobile, rely on swipe or dots (for now just dots) */
