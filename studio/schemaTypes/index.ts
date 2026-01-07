@@ -1,4 +1,3 @@
-import { type SchemaTypeDefinition } from 'sanity'
 import { project } from './project'
 import { home } from './home'
 import { service } from './service'
@@ -7,6 +6,4 @@ import { footer } from './footer'
 import { testimonial } from './testimonial'
 import { philosophy } from './philosophy'
 
-export const schema: { types: SchemaTypeDefinition[] } = {
-    types: [project, home, service, contact, footer, testimonial, philosophy],
-}
+export const schemaTypes = [project, home, service, contact, footer, testimonial, philosophy]

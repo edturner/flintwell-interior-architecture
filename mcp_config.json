@@ -1,0 +1,15 @@
+{
+    "mcpServers": {
+        "sanity": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@sanity/mcp-server"
+            ],
+            "env": {
+                "SANITY_PROJECT_ID": "vcnt7muc",
+                "SANITY_DATASET": "production"
+            }
+        }
+    }
+}
