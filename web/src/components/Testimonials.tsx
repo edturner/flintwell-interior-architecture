@@ -37,10 +37,6 @@ export default function Testimonials({ testimonials }: Props) {
                 <h2 className={styles.heading}>KIND WORDS FROM CLIENTS</h2>
 
                 <div className={styles.carousel}>
-                    <button onClick={prevSlide} className={styles.navButton} aria-label="Previous testimonial">
-                        ←
-                    </button>
-
                     <div className={styles.slideContainer}>
                         <div className={styles.content}>
                             <p className={styles.quote}>"{current.quote}"</p>
@@ -63,7 +59,12 @@ export default function Testimonials({ testimonials }: Props) {
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <div className={styles.controls}>
+                    <button onClick={prevSlide} className={styles.navButton} aria-label="Previous testimonial">
+                        ←
+                    </button>
                     <button onClick={nextSlide} className={styles.navButton} aria-label="Next testimonial">
                         →
                     </button>

@@ -8,6 +8,7 @@
 .container {
     max-width: 1000px;
     margin: 0 auto;
+    position: relative;
 }
 
 .heading {
@@ -22,7 +23,7 @@
 .carousel {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     gap: 2rem;
     min-height: 300px;
 }
@@ -31,7 +32,6 @@
     flex: 1;
     overflow: hidden;
     height: 350px;
-    /* Fixed height for stability */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -68,7 +68,6 @@
     display: -webkit-box;
     -webkit-line-clamp: 6;
     line-clamp: 6;
-    /* Limit to 6 lines */
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -110,6 +109,15 @@
     font-size: 0.9rem;
     color: #888;
     font-weight: 300;
+}
+
+.controls {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    gap: 1rem;
+    z-index: 10;
 }
 
 .navButton {
@@ -156,51 +164,38 @@
 }
 
 @media (max-width: 768px) {
+    .section {
+        min-height: 800px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
     .quote {
         font-size: 1.1rem;
-        /* Slightly smaller to fit more text */
         -webkit-line-clamp: 10;
         line-clamp: 10;
-        /* Allow more lines/wrapping on mobile */
     }
 
     .carousel {
         flex-direction: column;
         gap: 1rem;
         position: relative;
-        /* Ensure absolute positioning works */
     }
 
     .content {
         gap: 2rem;
-        /* Reduce gap on mobile */
-    }
-
-    .navButton {
-        display: flex;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 10;
-        background: rgba(0, 0, 0, 0.5);
-        /* Semi-transparent background for visibility */
-        border: none;
-    }
-
-    .navButton:first-child {
-        left: 0;
-    }
-
-    .navButton:last-child {
-        right: 0;
     }
 
     .slideContainer {
         height: 400px;
-        /* Slightly taller on mobile since width is constrained */
-        padding: 0 60px;
-        /* Space for buttons */
+        padding: 0;
     }
 
-    /* Hide arrows on mobile, rely on swipe or dots (for now just dots) */
+    .controls {
+        position: static;
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 1rem;
+    }
 }
