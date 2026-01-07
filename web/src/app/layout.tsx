@@ -16,7 +16,7 @@ const spaceMono = Space_Mono({
 
 export const metadata: Metadata = {
   title: "Flintwell Interior Architecture",
-  description: "Precision, Process, and Tactility.",
+  description: "Architecturally led interior design.",
 };
 
 import { client } from "@/sanity/lib/client";
