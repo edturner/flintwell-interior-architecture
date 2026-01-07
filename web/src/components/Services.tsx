@@ -20,7 +20,7 @@ export default function Services({ services }: ServicesProps) {
     return (
         <section id="services" className={styles.servicesSection}>
             <div className={styles.container}>
-                <h2 className={styles.title}>OUR PROCESS</h2>
+                <h2 className={styles.title}>THE PROCESS</h2>
 
                 <div className={styles.grid}>
                     {services.map((service, index) => (

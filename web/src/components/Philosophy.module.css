@@ -7,10 +7,10 @@
 
 /* Quote Banner */
 .quoteBanner {
-    background-color: #1a1a1a;
-    /* Dark background */
-    color: #ffffff;
-    padding: 6rem 2rem;
+    background-color: var(--background);
+    /* Seamless background */
+    color: var(--foreground);
+    padding: 8rem 2rem;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -55,8 +55,10 @@
 }
 
 /* Alternating Backgrounds (Optional, but keeps it clean) */
+/* Alternating Backgrounds */
 .block:nth-child(odd) {
-    background-color: var(--background);
+    background-color: #f4f2ee;
+    /* Slightly darker than main background (#fdfbf7) */
 }
 
 .block:nth-child(even) {
