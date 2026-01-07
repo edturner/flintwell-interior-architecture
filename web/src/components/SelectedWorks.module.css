@@ -1,6 +1,6 @@
 .section {
     padding: 4rem 2rem;
-    min-height: 100vh;
+    /* Removed min-height to prevent excessive gap */
     border-top: 1px solid var(--grid-lines);
     background-image:
         linear-gradient(to right, var(--grid-lines) 1px, transparent 1px),
