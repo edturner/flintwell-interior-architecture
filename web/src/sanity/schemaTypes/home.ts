@@ -34,5 +34,7 @@ export const home = defineType({
             type: 'array',
             of: [{ type: 'reference', to: { type: 'service' } }],
         }),
+
+        // Philosophy Section - MOVED TO SEPARATE SCHEMA
     ],
 })

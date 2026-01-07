@@ -13,7 +13,7 @@ export default function Hero({ homeData }: HeroProps) {
             <div className={styles.centerContent}>
                 <div className={styles.textHeader}>
                     <h1 className={styles.title}>{homeData?.title || "FLINTWELL"}</h1>
-                    <p className={styles.subtitle}>{homeData?.subtitle || "Interior Architecture"}</p>
+                    <p className={styles.subtitle}>{homeData?.subtitle || ":Architecturally led interior design"}</p>
                 </div>
                 <p className={styles.description}>
                     {homeData?.description ||

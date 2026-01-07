@@ -41,6 +41,16 @@ export const HOME_QUERY = groq`*[_type == "home"][0]{
   }
 }`;
 
+export const PHILOSOPHY_QUERY = groq`*[_type == "philosophy"][0]{
+  philosophySlogan,
+  philosophyVisionTitle,
+  philosophyVisionText,
+  philosophyVisionImage,
+  philosophyApproachTitle,
+  philosophyApproachText,
+  philosophyApproachImage
+}`;
+
 export const CONTACT_QUERY = groq`*[_type == "contact"][0]{
   title,
   toolsText,

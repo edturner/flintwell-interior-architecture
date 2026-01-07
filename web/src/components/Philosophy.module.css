@@ -1,0 +1,172 @@
+.philosophySection {
+    background-color: var(--background);
+    color: var(--foreground);
+    overflow: hidden;
+    /* Removed padding here to allow full-width quote banner */
+}
+
+/* Quote Banner */
+.quoteBanner {
+    background-color: #1a1a1a;
+    /* Dark background */
+    color: #ffffff;
+    padding: 6rem 2rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slogan {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    /* Larger and more responsive */
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    max-width: 1200px;
+    margin: 0;
+    position: relative;
+}
+
+.slogan::after {
+    content: '';
+    display: block;
+    width: 80px;
+    /* Slightly wider */
+    height: 2px;
+    background-color: var(--accent-color, #cda776);
+    /* Fallback accent if var not set */
+    margin: 3rem auto 0;
+}
+
+/* Content Blocks */
+.contentContainer {
+    max-width: 1600px;
+    /* Wider container for the content */
+    margin: 0 auto;
+    padding: 0;
+    /* Full bleed on edges if we want, or padded. Let's do 0 and pad inner */
+}
+
+.block {
+    display: flex;
+    min-height: 600px;
+}
+
+/* Alternating Backgrounds (Optional, but keeps it clean) */
+.block:nth-child(odd) {
+    background-color: var(--background);
+}
+
+.block:nth-child(even) {
+    background-color: #f9f9f9;
+    /* Subtle contrast */
+}
+
+/* Text Content */
+.textWrapper {
+    flex: 1;
+    padding: 6rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.blockTitle {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+
+.paragraph {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    font-weight: 300;
+    max-width: 600px;
+    /* Readable line length */
+}
+
+.strong {
+    color: var(--foreground);
+    font-weight: 500;
+}
+
+/* Image Content */
+.imageWrapper {
+    flex: 1;
+    position: relative;
+    min-height: 500px;
+}
+
+.image {
+    object-fit: cover;
+}
+
+/* Alternating Order */
+/* Even blocks: Text (Left) - Image (Right) -> Default Flex order is OK if we structure HTML that way. 
+   Or we use order CSS property. Let's structure HTML to match desirable default, or use CSS. 
+   css 'order' is cleaner.
+*/
+
+.block:nth-child(odd) .textWrapper {
+    order: 2;
+    /* Text on Right */
+}
+
+.block:nth-child(odd) .imageWrapper {
+    order: 1;
+    /* Image on Left */
+}
+
+.block:nth-child(even) .textWrapper {
+    order: 1;
+    /* Text on Left */
+}
+
+.block:nth-child(even) .imageWrapper {
+    order: 2;
+    /* Image on Right */
+}
+
+
+/* Mobile Responsive */
+@media (max-width: 1024px) {
+    .block {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    /* Always Image First on Mobile */
+    .block:nth-child(odd) .textWrapper,
+    .block:nth-child(odd) .imageWrapper,
+    .block:nth-child(even) .textWrapper,
+    .block:nth-child(even) .imageWrapper {
+        order: unset;
+        /* Reset order */
+    }
+
+    .imageWrapper {
+        height: 400px;
+        /* Fixed height for mobile image */
+        order: -1 !important;
+        /* Force image to top always */
+    }
+
+    .textWrapper {
+        padding: 4rem 2rem;
+    }
+
+    .slogan {
+        font-size: 2.5rem;
+    }
+
+    .quoteBanner {
+        padding: 4rem 1.5rem;
+    }
+}
