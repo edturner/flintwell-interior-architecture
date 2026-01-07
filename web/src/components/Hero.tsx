@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./Hero.module.css";
@@ -8,6 +10,19 @@ interface HeroProps {
 }
 
 export default function Hero({ homeData }: HeroProps) {
+    const handleScrollToBottom = (e: React.MouseEvent) => {
+        e.preventDefault();
+        const contactSection = document.getElementById("contact");
+        if (contactSection) {
+            contactSection.scrollIntoView({ behavior: "smooth" });
+        } else {
+            window.scrollTo({
+                top: document.documentElement.scrollHeight,
+                behavior: "smooth",
+            });
+        }
+    };
+
     return (
         <section id="hero-section" className={styles.heroSection}>
             <div className={styles.centerContent}>
@@ -44,7 +59,7 @@ export default function Hero({ homeData }: HeroProps) {
             </div>
 
             <div className={styles.footerAction}>
-                <Link href="#contact" className={styles.startProject}>
+                <Link href="#contact" className={styles.startProject} onClick={handleScrollToBottom}>
                     [ START YOUR PROJECT -&gt; ]
                 </Link>
             </div>
