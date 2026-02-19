@@ -11,7 +11,6 @@ interface ContactProps {
         toolsText: string;
         image: any;
         buttonText: string;
-        brochureUrl?: string;
     }
 }
 
@@ -29,7 +28,6 @@ export default function Contact({ contactData }: ContactProps) {
             number: formData.get('number'),
             location: formData.get('location'),
             message: formData.get('message'),
-            brochureUrl: contactData?.brochureUrl
         };
 
         try {

@@ -6,8 +6,6 @@ export const PROJECT_QUERY = groq`*[_type == "project" && slug.current == $slug]
   "slug": slug.current,
   tagline,
   mainImage,
-  sliderPlan,
-  sliderReality,
   year,
   location,
   gallery,
@@ -55,8 +53,18 @@ export const CONTACT_QUERY = groq`*[_type == "contact"][0]{
   title,
   toolsText,
   image,
-  buttonText,
-  "brochureUrl": brochure.asset->url
+  buttonText
+}`;
+
+export const EMAIL_TEMPLATE_QUERY = groq`*[_type == "contact"][0]{
+  "brochureUrl": brochure.asset->url,
+  autoReplySubject,
+  autoReplyGreeting,
+  autoReplyBody,
+  autoReplyClosing,
+  autoReplyResponseTime,
+  autoReplySignOffName,
+  autoReplySignOffCompany
 }`;
 
 export const FOOTER_QUERY = groq`*[_type == "footer"][0]{

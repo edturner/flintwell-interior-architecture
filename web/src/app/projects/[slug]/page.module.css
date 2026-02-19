@@ -21,9 +21,31 @@
     font-size: 0.9rem;
 }
 
-.heroSlider {
-    width: 100%;
-    margin-bottom: 4rem;
+.heroImage {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto 4rem;
+    padding: 0 2rem;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem 2rem;
+}
+
+.galleryItem {
+    position: relative;
+    aspect-ratio: 3/2;
+    overflow: hidden;
+    border: 1px solid var(--grid-lines);
+    background: var(--background);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
 .contentGrid {
@@ -90,5 +112,10 @@
         padding-right: 0;
         display: flex;
         gap: 2rem;
+    }
+
+    .gallery {
+        grid-template-columns: 1fr;
+        padding: 0 1rem 1rem;
     }
 }
