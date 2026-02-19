@@ -31,5 +31,13 @@ export const contact = defineType({
             type: 'string',
             initialValue: '[ SEND INQUIRY ]',
         }),
+        defineField({
+            name: 'brochure',
+            title: 'Brochure PDF',
+            type: 'file',
+            options: {
+                accept: '.pdf'
+            }
+        }),
     ],
 })

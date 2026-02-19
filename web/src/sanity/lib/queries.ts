@@ -55,7 +55,8 @@ export const CONTACT_QUERY = groq`*[_type == "contact"][0]{
   title,
   toolsText,
   image,
-  buttonText
+  buttonText,
+  "brochureUrl": brochure.asset->url
 }`;
 
 export const FOOTER_QUERY = groq`*[_type == "footer"][0]{
