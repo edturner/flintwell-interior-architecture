@@ -1,0 +1,99 @@
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle architectural grid overlay */
+.container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(to right, var(--grid-lines) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-lines) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    text-align: center;
+    max-width: 600px;
+}
+
+.logo {
+    width: clamp(120px, 20vw, 180px);
+    height: auto;
+}
+
+.divider {
+    width: 1px;
+    height: 60px;
+    background: var(--accent);
+}
+
+.heading {
+    font-family: var(--font-playfair), serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: normal;
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+    color: var(--foreground);
+}
+
+.tagline {
+    font-family: var(--font-space-mono), monospace;
+    font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--foreground);
+    opacity: 0.6;
+}
+
+.contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.contactLabel {
+    font-family: var(--font-space-mono), monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0.45;
+}
+
+.contactLink {
+    font-family: var(--font-space-mono), monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--foreground);
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 2px;
+    transition: opacity 0.2s ease;
+}
+
+.contactLink:hover {
+    opacity: 0.6;
+}
+
+.accentBar {
+    width: 40px;
+    height: 2px;
+    background: var(--accent);
+}
