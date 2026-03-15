@@ -12,6 +12,8 @@ import { client } from "@/sanity/lib/client";
 import { HOME_QUERY, CONTACT_QUERY, TESTIMONIALS_QUERY, PHILOSOPHY_QUERY } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 
+export const revalidate = 30;
+
 export default async function Home() {
   const [homeData, contactData, testimonialsData, philosophyData] = await Promise.all([
     client.fetch(HOME_QUERY),

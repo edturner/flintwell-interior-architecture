@@ -11,6 +11,8 @@ type Props = {
     params: Promise<{ slug: string }>;
 }
 
+export const revalidate = 30;
+
 export default async function ProjectPage({ params }: Props) {
     const resolvedParams = await params;
     const project = await client.fetch(PROJECT_QUERY, { slug: resolvedParams.slug });

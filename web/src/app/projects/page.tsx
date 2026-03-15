@@ -5,6 +5,8 @@ import { PROJECTS_QUERY } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 import styles from "./page.module.css";
 
+export const revalidate = 30;
+
 export default async function Projects() {
     const projects = await client.fetch(PROJECTS_QUERY);
 

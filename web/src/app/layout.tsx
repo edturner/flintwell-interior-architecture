@@ -3,6 +3,8 @@ import { Playfair_Display, Space_Mono } from "next/font/google";
 import Footer from "@/components/Footer";
 import "./globals.css";
 
+export const revalidate = 30; // Revalidate every 30 seconds to sync Sanity changes
+
 const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
