@@ -5,13 +5,9 @@ import { EMAIL_TEMPLATE_QUERY } from '@/sanity/lib/queries';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Automatically switch destination based on environment
-const DESTINATION_EMAIL = process.env.NODE_ENV === 'production'
-    ? 'inquiry@flintwell.com'
-    : 'edturner118@gmail.com';
+const DESTINATION_EMAIL = 'inquiry@flintwell.com';
 
-// Update this once you verify the domain in Resend (e.g., 'studio@flintwell.com')
-const FROM_EMAIL = 'Flintwell <onboarding@resend.dev>';
+const FROM_EMAIL = 'Flintwell <inquiry@flintwell.com>';
 
 // ── Default fallback values (used if Sanity fields are empty) ──
 const DEFAULTS = {
