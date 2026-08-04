@@ -12,27 +12,30 @@
 
 /* The quote block sits inboard of the left gutter, roughly a third
    across, with the label's right edge above it. */
-.stage {
+.carousel {
     max-width: 34ch;
     margin-left: auto;
     margin-right: clamp(0rem, 16vw, 22rem);
 }
 
-/* Quotes vary in length; reserve the height of a long one so the controls
-   below don't jump between slides. */
-.figure {
-    min-height: 13rem;
-    animation: fade 0.5s ease both;
+/* Every slide occupies the same single grid cell, so the stage measures
+   the tallest quote once and holds that height for all of them. The
+   controls below therefore never move. */
+.stage {
+    display: grid;
 }
 
-@keyframes fade {
-    from {
-        opacity: 0;
-    }
+.slide {
+    grid-area: 1 / 1;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.45s ease, visibility 0s linear 0.45s;
+}
 
-    to {
-        opacity: 1;
-    }
+.slideActive {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.45s ease, visibility 0s linear 0s;
 }
 
 .quote {
@@ -122,13 +125,23 @@
 }
 
 @media (max-width: 900px) {
-    .stage {
+    .carousel {
         max-width: 100%;
         margin-right: 0;
         margin-left: 0;
     }
+}
 
-    .figure {
-        min-height: 15rem;
+/* Too narrow for "AUTHOR | role" on one line. Stack the two and drop the
+   rule rather than letting it lead the wrapped line. */
+@media (max-width: 700px) {
+    .attribution {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
+    }
+
+    .divider {
+        display: none;
     }
 }

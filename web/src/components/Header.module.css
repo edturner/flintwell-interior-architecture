@@ -10,6 +10,18 @@
     /* Above the overlay: both the mark and "menu" stay visible over it. */
     z-index: 200;
     pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Fades out on the way down, returns on the way up. */
+.headerHidden {
+    opacity: 0;
+    transform: translateY(-0.75rem);
+}
+
+.headerHidden .markLink,
+.headerHidden .menuButton {
+    pointer-events: none;
 }
 
 .markLink {

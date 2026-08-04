@@ -20,8 +20,14 @@ export interface MenuDetails {
     menuSlogan?: string;
 }
 
+/** Ignore sub-pixel and rubber-band scrolls; only react to real intent. */
+const SCROLL_DELTA = 6;
+/** Above this the chrome always shows, so the hero is never bare. */
+const REVEAL_ZONE = 120;
+
 export default function Header({ details }: { details?: MenuDetails }) {
     const [isOpen, setIsOpen] = useState(false);
+    const [isHidden, setIsHidden] = useState(false);
 
     const email = details?.email || "info@flintwell.com";
     const phone = details?.phone || "07891 818682";
@@ -48,6 +54,36 @@ export default function Header({ details }: { details?: MenuDetails }) {
         };
     }, [isOpen]);
 
+    // Fade the chrome out on the way down, bring it back on the way up.
+    // The overlay is fixed and unscrollable, so this pauses while it's open.
+    useEffect(() => {
+        if (isOpen) return;
+
+        let lastY = window.scrollY;
+        let frame = 0;
+
+        const update = () => {
+            frame = 0;
+            const y = window.scrollY;
+            const delta = y - lastY;
+
+            if (Math.abs(delta) < SCROLL_DELTA) return;
+            setIsHidden(delta > 0 && y > REVEAL_ZONE);
+            lastY = y;
+        };
+
+        const onScroll = () => {
+            if (!frame) frame = requestAnimationFrame(update);
+        };
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+
+        return () => {
+            window.removeEventListener("scroll", onScroll);
+            if (frame) cancelAnimationFrame(frame);
+        };
+    }, [isOpen]);
+
     const close = () => setIsOpen(false);
 
     // "home = send to top of page" — from the homepage itself, scroll rather
@@ -62,7 +98,15 @@ export default function Header({ details }: { details?: MenuDetails }) {
 
     return (
         <>
-            <header className={`${styles.header} ${isOpen ? styles.headerOpen : ""}`}>
+            <header
+                className={[
+                    styles.header,
+                    isOpen ? styles.headerOpen : "",
+                    isHidden && !isOpen ? styles.headerHidden : "",
+                ]
+                    .filter(Boolean)
+                    .join(" ")}
+            >
                 <Link href="/" onClick={goHome} className={styles.markLink} aria-label="Flintwell — home">
                     <FlintwellMark className={styles.mark} />
                 </Link>

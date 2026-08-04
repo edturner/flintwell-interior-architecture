@@ -54,6 +54,14 @@ whitespace and one image per screen.
 | `Wordmark` | FLINTWELL + rule + `interior architecture` / `est2023`. `centred` prop for the footer. |
 | `SectionLabel` | The flush-right tracked lowercase heading. |
 | `Header` | Fixed mark + `menu`, and the terracotta overlay. Client component; `SiteHeader` is the server wrapper that feeds it Sanity content. |
+
+### Header scroll behaviour
+
+The chrome fades out (and lifts 0.75rem) when you scroll **down**, and
+returns when you scroll **up** or come back within `REVEAL_ZONE` (120px) of
+the top. A `SCROLL_DELTA` of 6px ignores sub-pixel and rubber-band jitter,
+and the listener is rAF-throttled and passive. It pauses while the menu
+overlay is open, since the overlay is fixed and unscrollable.
 | `SelectedWorks` | 3-col grid. Thumbnails keep their **own aspect ratio** (from Sanity's `metadata.dimensions.aspectRatio`) and are bottom-aligned within the row so captions land on a common line. |
 
 ## Deliberate departures from the mockups
@@ -71,9 +79,14 @@ Nothing else on the site moves. Delete the two `:hover` blocks in
 full-height blush screen. As a scrolling page that's a very long run of
 near-identical panels, so they cycle in place instead: prev/next arrows and
 an `01 — 05` counter, with swipe on touch. The panel composition is
-otherwise exactly as drawn. `Testimonials.module.css` reserves a
-`min-height` on `.figure` so the controls don't jump between quotes of
-different lengths.
+otherwise exactly as drawn.
+
+The stage must not resize between slides. Every quote is rendered into the
+**same CSS grid cell** (`.slide { grid-area: 1 / 1 }`), so the grid measures
+the longest one and holds that height for all of them; inactive slides are
+faded out, not unmounted. Do not replace this with a measured `min-height`
+or an animated container height — both reintroduce the growing and
+shrinking this exists to prevent.
 
 **The contact form has writing lines.** Ian draws only the single vertical
 rule, with no boxes and no lines — which leaves nothing indicating where to

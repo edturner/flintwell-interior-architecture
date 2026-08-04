@@ -19,9 +19,11 @@ const SWIPE_THRESHOLD = 50;
 /**
  * "our friends" — one blush screen, cycling through the quotes.
  *
- * The mockups draw each testimonial as its own panel; running them as a
- * carousel keeps that composition while collapsing a very long scroll into
- * a single screen.
+ * Every quote is rendered into the same CSS grid cell, so the stage is
+ * always as tall as the longest one and nothing reflows when the slide
+ * changes. Inactive slides are faded out rather than unmounted; measuring
+ * heights in JS or animating a container height would reintroduce exactly
+ * the movement this avoids.
  */
 export default function Testimonials({ testimonials }: Props) {
     const [index, setIndex] = useState(0);
@@ -30,7 +32,6 @@ export default function Testimonials({ testimonials }: Props) {
     if (!testimonials?.length) return null;
 
     const count = testimonials.length;
-    const current = testimonials[index];
 
     const go = (delta: number) => setIndex((i) => (i + delta + count) % count);
 
@@ -50,26 +51,39 @@ export default function Testimonials({ testimonials }: Props) {
             </div>
 
             <div
-                className={styles.stage}
+                className={styles.carousel}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
             >
-                {/* Keyed so each quote re-runs the fade as it comes in. */}
-                <figure key={index} className={styles.figure}>
-                    <blockquote className={styles.quote}>&ldquo; {current.quote} &rdquo;</blockquote>
+                <div className={styles.stage}>
+                    {testimonials.map((testimonial, i) => {
+                        const isActive = i === index;
 
-                    <figcaption className={styles.attribution}>
-                        <span className={styles.author}>{current.author}</span>
-                        {current.role && (
-                            <span className={styles.roleGroup}>
-                                <span className={styles.divider} aria-hidden="true">
-                                    |
-                                </span>
-                                <span className={styles.role}>{current.role}</span>
-                            </span>
-                        )}
-                    </figcaption>
-                </figure>
+                        return (
+                            <figure
+                                key={i}
+                                className={`${styles.slide} ${isActive ? styles.slideActive : ""}`}
+                                inert={!isActive}
+                            >
+                                <blockquote className={styles.quote}>
+                                    &ldquo; {testimonial.quote} &rdquo;
+                                </blockquote>
+
+                                <figcaption className={styles.attribution}>
+                                    <span className={styles.author}>{testimonial.author}</span>
+                                    {testimonial.role && (
+                                        <span className={styles.roleGroup}>
+                                            <span className={styles.divider} aria-hidden="true">
+                                                |
+                                            </span>
+                                            <span className={styles.role}>{testimonial.role}</span>
+                                        </span>
+                                    )}
+                                </figcaption>
+                            </figure>
+                        );
+                    })}
+                </div>
 
                 {count > 1 && (
                     <div className={styles.controls}>
