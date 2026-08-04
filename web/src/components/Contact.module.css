@@ -26,13 +26,13 @@
 .form {
     margin-top: auto;
     padding-top: clamp(3rem, 10vh, 7rem);
-    width: min(100%, 32rem);
+    width: min(100%, 36rem);
 }
 
 .field {
     display: grid;
     grid-template-columns: 8.5rem 1fr;
-    align-items: baseline;
+    align-items: stretch;
 }
 
 /* The single continuous vertical rule running down the form: drawn on
@@ -41,9 +41,20 @@
     font-family: var(--font-serif), "Times New Roman", serif;
     font-size: clamp(0.95rem, 1.3vw, 1.15rem);
     letter-spacing: 0.14em;
-    padding: 0.55rem 1.25rem 0.55rem 0;
+    padding: 0.85rem 1.25rem 0.85rem 0;
     border-right: 1px solid var(--rule);
-    align-self: stretch;
+    cursor: pointer;
+}
+
+/* Each field gets its own writing line. Ian's drawing shows only the
+   vertical rule, but with no boxes and no lines there is nothing to tell
+   you where to type — these read as a form you write on rather than as
+   input chrome. */
+.inputWrap {
+    display: flex;
+    align-items: stretch;
+    padding-left: 1.25rem;
+    cursor: text;
 }
 
 .input,
@@ -53,15 +64,31 @@
     color: var(--foreground);
     background: none;
     border: none;
+    border-bottom: 1px solid var(--rule-soft);
     outline: none;
-    padding: 0.55rem 0 0.55rem 1.25rem;
+    padding: 0.85rem 0 0.5rem;
     width: 100%;
+    transition: border-color 0.25s ease;
 }
 
-.input:focus-visible,
-.textarea:focus-visible {
-    /* No boxes anywhere in the design — mark focus with a hairline. */
-    box-shadow: inset 0 -1px 0 var(--rule);
+.input:hover,
+.textarea:hover {
+    border-bottom-color: var(--foreground);
+}
+
+.input:focus,
+.textarea:focus {
+    border-bottom-color: var(--foreground);
+    border-bottom-width: 1px;
+    box-shadow: 0 1px 0 var(--foreground);
+}
+
+/* Placeholders carry the hint without adding a second visible label. */
+.input::placeholder,
+.textarea::placeholder {
+    color: var(--foreground);
+    opacity: 0.32;
+    font-style: italic;
 }
 
 .textarea {
@@ -75,14 +102,30 @@
     opacity: 0.5;
 }
 
-.submit {
-    margin-top: 2.5rem;
+.required {
+    color: var(--terracotta);
+    opacity: 0.75;
+    margin-left: 0.25em;
+}
+
+.hint {
+    margin-top: 1.25rem;
     font-family: var(--font-sans), "Century Gothic", sans-serif;
     font-weight: 300;
-    font-size: clamp(0.72rem, 1.05vw, 0.86rem);
+    font-size: clamp(0.62rem, 0.9vw, 0.72rem);
     letter-spacing: var(--track-wide);
     text-transform: lowercase;
-    padding-bottom: 0.4rem;
+    opacity: 0.5;
+}
+
+.submit {
+    margin-top: 2rem;
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.78rem, 1.1vw, 0.92rem);
+    letter-spacing: var(--track-wide);
+    text-transform: lowercase;
+    padding: 0.75rem 0 0.5rem;
     border-bottom: 1px solid var(--rule);
     transition: opacity 0.3s ease;
 }

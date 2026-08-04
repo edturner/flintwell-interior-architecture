@@ -56,13 +56,32 @@ whitespace and one image per screen.
 | `Header` | Fixed mark + `menu`, and the terracotta overlay. Client component; `SiteHeader` is the server wrapper that feeds it Sanity content. |
 | `SelectedWorks` | 3-col grid. Thumbnails keep their **own aspect ratio** (from Sanity's `metadata.dimensions.aspectRatio`) and are bottom-aligned within the row so captions land on a common line. |
 
-## Selected Works: the one deliberate departure
+## Deliberate departures from the mockups
 
-Ian's mockups draw the grid completely flat. This build keeps his layout,
-proportions and captions but adds two restrained hover moves — a 1.03 image
-scale and a hairline that draws in under the caption. Nothing else on the
-site moves. If Ian wants it fully flat, delete the two `:hover` blocks in
-`SelectedWorks.module.css`.
+Three places where this build does not draw what Ian drew. Each is a
+usability call, and each is easy to revert.
+
+**Selected Works hover.** The mockups draw the grid completely flat. This
+build keeps the layout, proportions and captions but adds two restrained
+moves — a 1.03 image scale and a hairline that draws in under the caption.
+Nothing else on the site moves. Delete the two `:hover` blocks in
+`SelectedWorks.module.css` to go fully flat.
+
+**Testimonials are a carousel.** The mockups give each quote its own
+full-height blush screen. As a scrolling page that's a very long run of
+near-identical panels, so they cycle in place instead: prev/next arrows and
+an `01 — 05` counter, with swipe on touch. The panel composition is
+otherwise exactly as drawn. `Testimonials.module.css` reserves a
+`min-height` on `.figure` so the controls don't jump between quotes of
+different lengths.
+
+**The contact form has writing lines.** Ian draws only the single vertical
+rule, with no boxes and no lines — which leaves nothing indicating where to
+type. Each field now has its own hairline underneath (`--rule-soft`,
+darkening to `--foreground` on hover and focus), an italic placeholder, and
+a terracotta `*` on required fields. The vertical rule and the bare serif
+labels are unchanged, so it still reads as the drawing rather than as a
+conventional boxed form.
 
 ## Sanity content this design expects
 

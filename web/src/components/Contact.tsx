@@ -24,10 +24,38 @@ function unbracket(text: string) {
 }
 
 const FIELDS = [
-    { name: "name", label: "Name", type: "text", required: true },
-    { name: "number", label: "Number", type: "tel", required: true },
-    { name: "email", label: "Email", type: "email", required: true },
-    { name: "location", label: "Location", type: "text", required: true },
+    {
+        name: "name",
+        label: "Name",
+        type: "text",
+        required: true,
+        placeholder: "first and last",
+        autoComplete: "name",
+    },
+    {
+        name: "number",
+        label: "Number",
+        type: "tel",
+        required: true,
+        placeholder: "best number to reach you",
+        autoComplete: "tel",
+    },
+    {
+        name: "email",
+        label: "Email",
+        type: "email",
+        required: true,
+        placeholder: "you@example.com",
+        autoComplete: "email",
+    },
+    {
+        name: "location",
+        label: "Location",
+        type: "text",
+        required: true,
+        placeholder: "where is the project?",
+        autoComplete: "address-level2",
+    },
 ] as const;
 
 export default function Contact({ contactData }: ContactProps) {
@@ -85,15 +113,24 @@ export default function Contact({ contactData }: ContactProps) {
                     <div className={styles.field} key={field.name}>
                         <label className={styles.label} htmlFor={field.name}>
                             {field.label}
+                            {field.required && (
+                                <span className={styles.required} aria-hidden="true">
+                                    *
+                                </span>
+                            )}
                         </label>
-                        <input
-                            className={styles.input}
-                            type={field.type}
-                            id={field.name}
-                            name={field.name}
-                            required={field.required}
-                            disabled={status === "submitting"}
-                        />
+                        <span className={styles.inputWrap}>
+                            <input
+                                className={styles.input}
+                                type={field.type}
+                                id={field.name}
+                                name={field.name}
+                                required={field.required}
+                                placeholder={field.placeholder}
+                                autoComplete={field.autoComplete}
+                                disabled={status === "submitting"}
+                            />
+                        </span>
                     </div>
                 ))}
 
@@ -101,14 +138,19 @@ export default function Contact({ contactData }: ContactProps) {
                     <label className={styles.label} htmlFor="message">
                         Message
                     </label>
-                    <textarea
-                        className={styles.textarea}
-                        id="message"
-                        name="message"
-                        rows={3}
-                        disabled={status === "submitting"}
-                    />
+                    <span className={styles.inputWrap}>
+                        <textarea
+                            className={styles.textarea}
+                            id="message"
+                            name="message"
+                            rows={3}
+                            placeholder="tell us about it…"
+                            disabled={status === "submitting"}
+                        />
+                    </span>
                 </div>
+
+                <p className={styles.hint}>* required</p>
 
                 <button type="submit" className={styles.submit} disabled={status === "submitting"}>
                     {status === "submitting" ? "sending" : unbracket(contactData?.buttonText || "send")}
