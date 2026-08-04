@@ -7,29 +7,24 @@ export const contact = defineType({
     fields: [
         defineField({
             name: 'title',
-            title: 'Title',
+            title: 'Section Heading',
             type: 'string',
-            initialValue: "LET'S TALK",
+            initialValue: 'lets chat',
         }),
         defineField({
-            name: 'toolsText',
-            title: 'Tools Side Text',
-            type: 'string',
-            initialValue: '[ TOOLS OF THE TRADE ]',
-        }),
-        defineField({
-            name: 'image',
-            title: 'Image',
-            type: 'image',
-            options: {
-                hotspot: true,
-            },
+            name: 'intro',
+            title: 'Intro Copy',
+            type: 'text',
+            rows: 5,
+            description: 'Separate paragraphs with a blank line.',
+            initialValue:
+                'The starting point is never fixed, we find that almost all of our work starts with a friendly conversation!\n\nthe door is always open…',
         }),
         defineField({
             name: 'buttonText',
             title: 'Button Text',
             type: 'string',
-            initialValue: '[ SEND INQUIRY ]',
+            initialValue: 'send',
         }),
         defineField({
             name: 'brochure',

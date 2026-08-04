@@ -1,194 +1,49 @@
-.heroSection {
-    min-height: 100vh;
-    /* Ensure it doesn't force scroll if content fits */
-    height: 100vh;
-    /* Fallback for mobile browsers */
-    height: 100dvh;
-    width: 100%;
+.hero {
+    min-height: 100svh;
+    padding: clamp(7rem, 16vh, 11rem) var(--gutter) clamp(3rem, 8vh, 6rem);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: 6rem 1.5rem 1.5rem 1.5rem;
-    /* Reduced side padding for more width */
-    position: relative;
-    overflow: hidden;
-    /* Prevent scrollbars from animations */
 }
 
-.centerContent {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    z-index: 10;
-    width: 100%;
+.statement {
+    font-size: clamp(1.6rem, 3.9vw, 3rem);
+    line-height: 1.2;
+    max-width: 18ch;
+    margin-bottom: clamp(3rem, 9vh, 7rem);
+}
+
+/* Wordmark bottom left, image bottom right — the image is the only
+   thing on the page with any weight, so it carries the composition. */
+.lower {
     flex: 1;
-    /* Take up available vertical space to center properly */
-    /* Ensure content doesn't overflow container preventing footer visibility */
-    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 0.85fr);
+    align-items: start;
+    gap: clamp(2rem, 6vw, 5rem);
 }
 
-.title,
-.subtitle {
-    pointer-events: auto;
-}
-
-.textHeader {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* Shrink the container to the widest naturally unbreakable element (The Title) */
-    width: fit-content;
-    max-width: 100%;
-    margin: 0 auto 0.5rem auto;
-    /* Reduced margin */
-}
-
-.title {
-    font-family: "Times New Roman", Times, serif;
-    /* Fluid typography: scales between 3rem and 7rem depending on viewport width */
-    font-size: clamp(2.8rem, 10vw, 7rem);
-    /* Increased min size to 2.8rem, increased scaler */
-    letter-spacing: 0.1em;
-    margin-bottom: 0.25rem;
-    /* Reduced margin */
-    color: var(--foreground);
-    line-height: 1.1;
-    text-align: center;
-    /* Force title to stay on one line, defining the container width */
-    white-space: nowrap;
-}
-
-.subtitle {
-    font-family: "Times New Roman", Times, serif;
-    /* Fluid typography: scales proportionally with title */
-    font-size: clamp(0.7rem, 2vw, 1.2rem);
-    /* Slightly reduced size */
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    opacity: 0.9;
-    margin-bottom: 1rem;
-    /* Reduced margin */
-    text-align: center;
-    padding-left: 0.4em;
-    /* Optical alignment for letter-spacing */
-    /* Allow wrapping if it exceeds the container width (defined by Title) */
-    white-space: normal;
-    max-width: 100%;
-}
-
-.description {
-    font-family: var(--font-space-mono);
-    font-size: 0.75rem;
-    /* Reduced from 0.8rem */
-    line-height: 1.4;
-    /* Slightly tighter line height */
-    max-width: 600px;
-    margin: 0 auto;
-    opacity: 0.9;
-    padding: 0 0.5rem;
-}
-
-.floatingImageContainer {
-    margin-top: 1.5rem;
-    /* Reduced margin */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.imageFrame {
+    position: relative;
     width: 100%;
-    opacity: 0;
-    animation: fadeIn 1.5s ease-out forwards;
-    animation-delay: 0.3s;
-    /* Critical for keeping footer in view: constrain image height */
-    max-height: 35vh;
-    /* Reduced from 40vh */
+    aspect-ratio: 4 / 3;
 }
 
-.floatingImage {
-    width: auto;
-    /* Auto width to maintain aspect ratio with height constraint */
-    max-width: 100%;
-    height: auto;
-    max-height: 35vh;
-    /* Reduced from 40vh */
-    object-fit: contain;
-    /* Ensure it fits */
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
+.image {
+    object-fit: cover;
 }
 
-.footerAction {
-    display: flex;
-    justify-content: center;
-    /* Center on mobile, maybe right on desktop? User didn't specify, but overlap issue suggests better flow. Let's keep flex-end if possible but check overlap. */
-    align-items: flex-end;
-    margin-top: 1rem;
-    width: 100%;
-    padding-bottom: 1rem;
-}
-
-.startProject {
-    font-family: var(--font-space-mono);
-    font-weight: 700;
-    font-size: 1rem;
-    color: var(--foreground);
-    text-transform: uppercase;
-    border: 1px solid var(--foreground);
-    padding: 1rem 2rem;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
-
-.startProject:hover {
-    background: var(--foreground);
-    color: var(--background);
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
+@media (max-width: 900px) {
+    .statement {
+        max-width: 100%;
+        margin-bottom: 3rem;
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@media (min-width: 768px) {
-    .heroSection {
-        padding: 5rem 2rem 2rem 2rem;
+    .lower {
+        grid-template-columns: 1fr;
+        gap: 3rem;
     }
 
-    .footerAction {
-        justify-content: flex-end;
-    }
-
-    .title {
-        font-size: clamp(4rem, 12vw, 8rem);
-    }
-
-    .description {
-        font-size: 0.9rem;
-        padding: 0 1rem;
-    }
-
-    .textHeader {
-        margin-bottom: 1rem;
-    }
-
-    .subtitle {
-        margin-bottom: 1.5rem;
-    }
-
-    .floatingImageContainer {
-        margin-top: 2rem;
-        max-height: 40vh;
-    }
-
-    .floatingImage {
-        max-height: 40vh;
+    .imageFrame {
+        aspect-ratio: 3 / 2;
     }
 }

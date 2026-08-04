@@ -1,138 +1,121 @@
 .section {
-    display: flex;
-    min-height: 100vh;
-    border-top: 1px solid var(--grid-lines);
-    position: relative;
-    overflow: hidden;
-    flex-wrap: wrap;
-    /* Allow wrapping for better responsiveness */
-}
-
-.imageSide {
-    flex: 1 1 40%;
-    /* Base 40% width, allow grow/shrink */
-    min-width: 400px;
-    /* Prevent shrinking below 400px width on desktop */
-    background-color: #f7f7f7;
-    /* Light background */
+    min-height: 100svh;
+    padding: clamp(6rem, 14vh, 9rem) var(--gutter) clamp(3rem, 8vh, 6rem);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    border-right: 1px solid var(--grid-lines);
-    position: relative;
-    /* Ensure height allows filling if stacked, or full height if side-by-side */
-    min-height: 400px;
 }
 
-.toolsText {
-    font-family: var(--font-space-mono);
-    color: var(--foreground);
-    opacity: 0.5;
-    letter-spacing: 0.1em;
-    font-size: 0.9rem;
+.header {
+    margin-bottom: clamp(2rem, 5vh, 3.5rem);
 }
 
-.formSide {
-    flex: 1 1 50%;
-    /* Base 50% width */
-    min-width: 350px;
-    /* Ensure form has space */
-    background-color: var(--background);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    /* Reduced padding slightly for better fit */
+/* Intro copy sits top right, under the label. */
+.intro {
+    max-width: 32ch;
+    margin-left: auto;
+    margin-right: clamp(0rem, 8vw, 10rem);
+    font-size: clamp(1rem, 1.45vw, 1.3rem);
+    line-height: 1.5;
 }
 
-.formContainer {
-    width: 100%;
-    max-width: 500px;
+.intro p + p {
+    margin-top: 1.4em;
 }
 
-.title {
-    font-family: var(--font-playfair);
-    font-size: 3rem;
-    margin-bottom: 2rem;
-    color: var(--foreground);
-}
-
+/* Form hangs at the bottom left of the screen, as drawn. */
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    margin-top: auto;
+    padding-top: clamp(3rem, 10vh, 7rem);
+    width: min(100%, 32rem);
 }
 
 .field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    align-items: baseline;
 }
 
-.field label {
-    font-family: var(--font-space-mono);
-    font-size: 0.8rem;
-    font-weight: bold;
-    text-transform: uppercase;
+/* The single continuous vertical rule running down the form: drawn on
+   the label cell so it joins up seamlessly between rows. */
+.label {
+    font-family: var(--font-serif), "Times New Roman", serif;
+    font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+    letter-spacing: 0.14em;
+    padding: 0.55rem 1.25rem 0.55rem 0;
+    border-right: 1px solid var(--rule);
+    align-self: stretch;
+}
+
+.input,
+.textarea {
+    font-family: var(--font-serif), "Times New Roman", serif;
+    font-size: clamp(0.95rem, 1.3vw, 1.1rem);
     color: var(--foreground);
-}
-
-.field input {
-    padding: 1rem;
-    font-family: var(--font-space-mono);
-    font-size: 1rem;
-    background: transparent;
-    border: 1px solid #ccc;
-    border-radius: 0;
-    color: var(--foreground);
-    transition: border-color 0.3s ease;
-}
-
-.field input:focus {
-    outline: none;
-    border-color: var(--foreground);
-}
-
-.submitButton {
-    margin-top: 1rem;
-    padding: 1.5rem;
-    background: var(--foreground);
-    color: var(--background);
+    background: none;
     border: none;
-    font-family: var(--font-space-mono);
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: opacity 0.3s;
+    outline: none;
+    padding: 0.55rem 0 0.55rem 1.25rem;
+    width: 100%;
 }
 
-.submitButton:hover {
-    opacity: 0.9;
+.input:focus-visible,
+.textarea:focus-visible {
+    /* No boxes anywhere in the design — mark focus with a hairline. */
+    box-shadow: inset 0 -1px 0 var(--rule);
 }
 
-/* Breakpoint for stacking content */
-@media (max-width: 1024px) {
-    .section {
-        flex-direction: column;
+.textarea {
+    resize: vertical;
+    min-height: 5.5rem;
+    line-height: 1.5;
+}
+
+.input:disabled,
+.textarea:disabled {
+    opacity: 0.5;
+}
+
+.submit {
+    margin-top: 2.5rem;
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.72rem, 1.05vw, 0.86rem);
+    letter-spacing: var(--track-wide);
+    text-transform: lowercase;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--rule);
+    transition: opacity 0.3s ease;
+}
+
+.submit:hover:not(:disabled),
+.submit:focus-visible:not(:disabled) {
+    opacity: 0.55;
+}
+
+.submit:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.message {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    max-width: 40ch;
+}
+
+.error {
+    color: var(--terracotta);
+}
+
+@media (max-width: 700px) {
+    .intro {
+        max-width: 100%;
+        margin-right: 0;
+        margin-left: 0;
     }
 
-    .imageSide {
-        width: 100%;
-        min-height: 40vh;
-        /* Taller banner on mobile/tablet */
-        border-right: none;
-        border-bottom: 1px solid var(--grid-lines);
-        flex: none;
-        /* Disable flex scaling in column mode */
-    }
-
-    .formSide {
-        width: 100%;
-        padding: 4rem 2rem;
-        /* More vertical padding */
-        flex: none;
+    .field {
+        grid-template-columns: 6.5rem 1fr;
     }
 }

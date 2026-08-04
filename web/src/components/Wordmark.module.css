@@ -1,0 +1,52 @@
+.lockup {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.centred {
+    align-items: center;
+    text-align: center;
+}
+
+/* Set in lowercase and uppercased via CSS so the tracking sits evenly
+   between letters rather than being baked into the markup. */
+.name {
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    text-transform: uppercase;
+    font-size: clamp(1.6rem, 4.2vw, 2.9rem);
+    letter-spacing: var(--track-wider);
+    line-height: 1;
+    /* Tracking adds trailing space after the final letter; pull it back
+       so the lockup stays optically flush-left with the rule below. */
+    margin-right: calc(-1 * var(--track-wider));
+}
+
+.rule {
+    display: block;
+    width: 2.6em;
+    height: 1px;
+    background: var(--rule);
+    margin: 0.9rem 0 0.7rem;
+}
+
+.centred .rule {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.descriptor {
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.62rem, 1.15vw, 0.78rem);
+    letter-spacing: var(--track-wide);
+    line-height: 1.5;
+    margin-right: calc(-1 * var(--track-wide));
+}
+
+.est {
+    font-size: 0.82em;
+}

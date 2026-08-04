@@ -1,205 +1,59 @@
-.section {
-    background-color: #1a1a1a;
-    color: #fff;
-    padding: 8rem 2rem;
-    text-align: center;
+.run {
+    background: var(--blush);
 }
 
-.container {
-    max-width: 1000px;
-    margin: 0 auto;
-    position: relative;
-}
-
-.heading {
-    font-family: var(--font-cormorant);
-    font-size: 1.2rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 4rem;
-    color: #888;
-}
-
-.carousel {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    min-height: 300px;
-}
-
-.slideContainer {
-    flex: 1;
-    overflow: hidden;
-    height: 350px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.content {
+.panel {
+    min-height: 100svh;
+    padding: clamp(6rem, 14vh, 9rem) var(--gutter) clamp(3rem, 8vh, 6rem);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 3rem;
-    animation: fadeIn 0.5s ease-in-out;
-    width: 100%;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
+.header {
+    margin-bottom: clamp(2.5rem, 8vh, 5rem);
+}
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* The quote block sits inboard of the left gutter, roughly a third
+   across, with the label's right edge above it. */
+.figure {
+    max-width: 34ch;
+    margin-left: auto;
+    margin-right: clamp(0rem, 16vw, 22rem);
 }
 
 .quote {
-    font-family: var(--font-montserrat);
-    font-size: 1.8rem;
-    line-height: 1.6;
-    font-style: italic;
-    color: #e0e0e0;
-    max-width: 800px;
-    display: -webkit-box;
-    -webkit-line-clamp: 6;
-    line-clamp: 6;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: clamp(1.15rem, 1.8vw, 1.6rem);
+    line-height: 1.42;
 }
 
-.authorContainer {
+.attribution {
     display: flex;
-    align-items: center;
-    gap: 1.5rem;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.6em;
+    margin-top: 2rem;
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.72rem, 1.05vw, 0.86rem);
+    letter-spacing: var(--track-wide);
 }
 
-.imageWrapper {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 1px solid #333;
-}
-
-.avatar {
-    object-fit: cover;
-}
-
-.meta {
-    text-align: left;
-}
-
-.name {
-    font-family: var(--font-cormorant);
-    font-size: 1.2rem;
-    font-weight: 600;
+.author {
     text-transform: uppercase;
-    color: #fff;
-    margin-bottom: 0.2rem;
+}
+
+.divider {
+    opacity: 0.55;
 }
 
 .role {
-    font-family: var(--font-montserrat);
-    font-size: 0.9rem;
-    color: #888;
-    font-weight: 300;
+    text-transform: lowercase;
 }
 
-.controls {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: flex;
-    gap: 1rem;
-    z-index: 10;
-}
-
-.navButton {
-    background: none;
-    border: 1px solid #333;
-    color: #fff;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    padding: 0;
-    line-height: 0;
-    padding-bottom: 3px;
-    /* visual adjustment for text arrow baseline */
-}
-
-.navButton:hover {
-    background: #fff;
-    color: #000;
-    border-color: #fff;
-}
-
-.dots {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 4rem;
-}
-
-.dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: none;
-    background-color: #333;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    padding: 0;
-}
-
-.activeDot {
-    background-color: #fff;
-}
-
-@media (max-width: 768px) {
-    .section {
-        min-height: 800px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .quote {
-        font-size: 1.1rem;
-        -webkit-line-clamp: 10;
-        line-clamp: 10;
-    }
-
-    .carousel {
-        flex-direction: column;
-        gap: 1rem;
-        position: relative;
-    }
-
-    .content {
-        gap: 2rem;
-    }
-
-    .slideContainer {
-        height: 400px;
-        padding: 0;
-    }
-
-    .controls {
-        position: static;
-        width: 100%;
-        justify-content: flex-end;
-        margin-top: 1rem;
+@media (max-width: 900px) {
+    .figure {
+        max-width: 100%;
+        margin-right: 0;
+        margin-left: 0;
     }
 }

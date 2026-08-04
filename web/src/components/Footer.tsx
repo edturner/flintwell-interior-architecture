@@ -1,42 +1,55 @@
 import Link from "next/link";
 import styles from "./Footer.module.css";
+import Wordmark from "./Wordmark";
 
 interface FooterProps {
     footerData?: {
-        location: string;
-        email: string;
-        instagramUrl: string;
-        copyrightText: string;
-    }
+        email?: string;
+        phone?: string;
+        instagramUrl?: string;
+        copyrightText?: string;
+    };
 }
 
 export default function Footer({ footerData }: FooterProps) {
-    // Use a fixed year or client-side effect to avoid hydration mismatch
+    // Fixed rather than derived from Date, so the server and client render
+    // the same markup.
     const currentYear = 2026;
+
+    const email = footerData?.email || "info@flintwell.com";
+    const phone = footerData?.phone || "07891 818682";
 
     return (
         <footer className={styles.footer}>
-            <div className={styles.left}>
-                <div className={styles.contactInfo}>
-                    <p>{footerData?.location || 'LONDON, UK'}</p>
-                    <p>
-                        <a href={`mailto:${footerData?.email || 'INFO@FLINTWELL.COM'}`}>
-                            {footerData?.email || 'INFO@FLINTWELL.COM'}
-                        </a>
-                    </p>
-                </div>
-                <div className={styles.copyright}>
-                    &copy; {currentYear} {footerData?.copyrightText || 'FLINTWELL INTERIOR ARCHITECTURE'}
-                </div>
+            <div className={styles.centre}>
+                <Wordmark centred />
             </div>
 
-            <div className={styles.right}>
-                <Link href={footerData?.instagramUrl || "https://www.instagram.com/flintwell_/#"} target="_blank" className={styles.link}>
-                    [ INSTAGRAM ]
-                </Link>
-                <Link href="/contact" className={styles.link}>
-                    [ CONTACT ]
-                </Link>
+            <div className={styles.smallPrint}>
+                <div className={styles.column}>
+                    <span>copyright {currentYear}</span>
+                    <span>{footerData?.copyrightText || "All rights reserved"}</span>
+                </div>
+
+                <div className={styles.column}>
+                    <a href={`mailto:${email}`} className={styles.link}>
+                        {email}
+                    </a>
+                    <a href={`tel:${phone.replace(/\s/g, "")}`} className={styles.link}>
+                        {phone}
+                    </a>
+                </div>
+
+                <div className={styles.column}>
+                    <Link
+                        href={footerData?.instagramUrl || "https://www.instagram.com/flintwell_/"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.link}
+                    >
+                        instagram
+                    </Link>
+                </div>
             </div>
         </footer>
     );

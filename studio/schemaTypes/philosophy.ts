@@ -1,60 +1,46 @@
 import { defineField, defineType } from 'sanity'
 
+/**
+ * The "about us + what we do" section.
+ *
+ * Previously this drove a two-block Vision/Approach layout. Ian's mockups
+ * condense that into a single section, and the slogan has moved to the
+ * menu overlay (see the `footer` / Site Details document). The old
+ * philosophyVision* / philosophyApproach* field values still exist on the
+ * document in Sanity and can be copied across.
+ */
 export const philosophy = defineType({
     name: 'philosophy',
-    title: 'Philosophy',
+    title: 'About',
     type: 'document',
     fields: [
         defineField({
             name: 'title', // Internal title for the document
             title: 'Internal Title',
             type: 'string',
-            initialValue: 'Philosophy Section',
-            hidden: true
+            initialValue: 'About Section',
+            hidden: true,
         }),
         defineField({
-            name: 'philosophySlogan',
-            title: 'Slogan',
+            name: 'aboutHeading',
+            title: 'Section Heading',
             type: 'string',
-            initialValue: 'The most complicated thing is simplicity'
+            initialValue: 'about us + what we do',
         }),
         defineField({
-            name: 'philosophyVisionTitle',
-            title: 'Vision Title',
-            type: 'string',
-            initialValue: 'Our Vision'
-        }),
-        defineField({
-            name: 'philosophyVisionText',
-            title: 'Vision Text',
+            name: 'aboutText',
+            title: 'Body Copy',
             type: 'text',
-            rows: 4,
-            initialValue: 'We are driven by a creative design vision, with a clear objective: to achieve exceptional ergonomic and aesthetic outcomes for every project. Working closely with architects, investors, and developers, we deliver refined and enduring standards of living.'
+            rows: 10,
+            description: 'Separate paragraphs with a blank line.',
+            initialValue:
+                'We are continually building relationships with great people in the industry who, like us, love what they do. Passion, pride, and attention to detail are what we look for.\n\nArchitecturally led interior design, project management and procurement are amoungst the services we offer, often acting as the centre point that brings it all together.',
         }),
         defineField({
-            name: 'philosophyVisionImage',
-            title: 'Vision Image',
+            name: 'aboutImage',
+            title: 'Image',
             type: 'image',
-            options: { hotspot: true }
-        }),
-        defineField({
-            name: 'philosophyApproachTitle',
-            title: 'Approach Title',
-            type: 'string',
-            initialValue: 'Our Approach'
-        }),
-        defineField({
-            name: 'philosophyApproachText',
-            title: 'Approach Text',
-            type: 'text',
-            rows: 6,
-            initialValue: 'Exceptional service is at the core of our practice. Over the years, we have developed a structured and considered process that brings all disciplines together, ensuring each trade is aligned with the overall design intent.\n\nWith a meticulous eye for detail and a depth of industry knowledge, we simplify decision-making and ensure nothing is overlooked. We understand that in construction, timing and sequence are critical — and that precision at every stage is essential to achieving the best possible outcome.'
-        }),
-        defineField({
-            name: 'philosophyApproachImage',
-            title: 'Approach Image',
-            type: 'image',
-            options: { hotspot: true }
+            options: { hotspot: true },
         }),
     ],
 })

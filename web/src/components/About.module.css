@@ -1,0 +1,66 @@
+.section {
+    min-height: 100svh;
+    padding: clamp(6rem, 14vh, 9rem) var(--gutter) clamp(3rem, 8vh, 6rem);
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+    gap: clamp(2rem, 8vw, 7rem);
+}
+
+/* The image hangs below the run of copy, as drawn. */
+.imageColumn {
+    display: flex;
+    align-items: center;
+}
+
+.imageFrame {
+    position: relative;
+    width: 100%;
+    max-width: 27rem;
+    aspect-ratio: 1 / 1;
+}
+
+.image {
+    object-fit: cover;
+}
+
+.textColumn {
+    display: flex;
+    flex-direction: column;
+}
+
+.copy {
+    /* Copy sits under the label but left-aligned within the right column,
+       so the ragged right edge reads the way it does in the mockup. */
+    max-width: 34ch;
+    margin-top: clamp(2.5rem, 6vh, 4.5rem);
+}
+
+.paragraph {
+    font-size: clamp(1rem, 1.45vw, 1.3rem);
+    line-height: 1.5;
+}
+
+.paragraph + .paragraph {
+    margin-top: 1.6em;
+}
+
+@media (max-width: 900px) {
+    .section {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .imageColumn {
+        order: 2;
+    }
+
+    .imageFrame {
+        max-width: 100%;
+        aspect-ratio: 4 / 3;
+    }
+
+    .copy {
+        max-width: 100%;
+        margin-top: 2rem;
+    }
+}

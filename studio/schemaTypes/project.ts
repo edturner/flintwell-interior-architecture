@@ -23,6 +23,13 @@ export const project = defineType({
             type: 'string',
         }),
         defineField({
+            name: 'projectNumber',
+            title: 'Project Number',
+            type: 'string',
+            description:
+                'The studio job number, digits only — e.g. "23". Shown in the selected work grid as "PROJECT23 | Dingle". Leave blank to show the name alone.',
+        }),
+        defineField({
             name: 'slug',
             title: 'Slug',
             type: 'slug',

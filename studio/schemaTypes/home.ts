@@ -16,6 +16,13 @@ export const home = defineType({
             type: 'string',
         }),
         defineField({
+            name: 'statement',
+            title: 'Hero Statement',
+            type: 'string',
+            description: 'The single serif line at the top of the homepage.',
+            initialValue: 'We build relationships and design around people',
+        }),
+        defineField({
             name: 'description',
             title: 'Description',
             type: 'text',
@@ -28,13 +35,5 @@ export const home = defineType({
                 hotspot: true,
             },
         }),
-        defineField({
-            name: 'services',
-            title: 'Services',
-            type: 'array',
-            of: [{ type: 'reference', to: { type: 'service' } }],
-        }),
-
-        // Philosophy Section - MOVED TO SEPARATE SCHEMA
     ],
 })

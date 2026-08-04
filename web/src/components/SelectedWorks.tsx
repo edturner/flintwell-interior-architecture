@@ -1,44 +1,79 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./SelectedWorks.module.css";
-import { client } from "@/sanity/lib/client";
-import { PROJECTS_QUERY } from "@/sanity/lib/queries";
+import SectionLabel from "./SectionLabel";
 import { urlFor } from "@/sanity/lib/image";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
-export default async function SelectedWorks() {
-    const projects = await client.fetch(PROJECTS_QUERY);
-    const selectedProjects = projects.slice(0, 3);
+export interface ProjectSummary {
+    _id: string;
+    title: string;
+    projectNumber?: string;
+    slug: string;
+    mainImage?: SanityImageSource;
+    aspect?: number;
+}
+
+interface SelectedWorksProps {
+    projects: ProjectSummary[];
+    /** Rendered once at the top of the run; omit where the page supplies its own. */
+    showLabel?: boolean;
+}
+
+const NOMINAL_WIDTH = 800;
+
+export default function SelectedWorks({ projects, showLabel = true }: SelectedWorksProps) {
+    if (!projects?.length) return null;
 
     return (
-        <section id="projects" className={styles.section}>
-            <header className={styles.header}>
-                <h2 className={styles.sectionTitle}>Selected Works (2023–2026)</h2>
-            </header>
+        <section id="work" className={styles.section}>
+            {showLabel && (
+                <div className={styles.header}>
+                    <SectionLabel>selected work</SectionLabel>
+                </div>
+            )}
 
             <div className={styles.grid}>
-                {selectedProjects.map((project: any) => (
-                    <Link href={`/projects/${project.slug}`} key={project._id} className={styles.card}>
-                        <div className={styles.imagePlaceholder} style={{ position: 'relative' }}>
-                            {project.mainImage && (
-                                <Image
-                                    src={urlFor(project.mainImage).width(800).height(600).url()}
-                                    alt={project.title}
-                                    fill
-                                    sizes="(max-width: 768px) 100vw, 33vw"
-                                    style={{ objectFit: 'cover' }}
-                                />
-                            )}
-                        </div>
-                        <div className={styles.info}>
-                            <h3 className={styles.projectTitle}>{project.title}</h3>
-                            <div className={styles.meta}>
-                                {project.location && <span>{project.location}</span>}
-                                {project.location && project.year && <span>|</span>}
-                                {project.year && <span>{project.year}</span>}
+                {projects.map((project) => {
+                    // Fall back to 4:3 when Sanity has no dimension metadata,
+                    // so a missing asset can't collapse the row.
+                    const aspect = project.aspect && project.aspect > 0 ? project.aspect : 4 / 3;
+
+                    return (
+                        <Link
+                            href={`/projects/${project.slug}`}
+                            key={project._id}
+                            className={styles.card}
+                        >
+                            <div className={styles.frame}>
+                                {project.mainImage && (
+                                    <Image
+                                        src={urlFor(project.mainImage).width(NOMINAL_WIDTH).url()}
+                                        alt={project.title}
+                                        width={NOMINAL_WIDTH}
+                                        height={Math.round(NOMINAL_WIDTH / aspect)}
+                                        sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 30vw"
+                                        className={styles.image}
+                                    />
+                                )}
                             </div>
-                        </div>
-                    </Link>
-                ))}
+
+                            <div className={styles.caption}>
+                                {project.projectNumber && (
+                                    <>
+                                        <span className={styles.number}>
+                                            project{project.projectNumber}
+                                        </span>
+                                        <span className={styles.divider} aria-hidden="true">
+                                            |
+                                        </span>
+                                    </>
+                                )}
+                                <span className={styles.name}>{project.title}</span>
+                            </div>
+                        </Link>
+                    );
+                })}
             </div>
         </section>
     );

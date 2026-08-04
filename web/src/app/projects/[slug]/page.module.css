@@ -1,121 +1,145 @@
 .main {
-    min-height: 100vh;
-    padding: 0;
-    background: var(--background);
+    padding: clamp(6rem, 14vh, 9rem) var(--gutter) clamp(4rem, 10vh, 7rem);
 }
 
 .header {
-    padding: 2rem;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    margin-bottom: clamp(2rem, 5vh, 3.5rem);
+}
+
+.titleRow {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.6em;
+}
+
+.number {
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.72rem, 1.05vw, 0.86rem);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+}
+
+.divider {
+    opacity: 0.55;
 }
 
 .title {
-    font-family: var(--font-playfair);
-    font-size: 2rem;
+    font-size: clamp(1.4rem, 3vw, 2.4rem);
 }
 
 .backLink {
-    font-family: var(--font-space-mono);
-    font-size: 0.9rem;
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.7rem, 1.05vw, 0.82rem);
+    letter-spacing: var(--track-wide);
+    text-transform: lowercase;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--rule);
+    transition: opacity 0.3s ease;
+}
+
+.backLink:hover,
+.backLink:focus-visible {
+    opacity: 0.55;
 }
 
 .heroImage {
     position: relative;
-    max-width: 900px;
-    margin: 0 auto 4rem;
-    padding: 0 2rem;
-    aspect-ratio: 16/9;
-    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-bottom: clamp(3rem, 8vh, 5rem);
+}
+
+.cover {
+    object-fit: cover;
+}
+
+.contentGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.4fr) minmax(0, 1fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    margin-bottom: clamp(3rem, 8vh, 5rem);
+}
+
+.meta {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+}
+
+.metaItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+}
+
+.metaLabel {
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.66rem, 0.95vw, 0.76rem);
+    letter-spacing: var(--track-wide);
+    text-transform: lowercase;
+    opacity: 0.6;
+}
+
+.narrative {
+    max-width: 52ch;
+    font-size: clamp(1rem, 1.35vw, 1.2rem);
+    line-height: 1.55;
+}
+
+.narrative p + p {
+    margin-top: 1.4em;
 }
 
 .gallery {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 2rem 2rem;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    margin-bottom: clamp(3rem, 8vh, 5rem);
 }
 
 .galleryItem {
     position: relative;
-    aspect-ratio: 3/2;
-    overflow: hidden;
-    border: 1px solid var(--grid-lines);
-    background: var(--background);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-}
-
-.contentGrid {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-    gap: 4rem;
-}
-
-.meta {
-    font-family: var(--font-space-mono);
-    font-size: 0.9rem;
-    border-right: 1px solid var(--grid-lines);
-    padding-right: 2rem;
-}
-
-.metaItem {
-    margin-bottom: 2rem;
-}
-
-.narrative p {
-    font-family: Arial, sans-serif;
-    /* Per brief: body text vs specs/headings? Brief said "Body & Specs (Monospace)"... wait. 
-     Brief: "Body & Specs (Monospace): Space Mono or JetBrains Mono. Used for all navigation, specifications, and descriptions. This treats the text as 'data' rather than just stories."
-     
-     Okay, "stories" might mean the narrative IS monospace? "Used for all... descriptions".
-     Wait. "Headings (Serif)... Body & Specs (Monospace)".
-     So yes, narrative should be Monospace too?
-     "This treats the text as 'data' rather than just stories" implies a styilistic choice to make even the story feel like data.
-  */
-    font-family: var(--font-space-mono);
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 1.6rem;
-    max-width: 60ch;
+    width: 100%;
+    aspect-ratio: 4 / 3;
 }
 
 .nextNav {
-    padding: 4rem 2rem;
     display: flex;
     justify-content: flex-end;
-    border-top: 1px solid var(--grid-lines);
-    margin-top: 4rem;
 }
 
 .nextLink {
-    font-family: var(--font-space-mono);
-    font-weight: bold;
-    font-size: 1.2rem;
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.72rem, 1.05vw, 0.86rem);
+    letter-spacing: var(--track-wide);
+    text-transform: lowercase;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--rule);
+    transition: opacity 0.3s ease;
 }
 
-@media (max-width: 768px) {
+.nextLink:hover,
+.nextLink:focus-visible {
+    opacity: 0.55;
+}
+
+@media (max-width: 800px) {
     .contentGrid {
         grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-
-    .meta {
-        border-right: none;
-        border-bottom: 1px solid var(--grid-lines);
-        padding-bottom: 2rem;
-        padding-right: 0;
-        display: flex;
-        gap: 2rem;
     }
 
     .gallery {
         grid-template-columns: 1fr;
-        padding: 0 1rem 1rem;
     }
 }

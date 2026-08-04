@@ -1,0 +1,12 @@
+.label {
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.85rem, 1.6vw, 1.15rem);
+    letter-spacing: var(--track-wide);
+    text-transform: lowercase;
+    text-align: right;
+    line-height: 1;
+    /* Sits directly beneath the "menu" control, sharing its right edge —
+       cancel the trailing letter-space so the two align optically. */
+    margin-right: calc(-1 * var(--track-wide));
+}
