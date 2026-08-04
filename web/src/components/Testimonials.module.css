@@ -1,21 +1,21 @@
 .panel {
     background: var(--blush);
     min-height: 100svh;
-    padding: clamp(6rem, 14vh, 9rem) var(--gutter) clamp(3rem, 8vh, 6rem);
+    padding: var(--section-top) var(--gutter) var(--section-bottom);
     display: flex;
     flex-direction: column;
 }
 
 .header {
-    margin-bottom: clamp(2.5rem, 8vh, 5rem);
+    margin-bottom: var(--label-gap);
 }
 
-/* The quote block sits inboard of the left gutter, roughly a third
-   across, with the label's right edge above it. */
+/* Centred in the panel, with the quote and its controls sharing the same
+   left edge so the block reads as one unit. */
 .carousel {
-    max-width: 34ch;
-    margin-left: auto;
-    margin-right: clamp(0rem, 16vw, 22rem);
+    max-width: 40ch;
+    margin: auto;
+    width: 100%;
 }
 
 /* Every slide occupies the same single grid cell, so the stage measures
@@ -43,10 +43,15 @@
     line-height: 1.42;
 }
 
+/* Held on one line: a long studio name wrapping would push the "|" to the
+   start of the next line. The row is allowed to run wider than the quote
+   above it — the carousel is centred, so there is room either side. */
 .attribution {
     display: flex;
     align-items: baseline;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    width: max-content;
     gap: 0.6em;
     margin-top: 2rem;
     font-family: var(--font-sans), "Century Gothic", sans-serif;
@@ -80,7 +85,7 @@
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    margin-top: clamp(2.5rem, 6vh, 4rem);
+    margin-top: clamp(2rem, 4.5vh, 3rem);
 }
 
 .arrow {
@@ -124,20 +129,19 @@
     opacity: 0.45;
 }
 
+/* Below this there isn't room to run the attribution wide, so stack the
+   author and role and drop the rule rather than let it dangle. */
 @media (max-width: 900px) {
     .carousel {
         max-width: 100%;
-        margin-right: 0;
-        margin-left: 0;
+        margin: 0;
     }
-}
 
-/* Too narrow for "AUTHOR | role" on one line. Stack the two and drop the
-   rule rather than letting it lead the wrapped line. */
-@media (max-width: 700px) {
     .attribution {
         flex-direction: column;
         align-items: flex-start;
+        white-space: normal;
+        width: auto;
         gap: 0.4rem;
     }
 

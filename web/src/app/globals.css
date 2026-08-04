@@ -20,7 +20,14 @@
   --track-wider: 0.42em;
 
   /* Page gutters */
-  --gutter: clamp(1.5rem, 5vw, 5rem);
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+
+  /* Shared section rhythm. Every full screen uses these rather than its
+     own clamps, so the overall density is tuned in one place. */
+  --section-top: clamp(4.5rem, 10vh, 6.5rem);
+  --section-bottom: clamp(2.5rem, 6vh, 4.5rem);
+  /* Gap between a section label and the content beneath it. */
+  --label-gap: clamp(2rem, 5vh, 3.25rem);
 }
 
 /* Base Reset */

@@ -39,10 +39,23 @@ whitespace and one image per screen.
 
 ## Layout
 
-- `--gutter: clamp(1.5rem, 5vw, 5rem)` — the page margin everywhere.
+Spacing runs off four tokens in `globals.css`, so overall density is tuned
+in one place rather than per component. Don't reintroduce per-section
+clamps:
+
+| Token | Role |
+|-------|------|
+| `--gutter` | Page margin everywhere |
+| `--section-top` / `--section-bottom` | Every full-screen section's padding |
+| `--label-gap` | Section label → content beneath it |
+
 - Sections are `min-height: 100svh`. The mockups are drawn as discrete
   screens, and the design depends on that breathing room.
-- Section labels sit flush right, directly under the `menu` control.
+- Section labels sit flush right, directly under the `menu` control. So
+  does the About copy block — left-aligned text, but the *block* sits
+  right, sharing an edge with the label above it.
+- The testimonial carousel is centred in its panel (`margin: auto`), not
+  offset right like the other sections.
 - Breakpoints: 1100px (work grid 3→2 col), 900px (hero/about stack),
   700px (work grid →1 col, contact form tightens), 640px (menu overlay stacks).
 
@@ -101,8 +114,11 @@ conventional boxed form.
 - `project.projectNumber` — drives `PROJECT23 | Dingle`. Captions fall back
   to the name alone when it's blank.
 - `home.statement` — the hero line.
-- `home.heroImage` — should be an on-site photograph. It currently holds the
-  logo PNG left over from the old build.
+- `home.heroImage` — **not currently used.** The field still holds the logo
+  PNG from the old build, which was rendering as the full-size hero image.
+  The hero now points at the local `public/hero-desk.jpeg`; once a proper
+  photograph is uploaded in the Studio, restore the Sanity binding in
+  `Hero.tsx` (one line, marked with a comment).
 - `philosophy` (now "About") — `aboutHeading` / `aboutText` / `aboutImage`.
 - `footer` (now "Site Details") — also feeds the menu overlay via `phone`,
   `addressLines` and `menuSlogan`.

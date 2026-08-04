@@ -1,6 +1,6 @@
 .hero {
     min-height: 100svh;
-    padding: clamp(7rem, 16vh, 11rem) var(--gutter) clamp(3rem, 8vh, 6rem);
+    padding: var(--section-top) var(--gutter) var(--section-bottom);
     display: flex;
     flex-direction: column;
 }
@@ -9,7 +9,7 @@
     font-size: clamp(1.6rem, 3.9vw, 3rem);
     line-height: 1.2;
     max-width: 18ch;
-    margin-bottom: clamp(3rem, 9vh, 7rem);
+    margin-bottom: clamp(2.5rem, 6vh, 4.5rem);
 }
 
 /* Wordmark bottom left, image bottom right — the image is the only
@@ -17,33 +17,39 @@
 .lower {
     flex: 1;
     display: grid;
-    grid-template-columns: 1fr minmax(0, 0.85fr);
+    grid-template-columns: 1fr minmax(0, 0.62fr);
     align-items: start;
-    gap: clamp(2rem, 6vw, 5rem);
+    gap: clamp(1.5rem, 5vw, 4rem);
 }
 
+/* Portrait, matching the photograph's own 3:4 proportions so nothing
+   important gets cropped away. */
 .imageFrame {
     position: relative;
     width: 100%;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 3 / 4;
+    max-height: 62vh;
+    margin-left: auto;
 }
 
 .image {
     object-fit: cover;
+    object-position: center 35%;
 }
 
 @media (max-width: 900px) {
     .statement {
         max-width: 100%;
-        margin-bottom: 3rem;
+        margin-bottom: 2.5rem;
     }
 
     .lower {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 2.5rem;
     }
 
     .imageFrame {
-        aspect-ratio: 3 / 2;
+        aspect-ratio: 4 / 5;
+        max-height: none;
     }
 }

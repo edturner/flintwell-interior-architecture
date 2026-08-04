@@ -2,7 +2,7 @@
    tucked into the bottom left. */
 .footer {
     min-height: 100svh;
-    padding: clamp(6rem, 14vh, 9rem) var(--gutter) clamp(2.5rem, 6vh, 4rem);
+    padding: var(--section-top) var(--gutter) var(--section-bottom);
     display: flex;
     flex-direction: column;
 }

@@ -1,9 +1,9 @@
 .section {
     min-height: 100svh;
-    padding: clamp(6rem, 14vh, 9rem) var(--gutter) clamp(3rem, 8vh, 6rem);
+    padding: var(--section-top) var(--gutter) var(--section-bottom);
     display: grid;
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
-    gap: clamp(2rem, 8vw, 7rem);
+    gap: clamp(1.5rem, 6vw, 5rem);
 }
 
 /* The image hangs below the run of copy, as drawn. */
@@ -15,7 +15,7 @@
 .imageFrame {
     position: relative;
     width: 100%;
-    max-width: 27rem;
+    max-width: 25rem;
     aspect-ratio: 1 / 1;
 }
 
@@ -28,11 +28,13 @@
     flex-direction: column;
 }
 
+/* Flush right, sharing an edge with the section label and the "menu"
+   control above it. Left-aligned text inside the block — it's the block
+   that sits right, not the ragged edge. */
 .copy {
-    /* Copy sits under the label but left-aligned within the right column,
-       so the ragged right edge reads the way it does in the mockup. */
     max-width: 34ch;
-    margin-top: clamp(2.5rem, 6vh, 4.5rem);
+    margin-left: auto;
+    margin-top: var(--label-gap);
 }
 
 .paragraph {
@@ -41,13 +43,13 @@
 }
 
 .paragraph + .paragraph {
-    margin-top: 1.6em;
+    margin-top: 1.5em;
 }
 
 @media (max-width: 900px) {
     .section {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 2.5rem;
     }
 
     .imageColumn {
@@ -61,6 +63,7 @@
 
     .copy {
         max-width: 100%;
-        margin-top: 2rem;
+        margin-left: 0;
+        margin-top: 1.75rem;
     }
 }

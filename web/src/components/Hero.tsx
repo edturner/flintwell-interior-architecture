@@ -1,16 +1,22 @@
 import Image from "next/image";
 import styles from "./Hero.module.css";
 import Wordmark from "./Wordmark";
-import { urlFor } from "@/sanity/lib/image";
-import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 interface HeroProps {
     homeData?: {
         statement?: string;
         description?: string;
-        heroImage?: SanityImageSource;
     };
 }
+
+/**
+ * The hero photograph is deliberately a local asset rather than
+ * `home.heroImage` from Sanity: that field still holds the logo PNG left
+ * over from the previous build, which is what was rendering here at full
+ * size. Once Ian uploads a photograph in the Studio, swap this back to
+ * `urlFor(homeData.heroImage)` — it's a one-line change.
+ */
+const HERO_IMAGE = "/hero-desk.jpeg";
 
 export default function Hero({ homeData }: HeroProps) {
     const statement =
@@ -25,14 +31,10 @@ export default function Hero({ homeData }: HeroProps) {
 
                 <div className={styles.imageFrame}>
                     <Image
-                        src={
-                            homeData?.heroImage
-                                ? urlFor(homeData.heroImage).width(1100).url()
-                                : "/hero-main.jpeg"
-                        }
-                        alt="Flintwell on site"
+                        src={HERO_IMAGE}
+                        alt="Ian at work in the Flintwell studio"
                         fill
-                        sizes="(max-width: 900px) 100vw, 45vw"
+                        sizes="(max-width: 900px) 100vw, 38vw"
                         className={styles.image}
                         priority
                     />
