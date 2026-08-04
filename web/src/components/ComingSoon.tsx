@@ -31,10 +31,10 @@ export default function ComingSoon() {
                     <p className={styles.est}>est2023</p>
 
                     <p className={styles.message}>
-                        A new site is in progress.
+                        a new site is in progress.
                         <br />
                         <span className={styles.soft}>
-                            Recent work and projects are posted on Instagram.
+                            recent work and projects are posted on Instagram.
                         </span>
                     </p>
 
@@ -55,7 +55,7 @@ export default function ComingSoon() {
                 </div>
             </main>
 
-            <footer className={styles.footer}>London, UK</footer>
+            <footer className={styles.footer}>Sussex, UK</footer>
         </>
     );
 }

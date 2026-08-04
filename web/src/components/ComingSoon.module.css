@@ -83,14 +83,17 @@
 
 /* ── Message ──────────────────────────────────────── */
 
+/* Set like the descriptor rather than like body copy — lowercase, weight 300,
+   gentle tracking. Reads as a statement instead of a paragraph. */
 .message {
-    margin-top: 4.5rem;
-    font-size: clamp(0.9375rem, 3vw, 1rem);
+    margin-top: 4rem;
+    font-size: clamp(1rem, 3.4vw, 1.3125rem);
     font-weight: 300;
-    letter-spacing: 0.02em;
-    line-height: 1.85;
-    color: #3a3730;
-    max-width: 26rem;
+    letter-spacing: 0.045em;
+    line-height: 1.75;
+    color: #2e2b26;
+    /* wide enough that each sentence holds one line at full size */
+    max-width: 32rem;
 }
 
 .soft {
