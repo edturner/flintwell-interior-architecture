@@ -1,4 +1,5 @@
 import Image from "next/image";
+import FlintwellWordmark from "./FlintwellWordmark";
 import styles from "./ComingSoon.module.css";
 
 const INSTAGRAM_URL = "https://www.instagram.com/flintwell_/";
@@ -24,7 +25,9 @@ export default function ComingSoon() {
                         unoptimized
                     />
 
-                    <h1 className={styles.wordmark}>FLINTWELL</h1>
+                    <h1 className={styles.wordmarkHeading}>
+                        <FlintwellWordmark />
+                    </h1>
 
                     <div className={styles.rule} role="presentation" />
 

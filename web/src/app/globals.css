@@ -9,9 +9,9 @@
   --ink: #141414;
   --muted: #8a857c;
 
-  /* The FLINTWELL wordmark only. Ian sets it in Noah, tracked 567 — Adobe
-     tracking is thousandths of an em, so 567 = 0.567em. */
-  --track-wordmark: 0.567em;
+  /* The wordmark is Ian's outlined Noah artwork, not live text — see
+     FlintwellWordmark.tsx. No webfont licence needed, and the 567 tracking
+     is carried by the glyph positions in the artwork itself. */
 
   /* Tracking for the lowercase sans labels — descriptor, links, footer. */
   --track-wide: 0.18em;
@@ -34,13 +34,6 @@ body {
 /* Cormorant Garamond is the reading voice. The geometric sans is used only
    for labels, never for body copy. */
 body {
-  /* Declared here, not on :root — next/font defines --font-sans on <body>,
-     so a :root rule referencing it resolves to nothing.
-     Noah is a commercial face and isn't in the repo; the geometric sans stands
-     in until the licensed webfont lands. To swap it, register Noah with
-     next/font/local as --font-noah and change this one line. */
-  --font-wordmark: var(--font-sans), "Century Gothic", sans-serif;
-
   display: flex;
   flex-direction: column;
   min-height: 100vh;

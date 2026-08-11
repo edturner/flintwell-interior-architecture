@@ -49,15 +49,19 @@
 
 /* ── Wordmark lockup ──────────────────────────────── */
 
+/* Ian's outlined Noah artwork, so there is no font to load, no tracking to
+   set and nothing to optically re-centre — the glyph positions carry it.
+   Widths match what the old live-text wordmark rendered at. */
+.wordmarkHeading {
+    width: clamp(13.3rem, 61vw, 32rem);
+    max-width: 100%;
+    line-height: 0;
+}
+
 .wordmark {
-    font-family: var(--font-wordmark);
-    font-size: clamp(1.35rem, 6.2vw, 3.25rem);
-    font-weight: 300;
-    letter-spacing: var(--track-wordmark);
-    line-height: 1;
-    white-space: nowrap;
-    /* tracking adds trailing space after the final L — pull back to optically centre */
-    margin-right: calc(-1 * var(--track-wordmark));
+    display: block;
+    width: 100%;
+    height: auto;
 }
 
 .rule {

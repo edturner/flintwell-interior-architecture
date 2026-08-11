@@ -10,9 +10,8 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
-// Geometric sans for the tracked-out lowercase labels. Also standing in for
-// Noah on the wordmark until the licensed webfont arrives — see
-// --font-wordmark in globals.css.
+// Geometric sans for the tracked-out lowercase labels only — the descriptor,
+// links and footer. The wordmark is outlined artwork, not type.
 const jost = Jost({
   weight: ["300", "400"],
   variable: "--font-sans",
