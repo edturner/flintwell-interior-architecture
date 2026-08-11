@@ -31,10 +31,10 @@ export default function ComingSoon() {
                     <p className={styles.est}>est2023</p>
 
                     <p className={styles.message}>
-                        a new site is in progress.
+                        A new site is in progress.
                         <br />
                         <span className={styles.soft}>
-                            recent work and projects are posted on Instagram.
+                            Recent work and projects are posted on Instagram.
                         </span>
                     </p>
 
