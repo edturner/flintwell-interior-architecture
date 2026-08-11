@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styles from "./ComingSoon.module.css";
 
 const INSTAGRAM_URL = "https://www.instagram.com/flintwell_/";
@@ -8,20 +9,20 @@ export default function ComingSoon() {
         <>
             <main className={styles.main}>
                 <div className={styles.inner}>
-                    <svg
+                    {/* Ian's mark. Source artwork is public/flintwell-mark.svg —
+                        a raster wrapped in SVG, so this cropped PNG is the
+                        lighter, better-centred asset to actually render. */}
+                    <Image
                         className={styles.mark}
-                        viewBox="0 0 1600 1600"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        role="img"
-                        aria-label="Flintwell"
-                    >
-                        <g stroke="#141414" strokeWidth="36" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M 712 258 C 690 400 636 700 434 1332" />
-                            <path d="M 312 566 C 700 512 1050 470 1388 420" />
-                        </g>
-                        <circle cx="900" cy="886" r="32" fill="#141414" />
-                    </svg>
+                        src="/flintwell-mark.png"
+                        alt="Flintwell"
+                        width={512}
+                        height={512}
+                        priority
+                        // served straight from /public — keeps the holding page
+                        // fully static, with no image-optimizer round trip
+                        unoptimized
+                    />
 
                     <h1 className={styles.wordmark}>FLINTWELL</h1>
 

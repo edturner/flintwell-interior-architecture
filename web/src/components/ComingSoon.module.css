@@ -42,7 +42,7 @@
 
 .mark {
     width: 46px;
-    height: 46px;
+    height: auto;
     margin-bottom: 3.25rem;
     opacity: 0.85;
 }
