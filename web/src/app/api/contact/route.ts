@@ -3,8 +3,6 @@ import { Resend } from 'resend';
 import { client } from '@/sanity/lib/client';
 import { EMAIL_TEMPLATE_QUERY } from '@/sanity/lib/queries';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const DESTINATION_EMAIL = 'inquiry@flintwell.com';
 
 const FROM_EMAIL = 'Flintwell <inquiry@flintwell.com>';
@@ -22,6 +20,21 @@ const DEFAULTS = {
 
 export async function POST(request: Request) {
     try {
+        // Constructed per request rather than at module scope. `new Resend()`
+        // throws when the key is missing, and at module scope that throw
+        // happens while Next collects page data during `next build` — so the
+        // whole site failed to build on any machine without the key, even
+        // though nothing was sending mail.
+        const apiKey = process.env.RESEND_API_KEY;
+        if (!apiKey) {
+            console.error('RESEND_API_KEY is not set — cannot send contact emails');
+            return NextResponse.json(
+                { error: 'Email service is not configured' },
+                { status: 500 }
+            );
+        }
+        const resend = new Resend(apiKey);
+
         const { name, email, number, location, message } = await request.json();
 
         console.log('Received contact submission:', { name, email });
