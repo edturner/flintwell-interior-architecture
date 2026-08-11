@@ -14,6 +14,11 @@
   --rule: #1a1a1a;
   --rule-soft: #d8d3ce;
 
+  /* Fill behind the scrolled header bar. Kept faint on purpose — the blur
+     does most of the work of holding the mark and "menu" legible. Raise it
+     toward 1 for a more solid bar, drop it toward 0.4 for barely-there. */
+  --header-bar-alpha: 0.7;
+
   /* The letterspaced-lowercase-sans idiom used for every UI label.
      Ian's mockups set these very wide and very light. */
   --track-wide: 0.32em;

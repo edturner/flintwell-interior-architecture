@@ -20,14 +20,15 @@ export interface MenuDetails {
     menuSlogan?: string;
 }
 
-/** Ignore sub-pixel and rubber-band scrolls; only react to real intent. */
-const SCROLL_DELTA = 6;
-/** Above this the chrome always shows, so the hero is never bare. */
-const REVEAL_ZONE = 120;
+/**
+ * How far down the page the bar appears. Small, so it settles in as soon as
+ * the hero starts moving rather than waiting for a section boundary.
+ */
+const BAR_THRESHOLD = 24;
 
 export default function Header({ details }: { details?: MenuDetails }) {
     const [isOpen, setIsOpen] = useState(false);
-    const [isHidden, setIsHidden] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
 
     const email = details?.email || "info@flintwell.com";
     const phone = details?.phone || "07891 818682";
@@ -54,35 +55,31 @@ export default function Header({ details }: { details?: MenuDetails }) {
         };
     }, [isOpen]);
 
-    // Fade the chrome out on the way down, bring it back on the way up.
-    // The overlay is fixed and unscrollable, so this pauses while it's open.
+    // The chrome stays put the whole way down; once you're off the top it
+    // settles onto a translucent bar so the mark and "menu" stay legible
+    // over whatever is scrolling underneath.
     useEffect(() => {
-        if (isOpen) return;
-
-        let lastY = window.scrollY;
         let frame = 0;
 
         const update = () => {
             frame = 0;
-            const y = window.scrollY;
-            const delta = y - lastY;
-
-            if (Math.abs(delta) < SCROLL_DELTA) return;
-            setIsHidden(delta > 0 && y > REVEAL_ZONE);
-            lastY = y;
+            setIsScrolled(window.scrollY > BAR_THRESHOLD);
         };
 
         const onScroll = () => {
             if (!frame) frame = requestAnimationFrame(update);
         };
 
+        // Run once on mount: a reload partway down the page should already
+        // show the bar rather than waiting for the first scroll event.
+        update();
         window.addEventListener("scroll", onScroll, { passive: true });
 
         return () => {
             window.removeEventListener("scroll", onScroll);
             if (frame) cancelAnimationFrame(frame);
         };
-    }, [isOpen]);
+    }, []);
 
     const close = () => setIsOpen(false);
 
@@ -102,7 +99,7 @@ export default function Header({ details }: { details?: MenuDetails }) {
                 className={[
                     styles.header,
                     isOpen ? styles.headerOpen : "",
-                    isHidden && !isOpen ? styles.headerHidden : "",
+                    isScrolled ? styles.headerScrolled : "",
                 ]
                     .filter(Boolean)
                     .join(" ")}

@@ -9,19 +9,39 @@
     align-items: flex-start;
     /* Above the overlay: both the mark and "menu" stay visible over it. */
     z-index: 200;
+    /* The bar is decoration — clicks pass through to the page, and only the
+       mark and "menu" themselves take pointer events. */
     pointer-events: none;
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    border-bottom: 1px solid transparent;
+    transition: padding 0.4s ease, background-color 0.4s ease,
+        backdrop-filter 0.4s ease, border-color 0.4s ease;
 }
 
-/* Fades out on the way down, returns on the way up. */
-.headerHidden {
-    opacity: 0;
-    transform: translateY(-0.75rem);
+/* Off the top of the page the chrome settles onto a translucent bar, so the
+   mark and "menu" stay legible over whatever is scrolling underneath. The
+   blur is what carries it — the fill alone would need to be far more opaque
+   to hold contrast, and that would read as a solid slab against a brand this
+   quiet. Tune --header-bar-alpha in globals.css to taste. */
+.headerScrolled {
+    padding-top: clamp(0.7rem, 1.4vw, 1.1rem);
+    padding-bottom: clamp(0.7rem, 1.4vw, 1.1rem);
+    background-color: rgba(255, 255, 255, var(--header-bar-alpha));
+    -webkit-backdrop-filter: blur(12px) saturate(1.05);
+    backdrop-filter: blur(12px) saturate(1.05);
+    border-bottom-color: var(--rule-soft);
 }
 
-.headerHidden .markLink,
-.headerHidden .menuButton {
-    pointer-events: none;
+/* The mark condenses with the bar rather than keeping its hero scale. */
+.headerScrolled .mark {
+    width: clamp(34px, 3.2vw, 46px);
+}
+
+/* Over the terracotta the bar would fight the overlay, so it drops away. */
+.headerOpen.headerScrolled {
+    background-color: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-bottom-color: transparent;
 }
 
 .markLink {
@@ -33,6 +53,7 @@
 .mark {
     width: clamp(42px, 4.5vw, 62px);
     height: auto;
+    transition: width 0.4s ease;
     /* The mark stays dark on both white and terracotta, as drawn — the ink is
        baked into the artwork now, so there is no colour to set here. */
 }
