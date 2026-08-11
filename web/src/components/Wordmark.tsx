@@ -1,3 +1,4 @@
+import FlintwellWordmark from "./FlintwellWordmark";
 import styles from "./Wordmark.module.css";
 
 /**
@@ -8,7 +9,7 @@ import styles from "./Wordmark.module.css";
 export default function Wordmark({ centred = false }: { centred?: boolean }) {
     return (
         <div className={`${styles.lockup} ${centred ? styles.centred : ""}`}>
-            <span className={styles.name}>Flintwell</span>
+            <FlintwellWordmark className={styles.name} />
             <span className={styles.rule} aria-hidden="true" />
             <span className={styles.descriptor}>
                 interior architecture

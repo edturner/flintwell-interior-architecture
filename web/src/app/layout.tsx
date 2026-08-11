@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Jost } from "next/font/google";
+import { Cormorant_Garamond, Jost } from "next/font/google";
 import Footer from "@/components/Footer";
 import { client } from "@/sanity/lib/client";
 import { SITE_DETAILS_QUERY } from "@/sanity/lib/queries";
@@ -7,8 +7,10 @@ import "./globals.css";
 
 export const revalidate = 30; // Revalidate every 30 seconds to sync Sanity changes
 
-// Serif — statements, body copy, quotes, nav.
-const playfair = Playfair_Display({
+// Serif — statements, body copy, quotes, nav. Ian's own body face.
+const cormorant = Cormorant_Garamond({
+  weight: ["300", "400", "500"],
+  style: ["normal", "italic"],
   variable: "--font-serif",
   subsets: ["latin"],
 });
@@ -34,7 +36,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${playfair.variable} ${jost.variable}`}>
+      <body className={`${cormorant.variable} ${jost.variable}`}>
         {children}
         <Footer footerData={footerData} />
       </body>

@@ -17,7 +17,6 @@
   /* The letterspaced-lowercase-sans idiom used for every UI label.
      Ian's mockups set these very wide and very light. */
   --track-wide: 0.32em;
-  --track-wider: 0.42em;
 
   /* Page gutters */
   --gutter: clamp(1.25rem, 4vw, 4rem);
@@ -50,7 +49,7 @@ html {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-serif), "Times New Roman", serif;
+  font-family: var(--font-serif), Garamond, "Times New Roman", serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -62,7 +61,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-serif), "Times New Roman", serif;
+  font-family: var(--font-serif), Garamond, "Times New Roman", serif;
   font-weight: 400;
   line-height: 1.15;
 }

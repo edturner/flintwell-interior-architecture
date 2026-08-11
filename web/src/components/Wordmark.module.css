@@ -9,18 +9,17 @@
     text-align: center;
 }
 
-/* Set in lowercase and uppercased via CSS so the tracking sits evenly
-   between letters rather than being baked into the markup. */
+/* Ian's outlined Noah artwork rather than live text, so there is no font to
+   load, no tracking to set and no trailing letter-space to cancel — the glyph
+   positions carry his 567 tracking. Sized by width to hold the same footprint
+   the live-text wordmark occupied, which keeps the hero row and the footer
+   block unchanged. The letters read slightly smaller at that width because
+   567 is wider tracking than the 0.42em this was set at. */
 .name {
-    font-family: var(--font-sans), "Century Gothic", sans-serif;
-    font-weight: 300;
-    text-transform: uppercase;
-    font-size: clamp(1.6rem, 4.2vw, 2.9rem);
-    letter-spacing: var(--track-wider);
-    line-height: 1;
-    /* Tracking adds trailing space after the final letter; pull it back
-       so the lockup stays optically flush-left with the rule below. */
-    margin-right: calc(-1 * var(--track-wider));
+    display: block;
+    width: clamp(15.2rem, 39.8vw, 27.5rem);
+    max-width: 100%;
+    height: auto;
 }
 
 .rule {
