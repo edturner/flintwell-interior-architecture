@@ -53,7 +53,7 @@ export default function ComingSoon() {
                         </a>
                         <span className={styles.sep} role="presentation" />
                         <a className={styles.link} href={`mailto:${EMAIL}`}>
-                            {EMAIL}
+                            Contact
                         </a>
                     </nav>
                 </div>
