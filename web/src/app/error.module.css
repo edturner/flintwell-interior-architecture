@@ -1,0 +1,70 @@
+/* Shared by error.tsx and not-found.tsx. Opens under the fixed chrome the
+   same way the hero and /projects do — clearance plus a gap, not section
+   rhythm. */
+.main {
+    min-height: 100svh;
+    padding: calc(var(--header-clear) + clamp(1.5rem, 4vh, 3rem)) var(--gutter)
+        var(--section-bottom);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.block {
+    max-width: 34rem;
+}
+
+.title {
+    font-size: clamp(1.8rem, 4.5vw, 3rem);
+    line-height: 1.15;
+    text-wrap: balance;
+}
+
+.copy {
+    margin-top: 1.5rem;
+    font-size: clamp(1rem, 1.45vw, 1.2rem);
+    line-height: 1.5;
+    text-wrap: pretty;
+}
+
+.actions {
+    margin-top: clamp(2rem, 5vh, 3rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2.5rem;
+}
+
+/* Same tracked-lowercase treatment as every other standalone link, and the
+   same generous hit area — padding out, margin back, so the target grows
+   without the text moving. */
+.action {
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.8rem, 1.15vw, 0.95rem);
+    letter-spacing: var(--track-wide);
+    text-transform: lowercase;
+    padding: 0.75rem 0.5rem 0.6rem 0;
+    margin: -0.75rem -0.5rem -0.6rem 0;
+    border-bottom: 1px solid var(--rule);
+    transition: opacity var(--duration-hover) ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .action:hover {
+        opacity: 0.55;
+    }
+}
+
+.action:focus-visible {
+    opacity: 0.55;
+}
+
+.digest {
+    margin-top: 2.5rem;
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.62rem, 0.9vw, 0.72rem);
+    letter-spacing: var(--track-wide);
+    text-transform: lowercase;
+    opacity: 0.62;
+}

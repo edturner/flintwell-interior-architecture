@@ -13,20 +13,28 @@ import {
   CONTACT_QUERY,
   SITE_DETAILS_QUERY,
 } from "@/sanity/lib/queries";
+import type {
+  HomeData,
+  AboutData,
+  ProjectSummary,
+  Testimonial,
+  ContactData,
+  SiteDetails,
+} from "@/sanity/contentTypes";
 
-export const revalidate = 30;
+export const revalidate = 3600;
 
 export default async function Home() {
   const [homeData, aboutData, projects, testimonials, contactData, siteDetails] =
     await Promise.all([
-      client.fetch(HOME_QUERY),
-      client.fetch(ABOUT_QUERY),
-      client.fetch(PROJECTS_QUERY),
-      client.fetch(TESTIMONIALS_QUERY),
-      client.fetch(CONTACT_QUERY),
+      client.fetch<HomeData | null>(HOME_QUERY),
+      client.fetch<AboutData | null>(ABOUT_QUERY),
+      client.fetch<ProjectSummary[]>(PROJECTS_QUERY),
+      client.fetch<Testimonial[]>(TESTIMONIALS_QUERY),
+      client.fetch<ContactData | null>(CONTACT_QUERY),
       // Contact offers the email and phone as an alternative to the form —
       // they live on the footer document, same source the menu overlay uses.
-      client.fetch(SITE_DETAILS_QUERY),
+      client.fetch<SiteDetails | null>(SITE_DETAILS_QUERY),
     ]);
 
   return (
