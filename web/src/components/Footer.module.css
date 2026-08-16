@@ -33,11 +33,31 @@
     flex-direction: column;
 }
 
+/* Padding out, margin back: the tap target grows to meet the 24x24 minimum
+   without the text shifting. These sit in a column of small tracked labels
+   where the type is 11-13px, so the text box alone was well under it. */
 .link {
-    transition: opacity 0.3s ease;
+    padding: 0.6rem 0.5rem 0.6rem 0;
+    margin: -0.6rem -0.5rem -0.6rem 0;
+    transition: opacity var(--duration-hover) ease;
 }
 
-.link:hover,
+@media (hover: hover) and (pointer: fine) {
+    .link:hover {
+        opacity: 0.55;
+    }
+}
+
 .link:focus-visible {
     opacity: 0.55;
+}
+
+/* Visible to assistive tech, not to sight. */
+.srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
 }

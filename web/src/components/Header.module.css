@@ -13,8 +13,19 @@
        mark and "menu" themselves take pointer events. */
     pointer-events: none;
     border-bottom: 1px solid transparent;
-    transition: padding 0.4s ease, background-color 0.4s ease,
-        backdrop-filter 0.4s ease, border-color 0.4s ease;
+    /* `padding` is deliberately not in this list. Animating it ran layout on
+       the header subtree every frame for 400ms, at the exact moment the main
+       thread is busiest — during a scroll. The bar's fill, blur and rule
+       carry the state change on their own; the padding now snaps under cover
+       of that fade and nothing reads as missing.
+
+       (The reflow was always scoped to the header rather than the document,
+       because this element is `position: fixed` — so this was never the
+       page-wide layout thrash a generic detector reports. It was still
+       needless work at the worst possible moment.) */
+    transition: background-color var(--duration-state) ease,
+        backdrop-filter var(--duration-state) ease,
+        border-color var(--duration-state) ease;
 }
 
 /* Off the top of the page the chrome settles onto a translucent bar, so the
@@ -31,9 +42,17 @@
     border-bottom-color: var(--rule-soft);
 }
 
-/* The mark condenses with the bar rather than keeping its hero scale. */
+/* The mark condenses with the bar rather than keeping its hero scale.
+   `transform`, not `width`: the mark is a raster image element, so animating
+   width meant layout plus a re-raster of the bitmap at a new size every
+   frame, which browsers do not interpolate smoothly.
+
+   0.76 is a compromise. The old pair of clamps was not a constant ratio —
+   46/62 = 0.742 at the desktop cap but 34/42 = 0.810 at the mobile floor —
+   so no single scale reproduces both. At these sizes the difference lands
+   around 2px and is not perceptible. */
 .headerScrolled .mark {
-    width: clamp(34px, 3.2vw, 46px);
+    transform: scale(0.76);
 }
 
 /* Over the terracotta the bar would fight the overlay, so it drops away. */
@@ -53,11 +72,19 @@
 .mark {
     width: clamp(42px, 4.5vw, 62px);
     height: auto;
-    transition: width 0.4s ease;
+    /* Scales from its top-left so the mark stays pinned to the gutter
+       corner rather than drifting inward as it shrinks. */
+    transform-origin: left top;
+    transition: transform var(--duration-state) var(--ease-out);
     /* The mark stays dark on both white and terracotta, as drawn — the ink is
        baked into the artwork now, so there is no colour to set here. */
 }
 
+/* The site's only navigation control. With `line-height: 1` and no padding
+   its hit area was the text box — about 14px tall at mobile sizes, well
+   under the 24x24 WCAG 2.5.8 minimum and nowhere near the 44x44 that stops
+   people missing it. Padding grows the target; the negative margins pull the
+   box back so the word stays optically aligned with the mark opposite. */
 .menuButton {
     pointer-events: auto;
     font-family: var(--font-sans), "Century Gothic", sans-serif;
@@ -66,9 +93,10 @@
     letter-spacing: var(--track-wide);
     text-transform: lowercase;
     line-height: 1;
-    margin-right: calc(-1 * var(--track-wide));
+    padding: 0.85rem 0.75rem;
+    margin: -0.85rem calc(-0.75rem - var(--track-wide)) -0.85rem -0.75rem;
     color: var(--foreground);
-    transition: color 0.45s ease;
+    transition: color var(--duration-state) ease;
 }
 
 /* Over the terracotta, "menu" inverts; the mark does not. */
@@ -122,10 +150,15 @@
     font-size: clamp(1.5rem, 3vw, 2.15rem);
     line-height: 1.35;
     opacity: 0.92;
-    transition: opacity 0.25s ease;
+    transition: opacity var(--duration-hover) ease;
 }
 
-.navItem:hover,
+@media (hover: hover) and (pointer: fine) {
+    .navItem:hover {
+        opacity: 1;
+    }
+}
+
 .navItem:focus-visible {
     opacity: 1;
 }
@@ -148,20 +181,32 @@
     /* Existing Sanity content stores the address uppercase; the mockups
        set email and phone lowercase. */
     text-transform: lowercase;
-    transition: opacity 0.25s ease;
+    /* Same padding-out/margin-back trick as the footer links: a bigger tap
+       target without moving the text. */
+    padding: 0.5rem 0.5rem 0.5rem 0;
+    margin: -0.5rem -0.5rem -0.5rem 0;
+    transition: opacity var(--duration-hover) ease;
 }
 
-.detailLink:hover,
+@media (hover: hover) and (pointer: fine) {
+    .detailLink:hover {
+        opacity: 0.7;
+    }
+}
+
 .detailLink:focus-visible {
     opacity: 0.7;
 }
 
+/* 0.9, not 0.78. At 0.78 the blend against the terracotta came out at
+   3.96:1 — under the 4.5:1 AA floor for text this small (~10-12px). 0.9
+   reaches ~4.8:1 and still sits back from the links above it. */
 .address {
     font-style: normal;
     text-transform: uppercase;
     font-size: 0.92em;
     line-height: 1.85;
-    opacity: 0.78;
+    opacity: 0.9;
     margin-top: 2.2rem;
     display: flex;
     flex-direction: column;

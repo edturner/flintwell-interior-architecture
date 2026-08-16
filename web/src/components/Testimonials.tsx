@@ -3,18 +3,15 @@
 import { useState } from "react";
 import styles from "./Testimonials.module.css";
 import SectionLabel from "./SectionLabel";
-
-type Testimonial = {
-    quote: string;
-    author: string;
-    role?: string;
-};
+import type { Testimonial } from "@/sanity/contentTypes";
 
 type Props = {
     testimonials: Testimonial[];
 };
 
 const SWIPE_THRESHOLD = 50;
+/** px per ms. Above this the gesture reads as a flick regardless of distance. */
+const SWIPE_VELOCITY = 0.11;
 
 /**
  * "our friends" — one blush screen, cycling through the quotes.
@@ -27,7 +24,7 @@ const SWIPE_THRESHOLD = 50;
  */
 export default function Testimonials({ testimonials }: Props) {
     const [index, setIndex] = useState(0);
-    const [touchStart, setTouchStart] = useState<number | null>(null);
+    const [touchStart, setTouchStart] = useState<{ x: number; time: number } | null>(null);
 
     if (!testimonials?.length) return null;
 
@@ -35,12 +32,25 @@ export default function Testimonials({ testimonials }: Props) {
 
     const go = (delta: number) => setIndex((i) => (i + delta + count) % count);
 
-    const handleTouchStart = (e: React.TouchEvent) => setTouchStart(e.touches[0].clientX);
+    const handleTouchStart = (e: React.TouchEvent) => {
+        const touch = e.touches[0];
+        if (!touch) return;
+        setTouchStart({ x: touch.clientX, time: Date.now() });
+    };
 
+    // Distance *or* velocity, not distance alone. A fast 40px flick is
+    // unmistakably a swipe and used to do nothing, while a slow 60px drag
+    // advanced — velocity is what separates intent from a stray touch.
     const handleTouchEnd = (e: React.TouchEvent) => {
-        if (touchStart === null) return;
-        const distance = touchStart - e.changedTouches[0].clientX;
-        if (Math.abs(distance) > SWIPE_THRESHOLD) go(distance > 0 ? 1 : -1);
+        const touch = e.changedTouches[0];
+        if (touchStart === null || !touch) return;
+        const distance = touchStart.x - touch.clientX;
+        const elapsed = Math.max(Date.now() - touchStart.time, 1);
+        const velocity = Math.abs(distance) / elapsed;
+
+        if (Math.abs(distance) > SWIPE_THRESHOLD || velocity > SWIPE_VELOCITY) {
+            go(distance > 0 ? 1 : -1);
+        }
         setTouchStart(null);
     };
 
@@ -54,8 +64,18 @@ export default function Testimonials({ testimonials }: Props) {
                 className={styles.carousel}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
+                role="group"
+                aria-roledescription="carousel"
+                aria-label="What our clients say"
             >
-                <div className={styles.stage}>
+                {/* Polite live region: pressing "next testimonial" used to
+                    produce silence for a screen-reader user — the counter
+                    changed but nothing announced it, so the only way to find
+                    the new quote was to navigate back into the region by
+                    hand. Because inactive slides are `inert`, the only thing
+                    exposed here is the active quote, which is exactly what
+                    should be read out. */}
+                <div className={styles.stage} aria-live="polite" aria-atomic="true">
                     {testimonials.map((testimonial, i) => {
                         const isActive = i === index;
 

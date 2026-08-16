@@ -1,20 +1,20 @@
-import Link from "next/link";
 import styles from "./Footer.module.css";
 import Wordmark from "./Wordmark";
+import type { SiteDetails } from "@/sanity/contentTypes";
 
 interface FooterProps {
-    footerData?: {
-        email?: string;
-        phone?: string;
-        instagramUrl?: string;
-        copyrightText?: string;
-    };
+    footerData?: SiteDetails | null;
 }
 
+const INSTAGRAM_FALLBACK = "https://www.instagram.com/flintwell_/";
+
 export default function Footer({ footerData }: FooterProps) {
-    // Fixed rather than derived from Date, so the server and client render
-    // the same markup.
-    const currentYear = 2026;
+    // Computed, not hard-coded. This was pinned to 2026 with a comment about
+    // server/client hydration mismatch — but Footer is a server component, so
+    // there is no client render to mismatch. Under ISR the value is resolved
+    // at revalidation and the client hydrates the same HTML. Left as it was,
+    // the site would have said "copyright 2026" from January 2027 onward.
+    const currentYear = new Date().getFullYear();
 
     const email = footerData?.email || "info@flintwell.com";
     const phone = footerData?.phone || "07891 818682";
@@ -41,14 +41,17 @@ export default function Footer({ footerData }: FooterProps) {
                 </div>
 
                 <div className={styles.column}>
-                    <Link
-                        href={footerData?.instagramUrl || "https://www.instagram.com/flintwell_/"}
+                    {/* A plain anchor, not next/link: this leaves the site, so
+                        prefetching and client-side navigation do nothing. */}
+                    <a
+                        href={footerData?.instagramUrl || INSTAGRAM_FALLBACK}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.link}
                     >
                         instagram
-                    </Link>
+                        <span className={styles.srOnly}> (opens in a new tab)</span>
+                    </a>
                 </div>
             </div>
         </footer>
