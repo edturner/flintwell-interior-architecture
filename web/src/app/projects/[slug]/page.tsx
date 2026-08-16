@@ -1,9 +1,11 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PortableText } from "next-sanity";
 import styles from "./page.module.css";
 import SiteHeader from "@/components/SiteHeader";
+import ProjectBackLink, { DEFAULT_ORIGIN } from "@/components/ProjectBackLink";
 import { client } from "@/sanity/lib/client";
 import { PROJECT_QUERY } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
@@ -42,9 +44,18 @@ export default async function ProjectPage({ params }: Props) {
                         <h1 className={styles.title}>{project.title}</h1>
                     </div>
 
-                    <Link href="/projects" className={styles.backLink}>
-                        back to work
-                    </Link>
+                    <Suspense
+                        fallback={
+                            <Link
+                                href={DEFAULT_ORIGIN.href}
+                                className={styles.backLink}
+                            >
+                                {DEFAULT_ORIGIN.label}
+                            </Link>
+                        }
+                    >
+                        <ProjectBackLink className={styles.backLink} />
+                    </Suspense>
                 </header>
 
                 {project.mainImage && (

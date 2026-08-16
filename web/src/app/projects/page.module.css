@@ -1,0 +1,50 @@
+/* This page opens directly under the fixed chrome, so the top padding is
+   clearance plus a gap rather than section rhythm — same as the hero and the
+   individual project pages. */
+.main {
+    padding: calc(var(--header-clear) + clamp(1.5rem, 4vh, 3rem)) var(--gutter)
+        var(--section-bottom);
+}
+
+/* Title left, way out; the way back right. Mirrors the header on an
+   individual project page so the two levels feel like one system. */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    padding-bottom: clamp(1.1rem, 2.2vh, 1.75rem);
+    border-bottom: 1px solid var(--rule-soft);
+}
+
+.title {
+    font-size: clamp(1.4rem, 3vw, 2.4rem);
+}
+
+.backLink {
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.7rem, 1.05vw, 0.82rem);
+    letter-spacing: var(--track-wide);
+    text-transform: lowercase;
+    /* No trailing-letter-space correction here, unlike the section labels:
+       the underline is the visible edge, so it aligns to the content edge
+       the grid and the rule use. Pulling the box right would overhang it. */
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--rule);
+    transition: opacity 0.3s ease;
+}
+
+.backLink:hover,
+.backLink:focus-visible {
+    opacity: 0.55;
+}
+
+/* The page owns the gutters and the opening here, so the section drops its
+   own — on the homepage it is a full screen in a run of them, here it is
+   simply the body of the page. */
+.main section {
+    min-height: 0;
+    padding: var(--label-gap) 0 0;
+}
