@@ -1,29 +1,48 @@
 .hero {
     min-height: 100svh;
-    padding: var(--section-top) var(--gutter) var(--section-bottom);
+    /* Clearance for the fixed chrome, then a real gap beneath it. Using
+       --section-top alone put the statement's first line inside the header. */
+    padding: calc(var(--header-clear) + clamp(1.5rem, 4vh, 3rem)) var(--gutter)
+        var(--section-bottom);
     display: flex;
     flex-direction: column;
+}
+
+/* Two columns that open and close on the same lines: the statement leads the
+   left one, the wordmark anchors its foot, the photograph fills the right.
+   The statement used to span the full width above this row, which left the
+   top-right and bottom-left corners empty and pushed it up under the mark.
+
+   The row takes its height from the photograph rather than from the space
+   available, so a portrait-shaped window can't stretch it into a strip; the
+   leftover height is distributed above and below instead. */
+.frame {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 0.62fr);
+    gap: clamp(1.5rem, 5vw, 4rem);
+    align-content: center;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    /* Statement on the row's top line, wordmark on its bottom one. */
+    justify-content: space-between;
+    gap: clamp(2.5rem, 6vh, 4.5rem);
+    min-width: 0;
 }
 
 .statement {
     font-size: clamp(1.6rem, 3.9vw, 3rem);
     line-height: 1.2;
     max-width: 18ch;
-    margin-bottom: clamp(2.5rem, 6vh, 4.5rem);
-}
-
-/* Wordmark bottom left, image bottom right — the image is the only
-   thing on the page with any weight, so it carries the composition. */
-.lower {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 1fr minmax(0, 0.62fr);
-    align-items: start;
-    gap: clamp(1.5rem, 5vw, 4rem);
+    text-wrap: balance;
 }
 
 /* Portrait, matching the photograph's own 3:4 proportions so nothing
-   important gets cropped away. */
+   important gets cropped away. The 62vh ceiling keeps a short window from
+   pushing the section past one screen. */
 .imageFrame {
     position: relative;
     width: 100%;
@@ -38,14 +57,19 @@
 }
 
 @media (max-width: 900px) {
-    .statement {
-        max-width: 100%;
-        margin-bottom: 2.5rem;
-    }
-
-    .lower {
+    .frame {
         grid-template-columns: 1fr;
         gap: 2.5rem;
+        align-content: start;
+    }
+
+    .column {
+        justify-content: flex-start;
+        gap: 2.5rem;
+    }
+
+    .statement {
+        max-width: 100%;
     }
 
     .imageFrame {

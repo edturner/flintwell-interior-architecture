@@ -1,5 +1,9 @@
+/* This page opens directly under the fixed chrome, so its top padding is
+   clearance plus a gap — not section rhythm. With --section-top alone the
+   title started inside the header's own box. Same fix as the hero. */
 .main {
-    padding: var(--section-top) var(--gutter) var(--section-bottom);
+    padding: calc(var(--header-clear) + clamp(1.5rem, 4vh, 3rem)) var(--gutter)
+        var(--section-bottom);
 }
 
 .header {

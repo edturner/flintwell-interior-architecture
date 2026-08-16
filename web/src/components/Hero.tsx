@@ -24,10 +24,11 @@ export default function Hero({ homeData }: HeroProps) {
 
     return (
         <section id="hero-section" className={styles.hero}>
-            <h1 className={styles.statement}>{statement}</h1>
-
-            <div className={styles.lower}>
-                <Wordmark />
+            <div className={styles.frame}>
+                <div className={styles.column}>
+                    <h1 className={styles.statement}>{statement}</h1>
+                    <Wordmark />
+                </div>
 
                 <div className={styles.imageFrame}>
                     <Image

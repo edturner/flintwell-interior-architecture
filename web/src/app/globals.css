@@ -26,6 +26,14 @@
   /* Page gutters */
   --gutter: clamp(1.25rem, 4vw, 4rem);
 
+  /* The fixed header's resting height — its own vertical padding twice,
+     plus the mark. Mirrors the values in Header.module.css; change them
+     together. Sections that are scrolled to don't need this, but the hero
+     opens *underneath* the chrome, so it has to clear it explicitly.
+     --section-top is rhythm, not clearance; the two were conflated and the
+     hero statement was starting inside the header's box. */
+  --header-clear: calc(2 * clamp(1rem, 2.2vw, 1.75rem) + clamp(42px, 4.5vw, 62px));
+
   /* Shared section rhythm. Every full screen uses these rather than its
      own clamps, so the overall density is tuned in one place. */
   --section-top: clamp(4.5rem, 10vh, 6.5rem);
