@@ -34,7 +34,7 @@ export default function About({ data }: AboutProps) {
                         }
                         alt="Flintwell at work"
                         fill
-                        sizes="(max-width: 900px) 100vw, 33vw"
+                        sizes="(max-width: 900px) 100vw, 40vw"
                         className={styles.image}
                     />
                 </div>

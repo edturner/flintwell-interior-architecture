@@ -1,21 +1,32 @@
 .section {
     min-height: 100svh;
     padding: var(--section-top) var(--gutter) var(--section-bottom);
+    /* Unlike the other sections, both halves here have hard size ceilings —
+       the square artwork at its 2× limit and the copy at its measure. Past
+       about 1300px the columns keep spreading while the contents don't, and
+       the two drift apart with a growing void between them. */
+    max-width: calc(75rem + 2 * var(--gutter));
+    margin-inline: auto;
     display: grid;
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
     gap: clamp(1.5rem, 6vw, 5rem);
+    /* The two columns are one group, centred in the screen, sharing a top
+       line. The image used to be centred in its column while the copy hung
+       from the top, so the halves read as unrelated fragments. */
+    align-content: center;
+    align-items: start;
 }
 
-/* The image hangs below the run of copy, as drawn. */
 .imageColumn {
     display: flex;
-    align-items: center;
 }
 
+/* Square because the source is square (1024×1024) — nothing is cropped.
+   32rem is its exact 2× ceiling; beyond that the artwork starts to soften. */
 .imageFrame {
     position: relative;
     width: 100%;
-    max-width: 25rem;
+    max-width: 32rem;
     aspect-ratio: 1 / 1;
 }
 
@@ -30,9 +41,10 @@
 
 /* Flush right, sharing an edge with the section label and the "menu"
    control above it. Left-aligned text inside the block — it's the block
-   that sits right, not the ragged edge. */
+   that sits right, not the ragged edge. The measure was 34ch, which broke
+   two short paragraphs into ten five-word lines. */
 .copy {
-    max-width: 34ch;
+    max-width: 64ch;
     margin-left: auto;
     margin-top: var(--label-gap);
 }
@@ -50,6 +62,7 @@
     .section {
         grid-template-columns: 1fr;
         gap: 2.5rem;
+        align-content: start;
     }
 
     .imageColumn {
@@ -58,7 +71,6 @@
 
     .imageFrame {
         max-width: 100%;
-        aspect-ratio: 4 / 3;
     }
 
     .copy {
