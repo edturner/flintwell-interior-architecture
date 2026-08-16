@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { ORIGINS, DEFAULT_ORIGIN } from "@/lib/projectOrigins";
 
 /**
  * Where a project page sends you back to, decided by the `from` the card
@@ -9,16 +10,10 @@ import { useSearchParams } from "next/navigation";
  * would opt these pages out of static rendering, and the value only affects
  * one link. `useSearchParams` needs a Suspense boundary above it — the page
  * supplies one whose fallback is this same link at its default.
+ *
+ * The origin table itself lives in `@/lib/projectOrigins` so the server page
+ * can read it for that fallback; see the note there.
  */
-const ORIGINS = {
-    home: { href: "/", label: "back to home" },
-    work: { href: "/projects", label: "back to work" },
-} as const;
-
-/** Deep links, shares and search hits have no origin — the listing is the
- *  honest parent to offer them. */
-export const DEFAULT_ORIGIN = ORIGINS.work;
-
 export default function ProjectBackLink({ className }: { className?: string }) {
     const from = useSearchParams().get("from");
     const target = from === "home" ? ORIGINS.home : DEFAULT_ORIGIN;
