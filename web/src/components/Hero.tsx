@@ -1,12 +1,10 @@
 import Image from "next/image";
 import styles from "./Hero.module.css";
 import Wordmark from "./Wordmark";
+import type { HomeData } from "@/sanity/contentTypes";
 
 interface HeroProps {
-    homeData?: {
-        statement?: string;
-        description?: string;
-    };
+    homeData?: HomeData | null;
 }
 
 /**

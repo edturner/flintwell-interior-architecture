@@ -40,6 +40,24 @@
   --section-bottom: clamp(2.5rem, 6vh, 4.5rem);
   /* Gap between a section label and the content beneath it. */
   --label-gap: clamp(2rem, 5vh, 3.25rem);
+
+  /* ---------- Motion ----------
+     Colour, spacing and tracking were all tokenised; motion was the one
+     system still hand-typed, with two near-identical curves copied across
+     eleven declarations. These are those two curves.
+
+     --ease-out       UI responding to you: hover, press, state change.
+     --ease-entrance  Content arriving: the work grid reveal, slide changes.
+
+     Hover is the highest-frequency interaction on the site, so it gets the
+     short duration — at the old 0.55-0.7s the image scale was still moving
+     after the pointer had left, which reads as lag rather than elegance.
+     The long curve stays long: entrances are allowed to take their time. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-hover: 0.25s;
+  --duration-state: 0.4s;
+  --duration-entrance: 0.9s;
 }
 
 /* Base Reset */
@@ -49,9 +67,16 @@
   margin: 0;
 }
 
+/* `overflow-x: hidden` is a safety net, not a fix — it hides horizontal
+   overflow rather than preventing it. The `max-width: 100vw` that used to sit
+   here was actively causing some: 100vw includes the scrollbar width, so on
+   any desktop page with a vertical scrollbar the body was ~15px wider than
+   the viewport and then clipped itself. Removed.
+
+   The remaining rule should come out too, once someone has verified in a
+   browser at 320px that nothing actually overflows. */
 html,
 body {
-  max-width: 100vw;
   overflow-x: hidden;
 }
 
@@ -92,6 +117,15 @@ button {
   cursor: pointer;
 }
 
+/* One focus ring for the whole site, defined once. `currentColor` means it
+   inverts correctly on the terracotta overlay without a second rule, and the
+   offset keeps it clear of the hairline underlines the links already draw. */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
 /* The geometric sans is the *labelling* voice — never body copy.
    Always lowercase, always tracked out. */
 .sans {
@@ -106,6 +140,19 @@ button {
   color: var(--terracotta-fg);
 }
 
+/* Reduced motion means *less and gentler* motion, not none.
+
+   This used to kill every transition on the page with
+   `transition-duration: 0.01ms !important`, which also overrode components
+   that had thought about it — the testimonial cross-fade at
+   Testimonials.module.css deliberately keeps its opacity fade and drops only
+   the translate, and the blanket rule turned that fade into a hard cut. The
+   jarring change the fade exists to prevent was exactly what a reduced-motion
+   user got.
+
+   So: kill movement, keep opacity and colour. Components that want to drop
+   more than this still can — see SelectedWorks.module.css, which removes its
+   entrance outright rather than playing it at zero duration. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -116,6 +163,7 @@ button {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    transition-property: transform, translate, rotate, scale !important;
     transition-duration: 0.01ms !important;
   }
 }

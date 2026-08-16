@@ -1,19 +1,19 @@
 import Image from "next/image";
 import styles from "./About.module.css";
 import SectionLabel from "./SectionLabel";
-import { urlFor } from "@/sanity/lib/image";
-import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { croppedUrl, altText } from "@/sanity/lib/image";
+import type { AboutData } from "@/sanity/contentTypes";
 
 interface AboutProps {
-    data?: {
-        aboutHeading?: string;
-        aboutText?: string;
-        aboutImage?: SanityImageSource;
-    };
+    data?: AboutData | null;
 }
 
 const FALLBACK_TEXT =
-    "We are continually building relationships with great people in the industry who, like us, love what they do. Passion, pride, and attention to detail are what we look for.\n\nArchitecturally led interior design, project management and procurement are amoungst the services we offer, often acting as the centre point that brings it all together.";
+    "We are continually building relationships with great people in the industry who, like us, love what they do. Passion, pride, and attention to detail are what we look for.\n\nArchitecturally led interior design, project management and procurement are amongst the services we offer, often acting as the centre point that brings it all together.";
+
+/** Used when the Studio has no image and no alt to go with it. */
+const FALLBACK_IMAGE = "/philosophy_process.png";
+const FALLBACK_ALT = "Flintwell at work";
 
 export default function About({ data }: AboutProps) {
     const heading = data?.aboutHeading || "about us + what we do";
@@ -27,12 +27,18 @@ export default function About({ data }: AboutProps) {
             <div className={styles.imageColumn}>
                 <div className={styles.imageFrame}>
                     <Image
+                        // Square, matching the frame — Sanity crops to the
+                        // hotspot rather than CSS cropping from the centre.
                         src={
                             data?.aboutImage
-                                ? urlFor(data.aboutImage).width(900).url()
-                                : "/philosophy_process.png"
+                                ? croppedUrl(data.aboutImage, 900, 1)
+                                : FALLBACK_IMAGE
                         }
-                        alt="Flintwell at work"
+                        alt={
+                            data?.aboutImage
+                                ? altText(data.aboutImage, FALLBACK_ALT)
+                                : FALLBACK_ALT
+                        }
                         fill
                         sizes="(max-width: 900px) 100vw, 40vw"
                         className={styles.image}

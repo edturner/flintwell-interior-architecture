@@ -44,12 +44,20 @@
     font-size: clamp(0.7rem, 1.05vw, 0.82rem);
     letter-spacing: var(--track-wide);
     text-transform: lowercase;
-    padding-bottom: 0.35rem;
+    /* Padding out, margin back — a 24px+ tap target without moving the
+       underline off the content edge it aligns to. */
+    padding: 0.6rem 0.5rem 0.35rem 0;
+    margin: -0.6rem -0.5rem 0 0;
     border-bottom: 1px solid var(--rule);
-    transition: opacity 0.3s ease;
+    transition: opacity var(--duration-hover) ease;
 }
 
-.backLink:hover,
+@media (hover: hover) and (pointer: fine) {
+    .backLink:hover {
+        opacity: 0.55;
+    }
+}
+
 .backLink:focus-visible {
     opacity: 0.55;
 }
@@ -128,12 +136,18 @@
     font-size: clamp(0.72rem, 1.05vw, 0.86rem);
     letter-spacing: var(--track-wide);
     text-transform: lowercase;
-    padding-bottom: 0.35rem;
+    padding: 0.6rem 0.5rem 0.35rem 0;
+    margin: -0.6rem -0.5rem 0 0;
     border-bottom: 1px solid var(--rule);
-    transition: opacity 0.3s ease;
+    transition: opacity var(--duration-hover) ease;
 }
 
-.nextLink:hover,
+@media (hover: hover) and (pointer: fine) {
+    .nextLink:hover {
+        opacity: 0.55;
+    }
+}
+
 .nextLink:focus-visible {
     opacity: 0.55;
 }

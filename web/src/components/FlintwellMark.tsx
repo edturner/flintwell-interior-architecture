@@ -15,16 +15,26 @@ import Image from "next/image";
  * recolour, either use the PNG as a CSS mask-image with
  * `background-color: currentColor`, or swap in true vector artwork once Ian
  * outlines the mark the way he did the wordmark.
+ *
+ * `alt=""` on purpose: the link wrapping this already carries
+ * aria-label="Flintwell — home", and an alt here would give that link two
+ * accessible names.
+ *
+ * The intrinsic size is 124px, not the artwork's 512. CSS renders this at
+ * 42-62px, and with no `sizes` hint next/image builds its srcset from the
+ * `width` prop — so a 512px prop meant serving a 1024px asset on retina to
+ * fill a 62px box. `priority` came off for the same reason: it preloaded
+ * that oversized file ahead of the actual LCP image on every page.
  */
 export default function FlintwellMark({ className }: { className?: string }) {
     return (
         <Image
             className={className}
             src="/flintwell-mark.png"
-            alt="Flintwell"
-            width={512}
-            height={512}
-            priority
+            alt=""
+            width={124}
+            height={124}
+            sizes="(max-width: 900px) 42px, 62px"
         />
     );
 }

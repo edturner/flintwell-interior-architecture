@@ -36,12 +36,27 @@
     background-color: var(--blush);
 }
 
+/* object-fit is a safety net now: Sanity does the 4:5 crop server-side so the
+   hotspot is honoured, and this only matters if a source somehow arrives at a
+   different ratio. */
 .image {
     object-fit: cover;
-    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform var(--duration-hover) var(--ease-out);
 }
 
-.card:hover .image,
+/* Hover motion gated to real pointers. Touch fires a synthetic hover on tap
+   and leaves it applied — so tapping a card on the mobile swipe track ran the
+   scale and the underline draw, navigated, and left the stuck state visible
+   on back-navigation, which reads as a rendering bug.
+
+   :focus-visible stays outside the query — keyboard users need it on every
+   device. */
+@media (hover: hover) and (pointer: fine) {
+    .card:hover .image {
+        transform: scale(1.03);
+    }
+}
+
 .card:focus-visible .image {
     transform: scale(1.03);
 }
@@ -60,10 +75,15 @@
     background-repeat: no-repeat, no-repeat;
     background-position: 0 100%, 0 100%;
     background-size: 0% 1px, 100% 1px;
-    transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: background-size 0.3s var(--ease-out);
 }
 
-.card:hover .caption,
+@media (hover: hover) and (pointer: fine) {
+    .card:hover .caption {
+        background-size: 100% 1px, 100% 1px;
+    }
+}
+
 .card:focus-visible .caption {
     background-size: 100% 1px, 100% 1px;
 }
@@ -85,10 +105,17 @@
        it back onto the optical centre of the line. */
     align-self: center;
     opacity: 0.45;
-    transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity var(--duration-hover) ease,
+        transform var(--duration-hover) var(--ease-out);
 }
 
-.card:hover .arrow,
+@media (hover: hover) and (pointer: fine) {
+    .card:hover .arrow {
+        opacity: 1;
+        transform: translateX(0.3rem);
+    }
+}
+
 .card:focus-visible .arrow {
     opacity: 1;
     transform: translateX(0.3rem);
@@ -138,7 +165,7 @@
     background-repeat: no-repeat, no-repeat;
     background-position: 0 100%, 0 100%;
     background-size: 0% 1px, 100% 1px;
-    transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: background-size 0.3s var(--ease-out);
 }
 
 /* Cancel the trailing letter-space so the gap to the arrow is the gap, not
@@ -147,7 +174,16 @@
     margin-right: calc(-1 * var(--track-wide));
 }
 
-.moreLink:hover,
+@media (hover: hover) and (pointer: fine) {
+    .moreLink:hover {
+        background-size: 100% 1px, 100% 1px;
+    }
+
+    .moreLink:hover .moreArrow {
+        transform: translateX(0.3rem);
+    }
+}
+
 .moreLink:focus-visible {
     background-size: 100% 1px, 100% 1px;
 }
@@ -156,10 +192,9 @@
     width: 1.6rem;
     height: auto;
     flex: none;
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform var(--duration-hover) var(--ease-out);
 }
 
-.moreLink:hover .moreArrow,
 .moreLink:focus-visible .moreArrow {
     transform: translateX(0.3rem);
 }
@@ -181,14 +216,14 @@
 
 .grid[data-reveal="in"] .frame {
     clip-path: inset(0 0 0 0);
-    transition: clip-path 0.9s cubic-bezier(0.16, 1, 0.3, 1)
+    transition: clip-path var(--duration-entrance) var(--ease-entrance)
         calc(var(--i, 0) * 90ms);
 }
 
 /* `backwards` holds the overscale through the stagger delay and then
    releases, leaving the hover transition free to own transform afterwards. */
 .grid[data-reveal="in"] .image {
-    animation: settle 1.25s cubic-bezier(0.16, 1, 0.3, 1)
+    animation: settle 1.25s var(--ease-entrance)
         calc(var(--i, 0) * 90ms) backwards;
 }
 
@@ -196,9 +231,9 @@
     opacity: 1;
     transform: none;
     transition: opacity 0.7s ease calc(var(--i, 0) * 90ms + 240ms),
-        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)
+        transform 0.7s var(--ease-entrance)
             calc(var(--i, 0) * 90ms + 240ms),
-        background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+        background-size 0.3s var(--ease-out);
 }
 
 @keyframes settle {

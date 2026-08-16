@@ -28,6 +28,13 @@ export default function RevealGrid({ className, children }: RevealGridProps) {
         const el = ref.current;
         if (!el) return;
 
+        // Deliberate, and the reason is in the comment above: arming has to
+        // land in its own render or the browser coalesces it with the reveal
+        // and no transition runs. React's rule is right in general and can't
+        // see that constraint. (CSS `@starting-style` would remove the need
+        // for the three-state dance entirely — worth revisiting once older
+        // Safari no longer needs a fallback path.)
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setState("armed");
 
         let observer: IntersectionObserver | null = null;

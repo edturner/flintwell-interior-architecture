@@ -3,17 +3,8 @@ import Image from "next/image";
 import styles from "./SelectedWorks.module.css";
 import SectionLabel from "./SectionLabel";
 import RevealGrid from "./RevealGrid";
-import { urlFor } from "@/sanity/lib/image";
-import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
-
-export interface ProjectSummary {
-    _id: string;
-    title: string;
-    projectNumber?: string;
-    slug: string;
-    mainImage?: SanityImageSource;
-    aspect?: number;
-}
+import { croppedUrl, altText } from "@/sanity/lib/image";
+import type { ProjectSummary } from "@/sanity/contentTypes";
 
 interface SelectedWorksProps {
     projects: ProjectSummary[];
@@ -36,9 +27,24 @@ interface SelectedWorksProps {
      * anyway — that keeps the param off the URL in the common case.
      */
     cardOrigin?: "home";
+    /**
+     * Eager-loads the first row. Set on /projects, where the grid sits
+     * directly under a short header and the first row is almost certainly
+     * the LCP element — next/image lazy-loads by default, which meant the
+     * LCP image couldn't start downloading until layout and the intersection
+     * check had run. Left off on the homepage, where the section is well
+     * below the fold and lazy is correct.
+     */
+    prioritiseFirstRow?: boolean;
 }
 
+/** Matches the `aspect-ratio: 4 / 5` the frames impose. Sanity does the crop
+ *  so the hotspot is honoured; see croppedUrl. */
 const NOMINAL_WIDTH = 900;
+const CARD_ASPECT = 4 / 5;
+
+/** The widest the grid ever goes: 3 columns above 1100px. */
+const FIRST_ROW = 3;
 
 /** Drawn rather than a glyph, so it keeps the hairline weight of the rules. */
 function Arrow({ className }: { className?: string }) {
@@ -67,6 +73,7 @@ export default function SelectedWorks({
     moreHref,
     swipeOnMobile = false,
     cardOrigin,
+    prioritiseFirstRow = false,
 }: SelectedWorksProps) {
     if (!projects?.length) return null;
 
@@ -102,13 +109,20 @@ export default function SelectedWorks({
                         <div className={styles.frame}>
                             {project.mainImage && (
                                 <Image
-                                    src={urlFor(project.mainImage)
-                                        .width(NOMINAL_WIDTH)
-                                        .url()}
-                                    alt={project.title}
+                                    src={croppedUrl(
+                                        project.mainImage,
+                                        NOMINAL_WIDTH,
+                                        CARD_ASPECT
+                                    )}
+                                    // The card is a link whose accessible name
+                                    // is the project title below it, so the
+                                    // Studio's alt is the useful thing here and
+                                    // the title is only a fallback.
+                                    alt={altText(project.mainImage, project.title)}
                                     fill
                                     sizes={sizes}
                                     className={styles.image}
+                                    priority={prioritiseFirstRow && i < FIRST_ROW}
                                 />
                             )}
                         </div>
