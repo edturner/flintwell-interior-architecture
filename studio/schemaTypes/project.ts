@@ -7,20 +7,33 @@ export const project = defineType({
     preview: {
         select: {
             title: 'title',
+            subtitle: 'projectNumber',
             media: 'mainImage',
         },
+        prepare({ title, subtitle, media }) {
+            return {
+                title: title || 'Untitled project',
+                subtitle: subtitle ? `project${subtitle}` : undefined,
+                media,
+            }
+        },
     },
-    groups: [
+    // Lowest number first. The site orders on this, so the studio decides
+    // which six projects represent it on the homepage rather than upload
+    // date deciding by accident.
+    orderings: [
         {
-            name: 'comparison',
-            title: 'Comparison Slider',
-        }
+            title: 'Display order',
+            name: 'displayOrderAsc',
+            by: [{ field: 'displayOrder', direction: 'asc' }],
+        },
     ],
     fields: [
         defineField({
             name: 'title',
             title: 'Title',
             type: 'string',
+            validation: (Rule) => Rule.required(),
         }),
         defineField({
             name: 'projectNumber',
@@ -37,6 +50,17 @@ export const project = defineType({
                 source: 'title',
                 maxLength: 96,
             },
+            // Without a slug the project has no URL: it renders a card that
+            // links to /projects/null. Required rather than optional.
+            validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+            name: 'displayOrder',
+            title: 'Display Order',
+            type: 'number',
+            description:
+                'Lower numbers come first, on the homepage and on /projects. Leave blank and the project falls to the end.',
+            validation: (Rule) => Rule.integer().min(0),
         }),
         defineField({
             name: 'tagline',
@@ -44,26 +68,10 @@ export const project = defineType({
             type: 'string',
         }),
         defineField({
-            name: 'sliderPlan',
-            title: 'Slider Plan (CAD)',
-            type: 'image',
-            options: { hotspot: true },
-            group: 'comparison',
-        }),
-        defineField({
-            name: 'sliderReality',
-            title: 'Slider Reality (Photo)',
-            type: 'image',
-            options: { hotspot: true },
-            group: 'comparison',
-        }),
-        defineField({
             name: 'mainImage',
             title: 'Main image',
-            type: 'image',
-            options: {
-                hotspot: true,
-            },
+            type: 'imageWithAlt',
+            validation: (Rule) => Rule.required(),
         }),
         defineField({
             name: 'year',
@@ -79,7 +87,7 @@ export const project = defineType({
             name: 'gallery',
             title: 'Gallery',
             type: 'array',
-            of: [{ type: 'image' }],
+            of: [{ type: 'imageWithAlt' }],
         }),
         defineField({
             name: 'description',

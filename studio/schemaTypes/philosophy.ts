@@ -34,13 +34,12 @@ export const philosophy = defineType({
             rows: 10,
             description: 'Separate paragraphs with a blank line.',
             initialValue:
-                'We are continually building relationships with great people in the industry who, like us, love what they do. Passion, pride, and attention to detail are what we look for.\n\nArchitecturally led interior design, project management and procurement are amoungst the services we offer, often acting as the centre point that brings it all together.',
+                'We are continually building relationships with great people in the industry who, like us, love what they do. Passion, pride, and attention to detail are what we look for.\n\nArchitecturally led interior design, project management and procurement are amongst the services we offer, often acting as the centre point that brings it all together.',
         }),
         defineField({
             name: 'aboutImage',
             title: 'Image',
-            type: 'image',
-            options: { hotspot: true },
+            type: 'imageWithAlt',
         }),
     ],
 })

@@ -30,10 +30,9 @@ export const home = defineType({
         defineField({
             name: 'heroImage',
             title: 'Hero Image',
-            type: 'image',
-            options: {
-                hotspot: true,
-            },
+            type: 'imageWithAlt',
+            description:
+                'Not currently rendered — the hero uses a local photograph. Upload a real photograph here and restore the Sanity binding in web/src/components/Hero.tsx (one line, marked with a comment).',
         }),
     ],
 })

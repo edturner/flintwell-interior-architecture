@@ -9,7 +9,8 @@ export const contact = defineType({
             name: 'title',
             title: 'Section Heading',
             type: 'string',
-            initialValue: 'lets chat',
+            description: 'Displayed lowercase; case here is not preserved.',
+            initialValue: "let's talk",
         }),
         defineField({
             name: 'intro',
@@ -30,6 +31,8 @@ export const contact = defineType({
             name: 'brochure',
             title: 'Brochure PDF',
             type: 'file',
+            description:
+                'Linked from the auto-reply email. Leave blank and the email simply omits the link.',
             options: {
                 accept: '.pdf'
             }
@@ -62,8 +65,8 @@ export const contact = defineType({
             name: 'autoReplyClosing',
             title: 'Auto-Reply Closing',
             type: 'text',
-            description: 'The closing paragraph before the sign-off. Use {responseTime} to insert the response time.',
-            initialValue: 'You can expect a direct response within {responseTime} to discuss the next phase of your project. In the meantime, please find our Studio Profile & Process Brochure attached.',
+            description: 'The closing paragraph before the sign-off. Use {responseTime} to insert the response time. The brochure link is added automatically below this — don\'t mention an attachment.',
+            initialValue: 'You can expect a direct response within {responseTime} to discuss the next phase of your project.',
             group: 'emailTemplate',
         }),
         defineField({

@@ -4,6 +4,15 @@ export const testimonial = defineType({
     name: "testimonial",
     title: "Testimonials",
     type: "document",
+    // The carousel opens on the first one, so the studio decides which
+    // quote leads rather than GROQ's unspecified default order.
+    orderings: [
+        {
+            title: "Display order",
+            name: "displayOrderAsc",
+            by: [{ field: "displayOrder", direction: "asc" }],
+        },
+    ],
     fields: [
         defineField({
             name: "quote",
@@ -24,12 +33,12 @@ export const testimonial = defineType({
             description: "e.g. 'Client' or 'Interior Designer'",
         }),
         defineField({
-            name: "image",
-            title: "Author Image",
-            type: "image",
-            options: {
-                hotspot: true,
-            },
+            name: "displayOrder",
+            title: "Display Order",
+            type: "number",
+            description:
+                "Lower numbers come first. The carousel opens on the lowest. Leave blank and the quote falls to the end.",
+            validation: (Rule) => Rule.integer().min(0),
         }),
     ],
 });
