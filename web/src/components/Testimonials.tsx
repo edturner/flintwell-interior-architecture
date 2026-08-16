@@ -65,8 +65,11 @@ export default function Testimonials({ testimonials }: Props) {
                                 className={`${styles.slide} ${isActive ? styles.slideActive : ""}`}
                                 inert={!isActive}
                             >
+                                {/* Marks sit tight against the words, and the
+                                    stylesheet hangs the opening one into the
+                                    margin so the text edge stays flush. */}
                                 <blockquote className={styles.quote}>
-                                    &ldquo; {testimonial.quote} &rdquo;
+                                    &ldquo;{testimonial.quote}&rdquo;
                                 </blockquote>
 
                                 <figcaption className={styles.attribution}>

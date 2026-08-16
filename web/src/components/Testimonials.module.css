@@ -10,13 +10,18 @@
     margin-bottom: var(--label-gap);
 }
 
-/* Centred in the panel, with the quote and its controls sharing the same
-   left edge so the block reads as one unit. */
+/* Centred in the panel, with the mark, quote and controls sharing the same
+   left edge so the block reads as one unit.
+
+   In rem, not ch: `ch` here resolved against this element's inherited 16px
+   rather than the quote's own size, so a 40ch cap was silently producing a
+   305px column adrift in a 1168px panel. */
 .carousel {
-    max-width: 40ch;
+    max-width: 42rem;
     margin: auto;
     width: 100%;
 }
+
 
 /* Every slide occupies the same single grid cell, so the stage measures
    the tallest quote once and holds that height for all of them. The
@@ -25,22 +30,38 @@
     display: grid;
 }
 
+/* The outgoing quote leaves faster than the incoming one arrives, so the two
+   never sit at half strength on top of each other. */
 .slide {
     grid-area: 1 / 1;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.45s ease, visibility 0s linear 0.45s;
+    transform: translateY(0.55rem);
+    transition: opacity 0.25s ease, transform 0s linear 0.25s,
+        visibility 0s linear 0.25s;
 }
 
 .slideActive {
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.45s ease, visibility 0s linear 0s;
+    transform: none;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0s;
 }
 
+/* The one place on the site where words run at display scale. The section is
+   social proof — five named clients — and it was being whispered at 23px in a
+   third of the available width. */
 .quote {
-    font-size: clamp(1.15rem, 1.8vw, 1.6rem);
-    line-height: 1.42;
+    font-size: clamp(1.5rem, 3.4vw, 3.1rem);
+    line-height: 1.28;
+    text-wrap: pretty;
+    /* Hanging punctuation: the opening mark sits out in the margin so the
+       words below it start on a clean left edge, rather than the first line
+       appearing indented by the width of a quote mark. 0.32em is just under
+       the glyph's 0.34em advance, which reads better optically than hanging
+       it by the full width. */
+    text-indent: -0.32em;
 }
 
 /* Held on one line: a long studio name wrapping would push the "|" to the
@@ -131,10 +152,21 @@
 
 /* Below this there isn't room to run the attribution wide, so stack the
    author and role and drop the rule rather than let it dangle. */
+/* Movement is the enhancement here; the cross-fade still carries the state
+   change on its own. */
+@media (prefers-reduced-motion: reduce) {
+    .slide,
+    .slideActive {
+        transform: none;
+    }
+}
+
 @media (max-width: 900px) {
+    /* Keep the auto margins: at this width they can't shift the block
+       horizontally, but they are what centres it in the panel. Zeroing them
+       pinned the quote to the top and left ~300px dead below the controls. */
     .carousel {
         max-width: 100%;
-        margin: 0;
     }
 
     .attribution {
