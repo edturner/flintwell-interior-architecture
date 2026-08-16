@@ -11,17 +11,21 @@ sans, and don't set UI labels in the serif.
 
 | Voice | Face | CSS var | Used for |
 |-------|------|---------|----------|
-| Reading | Playfair Display | `--font-serif` | Hero statement, body copy, quotes, menu nav, form labels |
+| Reading | Cormorant Garamond | `--font-serif` | Hero statement, body copy, quotes, menu nav, form labels |
 | Labelling | Jost (300) | `--font-sans` | `menu`, section labels, wordmark, `PROJECT23`, attributions, footer small print |
 
 The sans is **always lowercase and always tracked out** (`--track-wide`,
-`0.32em`). The wordmark uses `--track-wider` (`0.42em`). Tracking adds a
-trailing space after the final letter, so anything that needs to sit flush
-right or flush left cancels it with a negative margin — see
-`SectionLabel.module.css`.
+`0.32em`). Tracking adds a trailing space after the final letter, so anything
+that needs to sit flush right or flush left cancels it with a negative
+margin — see `SectionLabel.module.css`.
+
+The wordmark no longer uses a tracking token at all: `FlintwellWordmark` is
+outlined artwork, so the letter positions carry Ian's own 567 tracking and
+there is no live text to space. (`--track-wider` was documented here but has
+never existed in `globals.css`.)
 
 Fonts are substitutes for Ian's originals: Jost stands in for a Futura-style
-geometric sans, Playfair for the mockups' transitional serif. Swap in the
+geometric sans, Cormorant Garamond for the mockups' transitional serif. Swap in the
 studio's licensed faces if he has them.
 
 ## Colour
@@ -57,25 +61,33 @@ clamps:
 - The testimonial carousel is centred in its panel (`margin: auto`), not
   offset right like the other sections.
 - Breakpoints: 1100px (work grid 3→2 col), 900px (hero/about stack),
-  700px (work grid →1 col, contact form tightens), 640px (menu overlay stacks).
+  700px (contact form tightens), 640px (work grid →1 col and, on the
+  homepage, becomes a swipe track; menu overlay stacks).
 
 ## Components
 
 | Component | Notes |
 |-----------|-------|
-| `FlintwellMark` | The hand-drawn `f.` — inline SVG traced from the studio artwork, normalised to a 100×100 box. Uses `currentColor` so it recolours on the overlay. |
-| `Wordmark` | FLINTWELL + rule + `interior architecture` / `est2023`. `centred` prop for the footer. |
-| `SectionLabel` | The flush-right tracked lowercase heading. |
-| `Header` | Fixed mark + `menu`, and the terracotta overlay. Client component; `SiteHeader` is the server wrapper that feeds it Sanity content. |
+| `FlintwellMark` | The hand-drawn `f.` — `public/flintwell-mark.png` through `next/image`. Ian's supplied SVG is a raster plus a luminance mask in an SVG shell, not vector, and is kept as the source. The ink is baked into the artwork, so it does **not** recolour on the overlay; it reads correctly on both surfaces as drawn. |
+| `Wordmark` | FLINTWELL + rule + `interior architecture` / `est2023`. `centred` prop for the footer. Outlined artwork, not live text. |
+| `SectionLabel` | The flush-right tracked lowercase heading. `as="h1"` on `/contact`, where this label is the page title; `h2` everywhere else. |
+| `Header` | Fixed mark + `menu`/`close`, and the terracotta overlay. Client component; `SiteHeader` is the server wrapper that feeds it Sanity content. |
+| `SelectedWorks` | 3-col grid, one uniform 4:5 crop performed by Sanity so the hotspot is honoured. Thumbnails used to keep their own aspect ratio, which left the tops of each row ragged. Below 640px it stacks, or becomes a scroll-snap swipe track when `swipeOnMobile` is set. |
+| `RevealGrid` | Drives the work grid's entrance through a `data-reveal` attribute. Renders `idle` — plain and visible — and only arms the hidden state once its effect runs, so a blocked script can never hide the work. |
 
 ### Header scroll behaviour
 
-The chrome fades out (and lifts 0.75rem) when you scroll **down**, and
-returns when you scroll **up** or come back within `REVEAL_ZONE` (120px) of
-the top. A `SCROLL_DELTA` of 6px ignores sub-pixel and rubber-band jitter,
-and the listener is rAF-throttled and passive. It pauses while the menu
-overlay is open, since the overlay is fixed and unscrollable.
-| `SelectedWorks` | 3-col grid. Thumbnails keep their **own aspect ratio** (from Sanity's `metadata.dimensions.aspectRatio`) and are bottom-aligned within the row so captions land on a common line. |
+Off the top of the page (`BAR_THRESHOLD`, 24px) the chrome settles onto a
+translucent white bar with a 12px backdrop blur and a hairline bottom rule,
+so the mark and `menu` stay legible over whatever is scrolling underneath.
+The chrome itself never moves or fades out. The mark condenses to
+`scale(0.76)` with the bar. Over the open overlay the bar drops away, since
+it would fight the terracotta.
+
+The listener is rAF-throttled and passive, and runs once on mount so a reload
+partway down the page already shows the bar.
+
+Tune `--header-bar-alpha` in `globals.css` for the fill weight.
 
 ## Deliberate departures from the mockups
 
@@ -87,6 +99,13 @@ build keeps the layout, proportions and captions but adds two restrained
 moves — a 1.03 image scale and a hairline that draws in under the caption.
 Nothing else on the site moves. Delete the two `:hover` blocks in
 `SelectedWorks.module.css` to go fully flat.
+
+Hover motion across the site is gated behind
+`@media (hover: hover) and (pointer: fine)`, because touch browsers fire a
+synthetic hover on tap and leave it applied — on the mobile swipe track that
+left a stuck scale visible after back-navigation. `:focus-visible` mirrors
+each hover rule *outside* the query, so keyboard users keep the feedback on
+every device.
 
 **Testimonials are a carousel.** The mockups give each quote its own
 full-height blush screen. As a scrolling page that's a very long run of
@@ -121,7 +140,36 @@ conventional boxed form.
   `Hero.tsx` (one line, marked with a comment).
 - `philosophy` (now "About") — `aboutHeading` / `aboutText` / `aboutImage`.
 - `footer` (now "Site Details") — also feeds the menu overlay via `phone`,
-  `addressLines` and `menuSlogan`.
+  `addressLines` and `menuSlogan`, **and** the contact section's "or reach us
+  directly" block. A page rendering `<Contact>` must pass `details`, or that
+  block silently disappears.
+- `project.displayOrder` / `testimonial.displayOrder` — lower first, blanks
+  last. This is how the studio chooses which six projects lead the homepage
+  and which quote the carousel opens on; without it the order fell out of
+  upload date.
+- Every image is the `imageWithAlt` object type: an image plus `alt` and a
+  `decorative` flag. Alt is required unless `decorative` is ticked, and the
+  site reads it through `altText()` in `sanity/lib/image.ts`.
+
+## Motion tokens
+
+Curves and durations live in `globals.css` alongside colour and spacing.
+Don't hand-type a cubic-bezier — there were eleven near-identical copies of
+two curves before these existed.
+
+| Token | Value | Role |
+|-------|-------|------|
+| `--ease-out` | `cubic-bezier(0.23, 1, 0.32, 1)` | UI responding to you: hover, press, state change |
+| `--ease-entrance` | `cubic-bezier(0.16, 1, 0.3, 1)` | Content arriving: the work grid reveal, slide changes |
+| `--duration-hover` | `0.25s` | Hover and press feedback |
+| `--duration-state` | `0.4s` | Header bar, overlay |
+| `--duration-entrance` | `0.9s` | The work grid reveal |
+
+Reduced motion kills **movement only** — transforms — and keeps opacity and
+colour. A blanket `transition-duration: 0.01ms !important` was overriding
+components that had already thought about it, turning the testimonial
+cross-fade into a hard cut. Components may still drop more than the default
+does; `SelectedWorks.module.css` removes its entrance outright.
 
 ## Removed
 
