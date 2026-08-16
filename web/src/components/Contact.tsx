@@ -3,18 +3,15 @@
 import { useState } from "react";
 import styles from "./Contact.module.css";
 import SectionLabel from "./SectionLabel";
+import type { ContactData, SiteDetails } from "@/sanity/contentTypes";
 
 interface ContactProps {
-    contactData?: {
-        title?: string;
-        intro?: string;
-        buttonText?: string;
-    };
+    contactData?: ContactData | null;
     /** From the footer document. Optional — the section works without it. */
-    details?: {
-        email?: string;
-        phone?: string;
-    };
+    details?: Pick<SiteDetails, "email" | "phone"> | null;
+    /** Renders the section label as the page's h1. Set on /contact, where
+     *  this section *is* the page and there is no other heading above it. */
+    headingLevel?: "h1" | "h2";
 }
 
 /** Same hairline weight as the rules, so it can't fall back to a glyph. */
@@ -83,8 +80,12 @@ const FIELDS = [
     },
 ] as const;
 
-export default function Contact({ contactData, details }: ContactProps) {
-    const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+type Status = "idle" | "submitting" | "success" | "error";
+
+export default function Contact({ contactData, details, headingLevel = "h2" }: ContactProps) {
+    const [status, setStatus] = useState<Status>("idle");
+    /** True when the studio got the lead but the visitor's copy didn't send. */
+    const [autoReplyMissing, setAutoReplyMissing] = useState(false);
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -98,6 +99,7 @@ export default function Contact({ contactData, details }: ContactProps) {
             number: formData.get("number"),
             location: formData.get("location"),
             message: formData.get("message"),
+            company: formData.get("company"),
         };
 
         try {
@@ -109,6 +111,8 @@ export default function Contact({ contactData, details }: ContactProps) {
 
             if (!response.ok) throw new Error("Failed to send message");
 
+            const result = await response.json().catch(() => ({}));
+            setAutoReplyMissing(result?.autoReplySent === false);
             setStatus("success");
             form.reset();
         } catch (error) {
@@ -120,7 +124,9 @@ export default function Contact({ contactData, details }: ContactProps) {
     return (
         <section id="contact" className={styles.section}>
             <div className={styles.header}>
-                <SectionLabel>{unbracket(contactData?.title || "lets chat")}</SectionLabel>
+                <SectionLabel as={headingLevel}>
+                    {unbracket(contactData?.title || "lets chat")}
+                </SectionLabel>
             </div>
 
             <div className={styles.body}>
@@ -206,6 +212,23 @@ export default function Contact({ contactData, details }: ContactProps) {
                     </span>
                 </div>
 
+                {/* Honeypot. Hidden from sight, from the tab order and from
+                    assistive tech; only a bot filling every field will touch
+                    it, and the server treats anything here as spam.
+                    `aria-hidden` plus `tabIndex={-1}` is deliberate — this is
+                    one of the few cases where hiding from screen readers is
+                    correct, because the field is not for people. */}
+                <div className={styles.honeypot} aria-hidden="true">
+                    <label htmlFor="company">Company (leave blank)</label>
+                    <input
+                        id="company"
+                        name="company"
+                        type="text"
+                        tabIndex={-1}
+                        autoComplete="off"
+                    />
+                </div>
+
                 <p className={styles.hint}>* required</p>
 
                     <button
@@ -221,17 +244,28 @@ export default function Contact({ contactData, details }: ContactProps) {
                         <Arrow className={styles.submitArrow} />
                     </button>
 
+                    {/* The old copy promised "we have sent a confirmation
+                        email with our brochure" on every success — including
+                        the cases where the auto-reply failed. A false
+                        confirmation is worse than a vague one, because it
+                        stops the visitor doing anything about it. */}
                     {status === "success" && (
                         <p className={styles.message} role="status">
-                            Thank you for your enquiry. We have sent a confirmation
-                            email with our brochure.
+                            {autoReplyMissing
+                                ? "Thank you for your enquiry — it's with the studio. We'll be in touch within 48 hours."
+                                : "Thank you for your enquiry. We've sent a confirmation to your inbox, and we'll be in touch within 48 hours."}
                         </p>
                     )}
 
                     {status === "error" && (
                         <p className={`${styles.message} ${styles.error}`} role="alert">
-                            Something went wrong. Please try again, or email us
-                            directly.
+                            Something went wrong and your enquiry wasn&rsquo;t sent.
+                            Please try again{details?.email ? ", or email us at " : "."}
+                            {details?.email && (
+                                <a className={styles.errorLink} href={`mailto:${details.email}`}>
+                                    {details.email}
+                                </a>
+                            )}
                         </p>
                     )}
                 </form>
