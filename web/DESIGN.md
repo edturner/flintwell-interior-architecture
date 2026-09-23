@@ -34,7 +34,9 @@ studio's licensed faces if he has them.
 |------|-----|-------|
 | `--background` | `#ffffff` | Everything except the two surfaces below |
 | `--foreground` | `#1a1a1a` | All text, all rules, the mark |
-| `--blush` | `#f7efea` | "our friends" testimonial panels |
+| `--blush` | `#f7efea` | Behind work thumbnails while they load; the type colour on both dark surfaces |
+| `--olive` | `#40392e` | "our friends" testimonial surface |
+| `--olive-fg` | `#f7efea` | Type on the olive |
 | `--terracotta` | `#9c4a22` | Full-screen menu overlay |
 | `--terracotta-fg` | `#f7efea` | Type on the overlay |
 
@@ -69,7 +71,7 @@ clamps:
 | Component | Notes |
 |-----------|-------|
 | `FlintwellMark` | The hand-drawn `f.` — `public/flintwell-mark.png` through `next/image`. Ian's supplied SVG is a raster plus a luminance mask in an SVG shell, not vector, and is kept as the source. The ink is baked into the artwork, so it does **not** recolour on the overlay; it reads correctly on both surfaces as drawn. |
-| `Wordmark` | FLINTWELL + rule + `interior architecture` / `est2023`. `centred` prop for the footer. Outlined artwork, not live text. |
+| `Wordmark` | The FLINTWELL lockup, outlined artwork rather than live text. The short rule and the `interior architecture` / `est2023` descriptor beneath it were removed at the client’s request, so this is the artwork alone. `centred` prop for the footer. |
 | `SectionLabel` | The flush-right tracked lowercase heading. `as="h1"` on `/contact`, where this label is the page title; `h2` everywhere else. |
 | `Header` | Fixed mark + `menu`/`close`, and the terracotta overlay. Client component; `SiteHeader` is the server wrapper that feeds it Sanity content. |
 | `SelectedWorks` | 3-col grid, one uniform 4:5 crop performed by Sanity so the hotspot is honoured. Thumbnails used to keep their own aspect ratio, which left the tops of each row ragged. Below 640px it stacks, or becomes a scroll-snap swipe track when `swipeOnMobile` is set. |
@@ -91,8 +93,8 @@ Tune `--header-bar-alpha` in `globals.css` for the fill weight.
 
 ## Deliberate departures from the mockups
 
-Three places where this build does not draw what Ian drew. Each is a
-usability call, and each is easy to revert.
+Places where this build does not draw what Ian drew. Each is a client
+decision or a usability call, and each is easy to revert.
 
 **Selected Works hover.** The mockups draw the grid completely flat. This
 build keeps the layout, proportions and captions but adds two restrained
@@ -108,7 +110,7 @@ each hover rule *outside* the query, so keyboard users keep the feedback on
 every device.
 
 **Testimonials are a carousel.** The mockups give each quote its own
-full-height blush screen. As a scrolling page that's a very long run of
+full-height screen of its own. As a scrolling page that is a very long run of
 near-identical panels, so they cycle in place instead: prev/next arrows and
 an `01 — 05` counter, with swipe on touch. The panel composition is
 otherwise exactly as drawn.
@@ -127,6 +129,19 @@ darkening to `--foreground` on hover and focus), an italic placeholder, and
 a terracotta `*` on required fields. The vertical rule and the bare serif
 labels are unchanged, so it still reads as the drawing rather than as a
 conventional boxed form.
+
+**The hero statement runs on one line.** Chosen from a set of options: it
+stops on the halfway mark rather than running toward the photograph, which
+costs type size — 34px against the 48px it ran at over three lines. See the
+note on `.statement` in `Hero.module.css`.
+
+**The menu overlay right-aligns.** Nav, email, phone and address all end on
+the same edge as the `close` control, measured to the glyph rather than the
+box. The mockups ran that text left inside a right-positioned block, so only
+the longest line in each group reached the gutter.
+
+**The testimonials sit on olive, not blush**, with the type inverted to the
+blush. Near-black on `#40392e` is about 1.5:1 and unreadable.
 
 ## Sanity content this design expects
 

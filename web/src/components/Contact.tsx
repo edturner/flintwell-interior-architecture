@@ -35,7 +35,7 @@ function Arrow({ className }: { className?: string }) {
 }
 
 const FALLBACK_INTRO =
-    "The starting point is never fixed, we find that almost all of our work starts with a friendly conversation!\n\nthe door is always open…";
+    "The starting point is never fixed, we find that almost all of our work starts with a friendly conversation!";
 
 /**
  * Existing Sanity copy is written in the previous brand's "[ BRACKETED ]"
@@ -145,9 +145,6 @@ export default function Contact({ contactData, details, headingLevel = "h2" }: C
                         always open" ought to have a door. */}
                     {(details?.email || details?.phone) && (
                         <div className={styles.direct}>
-                            <span className={styles.directLabel}>
-                                or reach us directly
-                            </span>
 
                             {details.email && (
                                 <a

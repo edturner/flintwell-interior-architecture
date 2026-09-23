@@ -49,19 +49,6 @@
     gap: 0.7rem;
 }
 
-/* 0.62, not 0.5. At 0.5 this resolved to #8c8c8c on white — 3.36:1, under
-   the 4.5:1 AA floor for text this small (~10-11.5px). 0.62 lands at ~4.7:1
-   and still reads as clearly secondary to the serif above it. */
-.directLabel {
-    font-family: var(--font-sans), "Century Gothic", sans-serif;
-    font-weight: 300;
-    font-size: clamp(0.62rem, 0.9vw, 0.72rem);
-    letter-spacing: var(--track-wide);
-    text-transform: lowercase;
-    opacity: 0.62;
-    margin-bottom: 0.15rem;
-}
-
 /* Same two-hairline treatment the work cards use: a soft rule that is always
    there, and a dark one that draws across it on hover. */
 .directLink {
@@ -182,7 +169,7 @@
     margin-left: 0.25em;
 }
 
-/* 0.62 for the same contrast reason as .directLabel. */
+/* 0.62 keeps this above the 4.5:1 AA floor at this size. */
 .hint {
     margin-top: 1.25rem;
     font-family: var(--font-sans), "Century Gothic", sans-serif;

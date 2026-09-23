@@ -19,7 +19,7 @@ export const contact = defineType({
             rows: 5,
             description: 'Separate paragraphs with a blank line.',
             initialValue:
-                'The starting point is never fixed, we find that almost all of our work starts with a friendly conversation!\n\nthe door is always open…',
+                'The starting point is never fixed, we find that almost all of our work starts with a friendly conversation!',
         }),
         defineField({
             name: 'buttonText',
