@@ -3,7 +3,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    padding: clamp(1rem, 2.2vw, 1.75rem) var(--gutter);
+    padding: clamp(0.7rem, 1.6vw, 1.25rem) var(--gutter);
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -34,8 +34,8 @@
    to hold contrast, and that would read as a solid slab against a brand this
    quiet. Tune --header-bar-alpha in globals.css to taste. */
 .headerScrolled {
-    padding-top: clamp(0.7rem, 1.4vw, 1.1rem);
-    padding-bottom: clamp(0.7rem, 1.4vw, 1.1rem);
+    padding-top: clamp(0.5rem, 1vw, 0.8rem);
+    padding-bottom: clamp(0.5rem, 1vw, 0.8rem);
     background-color: rgba(255, 255, 255, var(--header-bar-alpha));
     -webkit-backdrop-filter: blur(12px) saturate(1.05);
     backdrop-filter: blur(12px) saturate(1.05);
@@ -136,12 +136,17 @@
     transition: opacity 0.45s ease, visibility 0s linear 0s;
 }
 
+/* Every line on the right of the overlay ends on the same edge as the
+   "close" control above it — nav, email, phone and address alike. These
+   blocks used to sit right while their text ran left inside them, so only
+   the longest line in each reached the gutter and everything shorter
+   stopped short of it. */
 .nav {
     grid-area: nav;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    /* Left-aligned text, but the block itself sits right. */
+    align-items: flex-end;
+    text-align: right;
     justify-self: end;
 }
 
@@ -169,7 +174,11 @@
     align-self: end;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: flex-end;
+    text-align: right;
+    /* Tracking leaves a space after the final letter; cancel it so the glyphs
+       align optically with "close" rather than the invisible gap. */
+    margin-right: calc(-1 * var(--track-wide));
     font-family: var(--font-sans), "Century Gothic", sans-serif;
     font-weight: 300;
     font-size: clamp(0.7rem, 1.1vw, 0.82rem);
@@ -202,6 +211,7 @@
    3.96:1 — under the 4.5:1 AA floor for text this small (~10-12px). 0.9
    reaches ~4.8:1 and still sits back from the links above it. */
 .address {
+    align-items: flex-end;
     font-style: normal;
     text-transform: uppercase;
     font-size: 0.92em;
@@ -239,9 +249,13 @@
     .nav,
     .details {
         justify-self: start;
+        align-items: flex-start;
+        text-align: left;
+        margin-right: 0;
     }
 
     .address {
+        align-items: flex-start;
         margin-top: 1.25rem;
     }
 }

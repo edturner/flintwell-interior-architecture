@@ -1,17 +1,11 @@
-/* The closing screen: the lockup alone, centred, with the small print
-   tucked into the bottom left. */
+/* The closing band. The centred FLINTWELL lockup that used to fill this
+   screen was removed at the client’s request, so it is no longer a full
+   viewport — holding 100svh would leave the small print floating beneath an
+   empty screen. */
 .footer {
-    min-height: 100svh;
-    padding: var(--section-top) var(--gutter) var(--section-bottom);
+    padding: clamp(3rem, 10vh, 6rem) var(--gutter) var(--section-bottom);
     display: flex;
     flex-direction: column;
-}
-
-.centre {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .smallPrint {

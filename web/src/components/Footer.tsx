@@ -1,5 +1,4 @@
 import styles from "./Footer.module.css";
-import Wordmark from "./Wordmark";
 import type { SiteDetails } from "@/sanity/contentTypes";
 
 interface FooterProps {
@@ -21,9 +20,6 @@ export default function Footer({ footerData }: FooterProps) {
 
     return (
         <footer className={styles.footer}>
-            <div className={styles.centre}>
-                <Wordmark centred />
-            </div>
 
             <div className={styles.smallPrint}>
                 <div className={styles.column}>

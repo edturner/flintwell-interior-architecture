@@ -33,10 +33,15 @@
     min-width: 0;
 }
 
+/* One line, stopping at the halfway mark rather than running on toward the
+   photograph. The cap measures from the text left edge to the centre of the
+   viewport — 655px at 1440px — and fitting the statement into that brings
+   the type to about 34px. Smaller than it was at three lines, which is what
+   the single line costs. */
 .statement {
-    font-size: clamp(1.6rem, 3.9vw, 3rem);
+    font-size: clamp(1.4rem, 2.36vw, 2.15rem);
     line-height: 1.2;
-    max-width: 18ch;
+    max-width: calc(50vw - var(--gutter));
     text-wrap: balance;
 }
 
