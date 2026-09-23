@@ -1,5 +1,6 @@
 .panel {
-    background: var(--blush);
+    background: var(--olive);
+    color: var(--olive-fg);
     min-height: 100svh;
     padding: var(--section-top) var(--gutter) var(--section-bottom);
     display: flex;
@@ -10,8 +11,8 @@
     margin-bottom: var(--label-gap);
 }
 
-/* Centred in the panel, with the mark, quote and controls sharing the same
-   left edge so the block reads as one unit.
+/* Centred in the panel, with the
+   quote and controls centred on the same axis so the block reads as one unit.
 
    In rem, not ch: `ch` here resolved against this element's inherited 16px
    rather than the quote's own size, so a 40ch cap was silently producing a
@@ -49,19 +50,23 @@
         transform 0.6s var(--ease-entrance), visibility 0s linear 0s;
 }
 
-/* The one place on the site where words run at display scale. The section is
-   social proof — five named clients — and it was being whispered at 23px in a
-   third of the available width. */
+/* Matched to the About body copy — same clamp, so the two track together at
+   every width rather than drifting apart.
+
+   The measure is capped independently of the carousel: in the full 42rem the
+   line ran to about 90 characters, roughly twice a comfortable measure and
+   the real reason it read badly. `ch` is safe here because it resolves
+   against this element’s own font-size — the earlier bug was a ch cap on
+   the parent, which inherited 16px instead.
+
+   Centred, so the hanging-punctuation indent this used to carry is gone. */
 .quote {
-    font-size: clamp(1.5rem, 3.4vw, 3.1rem);
-    line-height: 1.28;
+    font-size: clamp(1rem, 1.45vw, 1.3rem);
+    line-height: 1.45;
+    max-width: 34ch;
+    margin-inline: auto;
     text-wrap: pretty;
-    /* Hanging punctuation: the opening mark sits out in the margin so the
-       words below it start on a clean left edge, rather than the first line
-       appearing indented by the width of a quote mark. 0.32em is just under
-       the glyph's 0.34em advance, which reads better optically than hanging
-       it by the full width. */
-    text-indent: -0.32em;
+    text-align: center;
 }
 
 /* Held on one line: a long studio name wrapping would push the "|" to the
@@ -73,6 +78,8 @@
     flex-wrap: nowrap;
     white-space: nowrap;
     width: max-content;
+    margin-inline: auto;
+    justify-content: center;
     gap: 0.6em;
     margin-top: 2rem;
     font-family: var(--font-sans), "Century Gothic", sans-serif;
@@ -104,6 +111,7 @@
 
 .controls {
     display: flex;
+    justify-content: center;
     align-items: center;
     gap: 1.5rem;
     margin-top: clamp(2rem, 4.5vh, 3rem);
@@ -120,7 +128,7 @@
     min-height: 44px;
     padding: 0.5rem 0.35rem;
     margin: 0 -0.35rem;
-    color: var(--foreground);
+    color: inherit;
     opacity: 0.75;
     transition: opacity var(--duration-hover) ease, transform 160ms var(--ease-out);
 }
@@ -166,8 +174,7 @@
     opacity: 0.45;
 }
 
-/* Below this there isn't room to run the attribution wide, so stack the
-   author and role and drop the rule rather than let it dangle. */
+/* Below this the author and role stack rather than sitting on one line. */
 /* Movement is the enhancement here; the cross-fade still carries the state
    change on its own. */
 @media (prefers-reduced-motion: reduce) {
@@ -187,7 +194,7 @@
 
     .attribution {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         white-space: normal;
         width: auto;
         gap: 0.4rem;

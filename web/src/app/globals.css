@@ -3,8 +3,14 @@
   --background: #ffffff;
   --foreground: #1a1a1a;
 
-  /* Blush — "our friends" testimonial surface */
+  /* Blush — the pale warm neutral. Sits behind work thumbnails while their
+     images load, and is the type colour on both dark surfaces. */
   --blush: #f7efea;
+
+  /* Olive — "our friends" testimonial surface. Dark, so the type inverts to
+     the blush; near-black on it would be about 1.5:1 and unreadable. */
+  --olive: #40392e;
+  --olive-fg: #f7efea;
 
   /* Terracotta — full-screen menu overlay */
   --terracotta: #9c4a22;
@@ -32,7 +38,7 @@
      opens *underneath* the chrome, so it has to clear it explicitly.
      --section-top is rhythm, not clearance; the two were conflated and the
      hero statement was starting inside the header's box. */
-  --header-clear: calc(2 * clamp(1rem, 2.2vw, 1.75rem) + clamp(42px, 4.5vw, 62px));
+  --header-clear: calc(2 * clamp(0.7rem, 1.6vw, 1.25rem) + clamp(42px, 4.5vw, 62px));
 
   /* Shared section rhythm. Every full screen uses these rather than its
      own clamps, so the overall density is tuned in one place. */
