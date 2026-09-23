@@ -21,12 +21,12 @@ export default function NotFound() {
 
                     <p className={styles.copy}>
                         The link may be out of date, or the project may have moved.
-                        The work is all in one place.
+                        Have a look at the work instead.
                     </p>
 
                     <div className={styles.actions}>
                         <Link href="/projects" className={styles.action}>
-                            see all work
+                            featured work
                         </Link>
                         <Link href="/" className={styles.action}>
                             back to home

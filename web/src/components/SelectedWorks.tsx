@@ -154,7 +154,7 @@ export default function SelectedWorks({
             {moreHref && (
                 <div className={styles.footer}>
                     <Link href={moreHref} className={styles.moreLink}>
-                        <span>see all work</span>
+                        <span>see more</span>
                         <Arrow className={styles.moreArrow} />
                     </Link>
                 </div>

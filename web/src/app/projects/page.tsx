@@ -9,9 +9,9 @@ import type { ProjectSummary } from "@/sanity/contentTypes";
 export const revalidate = 3600;
 
 export const metadata = {
-    title: "All Work",
+    title: "Featured Work",
     description:
-        "Every project by Flintwell Interior Architecture — architecturally led interior design.",
+        "Featured projects by Flintwell Interior Architecture — architecturally led interior design.",
 };
 
 export default async function Projects() {
@@ -22,11 +22,11 @@ export default async function Projects() {
             <SiteHeader />
             <main className={styles.main}>
                 <header className={styles.header}>
-                    {/* "all work" rather than the homepage's "selected work":
-                        the home page shows a capped run, this shows every
-                        project, and the difference is what tells you the page
-                        changed. */}
-                    <h1 className={styles.title}>all work</h1>
+                    {/* "featured work", not "all work": the studio does not
+                        want a short run of projects read as everything they
+                        have ever built. The page still lists every published
+                        project — the label is about impression, not scope. */}
+                    <h1 className={styles.title}>featured work</h1>
 
                     <Link href="/" className={styles.backLink}>
                         back to home
