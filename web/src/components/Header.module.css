@@ -1,66 +1,34 @@
+/* Static, not fixed. The chrome scrolls away with the page like everything
+   else and is reachable again at the top.
+
+   It used to be fixed, with a translucent blurred bar once you were off the
+   top (7750029), and before that it faded out on scroll down (17a96b6). The
+   bar was the objection: the sections are discrete 100svh screens of
+   full-bleed photography, and a permanent white band shaved the top off
+   every one of them.
+
+   The one exception is while the overlay is open — see .headerOpen, which
+   pins it so the close control stays on screen above the panel. */
 .header {
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     padding: clamp(0.7rem, 1.6vw, 1.25rem) var(--gutter);
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    /* Above the overlay: both the mark and "menu" stay visible over it. */
-    z-index: 200;
-    /* The bar is decoration — clicks pass through to the page, and only the
-       mark and "menu" themselves take pointer events. */
+    /* Only the mark and "menu" take pointer events; the empty space between
+       them does not sit over the page catching clicks. */
     pointer-events: none;
-    border-bottom: 1px solid transparent;
-    /* `padding` is deliberately not in this list. Animating it ran layout on
-       the header subtree every frame for 400ms, at the exact moment the main
-       thread is busiest — during a scroll. The bar's fill, blur and rule
-       carry the state change on their own; the padding now snaps under cover
-       of that fade and nothing reads as missing.
-
-       (The reflow was always scoped to the header rather than the document,
-       because this element is `position: fixed` — so this was never the
-       page-wide layout thrash a generic detector reports. It was still
-       needless work at the worst possible moment.) */
-    transition: background-color var(--duration-state) ease,
-        backdrop-filter var(--duration-state) ease,
-        border-color var(--duration-state) ease;
 }
 
-/* Off the top of the page the chrome settles onto a translucent bar, so the
-   mark and "menu" stay legible over whatever is scrolling underneath. The
-   blur is what carries it — the fill alone would need to be far more opaque
-   to hold contrast, and that would read as a solid slab against a brand this
-   quiet. Tune --header-bar-alpha in globals.css to taste. */
-.headerScrolled {
-    padding-top: clamp(0.5rem, 1vw, 0.8rem);
-    padding-bottom: clamp(0.5rem, 1vw, 0.8rem);
-    background-color: rgba(255, 255, 255, var(--header-bar-alpha));
-    -webkit-backdrop-filter: blur(12px) saturate(1.05);
-    backdrop-filter: blur(12px) saturate(1.05);
-    border-bottom-color: var(--rule-soft);
-}
-
-/* The mark condenses with the bar rather than keeping its hero scale.
-   `transform`, not `width`: the mark is a raster image element, so animating
-   width meant layout plus a re-raster of the bitmap at a new size every
-   frame, which browsers do not interpolate smoothly.
-
-   0.76 is a compromise. The old pair of clamps was not a constant ratio —
-   46/62 = 0.742 at the desktop cap but 34/42 = 0.810 at the mobile floor —
-   so no single scale reproduces both. At these sizes the difference lands
-   around 2px and is not perceptible. */
-.headerScrolled .mark {
-    transform: scale(0.76);
-}
-
-/* Over the terracotta the bar would fight the overlay, so it drops away. */
-.headerOpen.headerScrolled {
-    background-color: transparent;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-    border-bottom-color: transparent;
+/* Open, the overlay covers the viewport, so the chrome has to leave the flow
+   and sit above it or the close control would be hidden behind the panel.
+   The menu can only be opened from the top of the page, so pinning it here
+   keeps the control in the same place it was clicked. */
+.headerOpen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 200;
 }
 
 .markLink {

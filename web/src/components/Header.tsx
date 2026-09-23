@@ -19,15 +19,8 @@ export type MenuDetails = Pick<
     "email" | "phone" | "addressLines" | "menuSlogan"
 >;
 
-/**
- * How far down the page the bar appears. Small, so it settles in as soon as
- * the hero starts moving rather than waiting for a section boundary.
- */
-const BAR_THRESHOLD = 24;
-
 export default function Header({ details }: { details?: MenuDetails | null }) {
     const [isOpen, setIsOpen] = useState(false);
-    const [isScrolled, setIsScrolled] = useState(false);
     const overlayRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLElement>(null);
     const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -101,31 +94,6 @@ export default function Header({ details }: { details?: MenuDetails | null }) {
         };
     }, [isOpen]);
 
-    // The chrome stays put the whole way down; once you're off the top it
-    // settles onto a translucent bar so the mark and "menu" stay legible
-    // over whatever is scrolling underneath.
-    useEffect(() => {
-        let frame = 0;
-
-        const update = () => {
-            frame = 0;
-            setIsScrolled(window.scrollY > BAR_THRESHOLD);
-        };
-
-        const onScroll = () => {
-            if (!frame) frame = requestAnimationFrame(update);
-        };
-
-        // Run once on mount: a reload partway down the page should already
-        // show the bar rather than waiting for the first scroll event.
-        update();
-        window.addEventListener("scroll", onScroll, { passive: true });
-
-        return () => {
-            window.removeEventListener("scroll", onScroll);
-            if (frame) cancelAnimationFrame(frame);
-        };
-    }, []);
 
     const close = () => setIsOpen(false);
 
@@ -146,7 +114,6 @@ export default function Header({ details }: { details?: MenuDetails | null }) {
                 className={[
                     styles.header,
                     isOpen ? styles.headerOpen : "",
-                    isScrolled ? styles.headerScrolled : "",
                 ]
                     .filter(Boolean)
                     .join(" ")}

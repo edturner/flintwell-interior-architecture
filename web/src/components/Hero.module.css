@@ -1,9 +1,9 @@
 .hero {
-    min-height: 100svh;
-    /* Clearance for the fixed chrome, then a real gap beneath it. Using
-       --section-top alone put the statement's first line inside the header. */
-    padding: calc(var(--header-clear) + clamp(1.5rem, 4vh, 3rem)) var(--gutter)
-        var(--section-bottom);
+    /* The header sits in normal flow above this now, so the first screen is
+       one viewport minus the chrome. Left at a flat 100svh, hero plus header
+       came to more than a viewport and pushed the fold down. */
+    min-height: calc(100svh - var(--header-height));
+    padding: clamp(1.5rem, 4vh, 3rem) var(--gutter) var(--section-bottom);
     display: flex;
     flex-direction: column;
 }
