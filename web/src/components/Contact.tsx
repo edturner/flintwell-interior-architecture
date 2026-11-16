@@ -140,31 +140,6 @@ export default function Contact({ contactData, details, headingLevel = "h2" }: C
                                 <p key={i}>{paragraph}</p>
                             ))}
                     </div>
-
-                    {/* Not everyone will fill in a form, and "the door is
-                        always open" ought to have a door. */}
-                    {(details?.email || details?.phone) && (
-                        <div className={styles.direct}>
-
-                            {details.email && (
-                                <a
-                                    className={styles.directLink}
-                                    href={`mailto:${details.email}`}
-                                >
-                                    {details.email}
-                                </a>
-                            )}
-
-                            {details.phone && (
-                                <a
-                                    className={styles.directLink}
-                                    href={`tel:${details.phone.replace(/\s/g, "")}`}
-                                >
-                                    {details.phone}
-                                </a>
-                            )}
-                        </div>
-                    )}
                 </div>
 
                 <form className={styles.form} onSubmit={handleSubmit}>

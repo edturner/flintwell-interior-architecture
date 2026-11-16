@@ -39,43 +39,6 @@
     margin-top: 0.85em;
 }
 
-/* Sits at the foot of the column, level with the end of the form. */
-.direct {
-    margin-top: auto;
-    padding-top: clamp(2rem, 5vh, 3.5rem);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.7rem;
-}
-
-/* Same two-hairline treatment the work cards use: a soft rule that is always
-   there, and a dark one that draws across it on hover. */
-.directLink {
-    font-family: var(--font-serif), "Times New Roman", serif;
-    font-size: clamp(1rem, 1.3vw, 1.15rem);
-    /* Sanity stores the address uppercase; the menu overlay lowercases it the
-       same way. Display only — the mailto: keeps the stored casing, since the
-       local part of an address is technically case-sensitive. */
-    text-transform: lowercase;
-    padding-bottom: 0.35rem;
-    background-image: linear-gradient(var(--rule), var(--rule)),
-        linear-gradient(var(--rule-soft), var(--rule-soft));
-    background-repeat: no-repeat, no-repeat;
-    background-position: 0 100%, 0 100%;
-    background-size: 0% 1px, 100% 1px;
-    transition: background-size 0.3s var(--ease-out);
-}
-
-@media (hover: hover) and (pointer: fine) {
-    .directLink:hover {
-        background-size: 100% 1px, 100% 1px;
-    }
-}
-
-.directLink:focus-visible {
-    background-size: 100% 1px, 100% 1px;
-}
 
 .form {
     width: 100%;
@@ -284,11 +247,6 @@
         grid-template-columns: 1fr;
         gap: clamp(2.5rem, 6vh, 4rem);
         align-content: start;
-    }
-
-    .direct {
-        margin-top: 0;
-        padding-top: clamp(1.5rem, 4vh, 2.5rem);
     }
 }
 
