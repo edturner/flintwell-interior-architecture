@@ -8,18 +8,38 @@
     flex-direction: column;
 }
 
+/* Spread edge to edge rather than bunched against the left gutter. The
+   three groups used to sit in a wrapping row with only a gap between them,
+   so on a phone the contact pair and instagram landed side by side and the
+   phone number dangled under the email — it read as jumbled because the
+   grouping was ambiguous, not because the items were wrong.
+
+   Existing Sanity content stores the email and the copyright line uppercase;
+   the mockups set the whole footer row lowercase. */
 .smallPrint {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.6rem clamp(2rem, 6vw, 5rem);
+    justify-content: space-between;
+    align-items: start;
+    gap: 1.6rem clamp(2rem, 6vw, 5rem);
     font-family: var(--font-sans), "Century Gothic", sans-serif;
     font-weight: 300;
     font-size: clamp(0.68rem, 1vw, 0.8rem);
     letter-spacing: var(--track-wide);
     line-height: 1.75;
-    /* Existing Sanity content stores the email uppercase; the mockups
-       set the whole footer row lowercase. */
     text-transform: lowercase;
+}
+
+/* On a phone the notice takes its own row, so the contact pair and instagram
+   can spread across the one below instead of colliding. */
+.legal {
+    max-width: 100%;
+}
+
+@media (max-width: 640px) {
+    .legal {
+        flex-basis: 100%;
+    }
 }
 
 .column {

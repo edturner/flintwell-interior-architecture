@@ -6,6 +6,8 @@ interface FooterProps {
 }
 
 const INSTAGRAM_FALLBACK = "https://www.instagram.com/flintwell_/";
+/** The legal entity, not the trading name — this is a copyright notice. */
+const COPYRIGHT_FALLBACK = "Flintwell Developments Ltd";
 
 export default function Footer({ footerData }: FooterProps) {
     // Computed, not hard-coded. This was pinned to 2026 with a comment about
@@ -20,12 +22,14 @@ export default function Footer({ footerData }: FooterProps) {
 
     return (
         <footer className={styles.footer}>
-
             <div className={styles.smallPrint}>
-                <div className={styles.column}>
-                    <span>copyright {currentYear}</span>
-                    <span>{footerData?.copyrightText || "All rights reserved"}</span>
-                </div>
+                {/* One line, not two. It was "copyright 2026" stacked above the
+                    trading name, which read as two unrelated fragments rather
+                    than a notice. */}
+                <span className={styles.legal}>
+                    &copy; {currentYear}{" "}
+                    {footerData?.copyrightText || COPYRIGHT_FALLBACK}
+                </span>
 
                 <div className={styles.column}>
                     <a href={`mailto:${email}`} className={styles.link}>
