@@ -30,9 +30,26 @@
     text-transform: lowercase;
 }
 
-/* On a phone the notice takes its own row, so the contact pair and instagram
-   can spread across the one below instead of colliding. */
+/* Tighter tracking than the labels beside it. This is the one piece of text
+   in the footer that is a notice rather than a label, and merging it onto a
+   single line made it ~33 characters — at 0.32em that reads as spaced-out
+   rather than deliberate, and the detector flags it on every page. 0.16em
+   keeps it visibly part of the tracked row without the reading cost.
+
+/* Set plainly, unlike the tracked labels beside it. This is the one piece of
+   footer text that is a notice rather than a label, and merging it onto a
+   single line took it to ~33 characters — wide tracking at that length reads
+   as spaced-out rather than deliberate and slows reading.
+
+   0.05em is the threshold the detector draws, and it is the only value that
+   clears the rule; 0.16em halved the problem but still flagged. The result
+   is visibly plainer than its neighbours, which is the honest reading of
+   what it is.
+
+   On a phone it takes its own row, so the contact pair and instagram can
+   spread across the one below instead of colliding. */
 .legal {
+    letter-spacing: 0.05em;
     max-width: 100%;
 }
 
