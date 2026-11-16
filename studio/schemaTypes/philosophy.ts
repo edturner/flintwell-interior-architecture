@@ -40,6 +40,8 @@ export const philosophy = defineType({
             name: 'aboutImage',
             title: 'Image',
             type: 'imageWithAlt',
+            description:
+                'The photograph beside the about copy. Shown as a square — use the crop tool to choose what stays in frame.',
         }),
     ],
 })

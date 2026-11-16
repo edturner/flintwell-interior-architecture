@@ -44,6 +44,13 @@ export const metadata: Metadata = {
     template: "%s — Flintwell Interior Architecture",
   },
   description: "Architecturally led interior design.",
+  // Self-referencing canonical on every page. Relative, so each route
+  // resolves it against `metadataBase` and declares itself the original —
+  // which matters most on project pages, where the same content is reachable
+  // with a `?from=home` query string on the end from every homepage card.
+  alternates: {
+    canonical: "./",
+  },
   openGraph: {
     siteName: "Flintwell Interior Architecture",
     locale: "en_GB",

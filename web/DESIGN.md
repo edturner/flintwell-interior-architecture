@@ -148,11 +148,18 @@ blush. Near-black on `#40392e` is about 1.5:1 and unreadable.
 - `project.projectNumber` — drives `PROJECT23 | Dingle`. Captions fall back
   to the name alone when it's blank.
 - `home.statement` — the hero line.
-- `home.heroImage` — **not currently used.** The field still holds the logo
-  PNG from the old build, which was rendering as the full-size hero image.
-  The hero now points at the local `public/hero-desk.jpeg`; once a proper
-  photograph is uploaded in the Studio, restore the Sanity binding in
-  `Hero.tsx` (one line, marked with a comment).
+- `home.heroImage` — **removed from the schema**, not merely unused. The
+  stored field still holds the logo PNG from the old build, which was
+  rendering as the full-size hero image, so the hero points at the local
+  `public/hero-desk.jpeg` instead. Giving it back to the Studio is three
+  steps *in this order*: clear the stale asset on the document, re-add the
+  field to `home.ts`, then restore the one-line binding marked in
+  `Hero.tsx`. Re-adding the field first republishes the logo.
+- `home.title` / `subtitle` / `description` — also removed. Never queried,
+  but three of them held live-looking values, so they read as load-bearing.
+  `home` is now a single-field document.
+- `footer.location` — removed for the same reason. It held "SUSSEX, UK" and
+  rendered nowhere.
 - `philosophy` (now "About") — `aboutHeading` / `aboutText` / `aboutImage`.
 - `footer` (now "Site Details") — also feeds the menu overlay via `phone`,
   `addressLines` and `menuSlogan`, **and** the contact section's "or reach us
@@ -189,5 +196,7 @@ does; `SelectedWorks.module.css` removes its entrance outright.
 ## Removed
 
 The Services / "THE PROCESS" section and all pricing are gone from the site
-at the client's request. The `service` document type is still registered in
-the Studio so existing documents stay reachable; nothing renders them.
+at the client's request. The `service` document type went with them: it was
+kept registered so any existing documents stayed reachable, but the
+production dataset holds none, so all it did was advertise a section the
+site no longer has.

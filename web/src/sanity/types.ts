@@ -12,6 +12,8 @@
  * ---------------------------------------------------------------------------------
  */
 
+export declare const internalGroqTypeReferenceTo: unique symbol;
+
 // Source: schema.json
 export type Philosophy = {
   _id: string;
@@ -60,7 +62,6 @@ export type Footer = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  location?: string;
   email?: string;
   phone?: string;
   instagramUrl?: string;
@@ -99,29 +100,13 @@ export type Contact = {
   autoReplySignOffCompany?: string;
 };
 
-export type Service = {
-  _id: string;
-  _type: "service";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  description?: string;
-  items?: Array<string>;
-  price?: string;
-};
-
 export type Home = {
   _id: string;
   _type: "home";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title?: string;
-  subtitle?: string;
   statement?: string;
-  description?: string;
-  heroImage?: ImageWithAlt;
 };
 
 export type Project = {
@@ -234,14 +219,14 @@ export type SanityFileAsset = {
   title?: string;
   description?: string;
   altText?: string;
-  sha1hash?: string;
-  extension?: string;
-  mimeType?: string;
-  size?: number;
-  assetId?: string;
+  sha1hash: string;
+  extension: string;
+  mimeType: string;
+  size: number;
+  assetId: string;
   uploadId?: string;
-  path?: string;
-  url?: string;
+  path: string;
+  url: string;
   source?: SanityAssetSourceData;
 };
 
@@ -263,14 +248,14 @@ export type SanityImageAsset = {
   title?: string;
   description?: string;
   altText?: string;
-  sha1hash?: string;
-  extension?: string;
-  mimeType?: string;
-  size?: number;
-  assetId?: string;
+  sha1hash: string;
+  extension: string;
+  mimeType: string;
+  size: number;
+  assetId: string;
   uploadId?: string;
-  path?: string;
-  url?: string;
+  path: string;
+  url: string;
   metadata?: SanityImageMetadata;
   source?: SanityAssetSourceData;
 };
@@ -290,7 +275,6 @@ export type AllSanitySchemaTypes =
   | Footer
   | SanityFileAssetReference
   | Contact
-  | Service
   | Home
   | Project
   | Slug
@@ -304,8 +288,6 @@ export type AllSanitySchemaTypes =
   | SanityAssetSourceData
   | SanityImageAsset
   | Geopoint;
-
-export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: ../web/src/sanity/lib/queries.ts
 // Variable: PROJECT_QUERY

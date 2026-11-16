@@ -1,38 +1,40 @@
 import { defineField, defineType } from 'sanity'
 
+/**
+ * One field, because one field is what the homepage reads.
+ *
+ * This document used to carry `title`, `subtitle`, `description` and
+ * `heroImage` as well. `HOME_QUERY` asks for `statement` and nothing else, so
+ * the other four were editable, saveable, publishable and inert — and three
+ * of them held live values (" F L I N T W E L L" and two single spaces) that
+ * made them look load-bearing. A field that accepts an edit and changes
+ * nothing teaches an editor that the CMS cannot be trusted, which is the
+ * expensive kind of untidiness.
+ *
+ * Removing a field from the schema does not delete what is stored on the
+ * document, so the old values are still in the dataset if they are ever
+ * wanted.
+ *
+ * `heroImage` is the one with a real future: the hero photograph is currently
+ * the local `web/public/hero-desk.jpeg`, because the Sanity field holds a
+ * leftover logo PNG ("F logo") that rendered full-bleed where the photograph
+ * belongs. Giving Ian control of it is three steps, in this order — clear the
+ * stale asset in the Studio, re-add the field here, then restore the
+ * one-line binding marked in `web/src/components/Hero.tsx`. Re-adding the
+ * field first would publish the logo to the homepage.
+ */
 export const home = defineType({
     name: 'home',
-    title: 'Home',
+    title: 'Homepage',
     type: 'document',
     fields: [
         defineField({
-            name: 'title',
-            title: 'Title',
-            type: 'string',
-        }),
-        defineField({
-            name: 'subtitle',
-            title: 'Subtitle',
-            type: 'string',
-        }),
-        defineField({
             name: 'statement',
-            title: 'Hero Statement',
+            title: 'Hero statement',
             type: 'string',
-            description: 'The single serif line at the top of the homepage.',
-            initialValue: 'We build relationships and design around people',
-        }),
-        defineField({
-            name: 'description',
-            title: 'Description',
-            type: 'text',
-        }),
-        defineField({
-            name: 'heroImage',
-            title: 'Hero Image',
-            type: 'imageWithAlt',
             description:
-                'Not currently rendered — the hero uses a local photograph. Upload a real photograph here and restore the Sanity binding in web/src/components/Hero.tsx (one line, marked with a comment).',
+                'The large serif line at the very top of the homepage. Leave blank and the site falls back to "We build relationships and design around people".',
+            initialValue: 'We build relationships and design around people',
         }),
     ],
 })

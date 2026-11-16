@@ -18,6 +18,8 @@ export const testimonial = defineType({
             name: "quote",
             title: "Quote",
             type: "text",
+            description:
+                "The words only — the site adds the opening and closing quote marks, so typing your own gives you two sets. No need to add the name here either.",
             validation: (Rule) => Rule.required().max(250).warning("Longer quotes may be truncated on smaller screens."),
         }),
         defineField({
