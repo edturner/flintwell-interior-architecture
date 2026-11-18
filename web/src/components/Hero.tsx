@@ -1,67 +1,43 @@
-"use client";
-
-import Link from "next/link";
 import Image from "next/image";
 import styles from "./Hero.module.css";
-import { urlFor } from "@/sanity/lib/image";
+import Wordmark from "./Wordmark";
+import type { HomeData } from "@/sanity/contentTypes";
 
 interface HeroProps {
-    homeData: any;
+    homeData?: HomeData | null;
 }
 
+/**
+ * The hero photograph is deliberately a local asset rather than
+ * `home.heroImage` from Sanity: that field still holds the logo PNG left
+ * over from the previous build, which is what was rendering here at full
+ * size. Once Ian uploads a photograph in the Studio, swap this back to
+ * `urlFor(homeData.heroImage)` — it's a one-line change.
+ */
+const HERO_IMAGE = "/hero-desk.jpeg";
+
 export default function Hero({ homeData }: HeroProps) {
-    const handleScrollToBottom = (e: React.MouseEvent) => {
-        e.preventDefault();
-        const contactSection = document.getElementById("contact");
-        if (contactSection) {
-            contactSection.scrollIntoView({ behavior: "smooth" });
-        } else {
-            window.scrollTo({
-                top: document.documentElement.scrollHeight,
-                behavior: "smooth",
-            });
-        }
-    };
+    const statement =
+        homeData?.statement || "We build relationships and design around people";
 
     return (
-        <section id="hero-section" className={styles.heroSection}>
-            <div className={styles.centerContent}>
-                <div className={styles.textHeader}>
-                    <h1 className={styles.title}>{homeData?.title || "FLINTWELL"}</h1>
-                    <p className={styles.subtitle}>{homeData?.subtitle || ":Architecturally led interior design"}</p>
+        <section id="hero-section" className={styles.hero}>
+            <div className={styles.frame}>
+                <div className={styles.column}>
+                    <h1 className={styles.statement}>{statement}</h1>
+                    <Wordmark />
                 </div>
-                <p className={styles.description}>
-                    {homeData?.description ||
-                        "Driven by creativity, we design with purpose—crafting spaces that are both ergonomically refined and visually striking. We work closely with developers and architects to collaboratively achieve beautiful standards of living."}
-                </p>
 
-                <div className={styles.floatingImageContainer}>
-                    {homeData?.heroImage ? (
-                        <Image
-                            src={urlFor(homeData.heroImage).width(800).url()}
-                            alt="Flintwell Architecture"
-                            width={800}
-                            height={600}
-                            className={styles.floatingImage}
-                            priority
-                        />
-                    ) : (
-                        <Image
-                            src="/hero-main.jpeg"
-                            alt="Flintwell Architecture"
-                            width={800}
-                            height={600}
-                            className={styles.floatingImage}
-                            priority
-                        />
-                    )}
+                <div className={styles.imageFrame}>
+                    <Image
+                        src={HERO_IMAGE}
+                        alt="Ian at work in the Flintwell studio"
+                        fill
+                        sizes="(max-width: 900px) 100vw, 38vw"
+                        className={styles.image}
+                        priority
+                    />
                 </div>
-            </div>
-
-            <div className={styles.footerAction}>
-                <Link href="#contact" className={styles.startProject} onClick={handleScrollToBottom}>
-                    [ START YOUR PROJECT -&gt; ]
-                </Link>
             </div>
         </section>
     );

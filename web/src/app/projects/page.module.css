@@ -1,88 +1,89 @@
 .main {
-    min-height: 100vh;
-    padding: 2rem;
-    /* .grid-technical handles the background pattern via global class */
+    padding: clamp(1.5rem, 4vh, 3rem) var(--gutter) var(--section-bottom);
 }
 
+/* Title left, way out; the way back right. Mirrors the header on an
+   individual project page so the two levels feel like one system. */
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 4rem;
-    border-bottom: 1px solid var(--grid-lines);
-    padding-bottom: 1rem;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    padding-bottom: clamp(1.1rem, 2.2vh, 1.75rem);
+    border-bottom: 1px solid var(--rule-soft);
 }
 
-.pageTitle {
-    font-family: var(--font-space-mono);
-    font-size: 0.9rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+.title {
+    font-size: clamp(1.4rem, 3vw, 2.4rem);
 }
 
-.homeLink {
-    font-family: var(--font-space-mono);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
+.backLink {
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.7rem, 1.05vw, 0.82rem);
+    letter-spacing: var(--track-wide);
+    text-transform: lowercase;
+    /* No trailing-letter-space correction here, unlike the section labels:
+       the underline is the visible edge, so it aligns to the content edge
+       the grid and the rule use. Pulling the box right would overhang it. */
+    padding: 0.6rem 0.5rem 0.35rem 0;
+    margin: -0.6rem -0.5rem 0 0;
+    border-bottom: 1px solid var(--rule);
+    transition: opacity var(--duration-hover) ease;
 }
 
-.logo {
-    height: 30px;
-    width: auto;
+@media (hover: hover) and (pointer: fine) {
+    .backLink:hover {
+        opacity: 0.55;
+    }
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 40px;
-    /* Aligns with the 40px grid lines */
+.backLink:focus-visible {
+    opacity: 0.55;
 }
 
-.card {
-    display: block;
-    group: hover;
-    /* Logic handled via specific hover selectors */
-    transition: opacity 0.3s ease;
+/* The page owns the gutters and the opening here, so the section drops its
+   own — on the homepage it is a full screen in a run of them, here it is
+   simply the body of the page. */
+.main section {
+    min-height: 0;
+    padding: var(--label-gap) 0 0;
 }
 
-/* Hover Effect: The brief says "background grid dims, focusing the eye".
-   This is tricky to do on the parent from a child hover without :has(), 
-   but we can make the non-hovered items opacity lower? 
-   Or we can just style the card itself.
-   
-   Let's keep it simple for now: Card hover sharpness.
-*/
+/* ---------- Empty state ---------- */
 
-.imagePlaceholder {
-    width: 100%;
-    aspect-ratio: 4/3;
-    background-color: #ddd;
-    margin-bottom: 1rem;
-    transition: transform 0.3s ease, filter 0.3s ease;
+.empty {
+    padding-top: clamp(3rem, 10vh, 6rem);
+    max-width: 34rem;
 }
 
-.card:hover .imagePlaceholder {
-    /* scale? or just straight sharpness */
-    filter: contrast(1.1);
+.emptyCopy {
+    font-size: clamp(1.15rem, 2vw, 1.6rem);
+    line-height: 1.35;
+    text-wrap: pretty;
 }
 
-.info {
-    border-top: 1px solid var(--foreground);
-    padding-top: 0.5rem;
+.emptyLink {
+    display: inline-block;
+    margin-top: clamp(1.5rem, 4vh, 2.5rem);
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.8rem, 1.15vw, 0.95rem);
+    letter-spacing: var(--track-wide);
+    text-transform: lowercase;
+    padding: 0.75rem 0.5rem 0.6rem 0;
+    margin-right: -0.5rem;
+    border-bottom: 1px solid var(--rule);
+    transition: opacity var(--duration-hover) ease;
 }
 
-.projectTitle {
-    font-family: var(--font-playfair);
-    font-size: 1.5rem;
-    margin-bottom: 0.25rem;
+@media (hover: hover) and (pointer: fine) {
+    .emptyLink:hover {
+        opacity: 0.55;
+    }
 }
 
-.meta {
-    font-family: var(--font-space-mono);
-    font-size: 0.8rem;
-    color: #666;
-    display: flex;
-    gap: 0.5rem;
+.emptyLink:focus-visible {
+    opacity: 0.55;
 }

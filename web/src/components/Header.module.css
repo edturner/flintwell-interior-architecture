@@ -1,61 +1,229 @@
+/* Static, not fixed. The chrome scrolls away with the page like everything
+   else and is reachable again at the top.
+
+   It used to be fixed, with a translucent blurred bar once you were off the
+   top (7750029), and before that it faded out on scroll down (17a96b6). The
+   bar was the objection: the sections are discrete 100svh screens of
+   full-bleed photography, and a permanent white band shaved the top off
+   every one of them.
+
+   The one exception is while the overlay is open — see .headerOpen, which
+   pins it so the close control stays on screen above the panel. */
 .header {
+    width: 100%;
+    padding: clamp(0.7rem, 1.6vw, 1.25rem) var(--gutter);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    /* Only the mark and "menu" take pointer events; the empty space between
+       them does not sit over the page catching clicks. */
+    pointer-events: none;
+}
+
+/* Open, the overlay covers the viewport, so the chrome has to leave the flow
+   and sit above it or the close control would be hidden behind the panel.
+   The menu can only be opened from the top of the page, so pinning it here
+   keeps the control in the same place it was clicked. */
+.headerOpen {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    padding: 0.75rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 100;
-    pointer-events: none;
-    transition: background 0.4s ease, backdrop-filter 0.4s ease, border-bottom 0.4s ease;
+    z-index: 200;
 }
 
-.scrolled {
-    background: rgba(253, 251, 247, 0.85);
-    /* Slightly opaque background matching site theme */
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    /* Very subtle border */
+.markLink {
     pointer-events: auto;
+    display: block;
+    line-height: 0;
 }
 
-.logoContainer {
-    pointer-events: none;
+.mark {
+    width: clamp(42px, 4.5vw, 62px);
+    height: auto;
+    /* Scales from its top-left so the mark stays pinned to the gutter
+       corner rather than drifting inward as it shrinks. */
+    transform-origin: left top;
+    transition: transform var(--duration-state) var(--ease-out);
+    /* The mark stays dark on both white and terracotta, as drawn — the ink is
+       baked into the artwork now, so there is no colour to set here. */
+}
+
+/* The site's only navigation control. With `line-height: 1` and no padding
+   its hit area was the text box — about 14px tall at mobile sizes, well
+   under the 24x24 WCAG 2.5.8 minimum and nowhere near the 44x44 that stops
+   people missing it. Padding grows the target; the negative margins pull the
+   box back so the word stays optically aligned with the mark opposite. */
+.menuButton {
+    pointer-events: auto;
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.85rem, 1.6vw, 1.15rem);
+    letter-spacing: var(--track-wide);
+    text-transform: lowercase;
+    line-height: 1;
+    padding: 0.85rem 0.75rem;
+    margin: -0.85rem calc(-0.75rem - var(--track-wide)) -0.85rem -0.75rem;
+    color: var(--foreground);
+    transition: color var(--duration-state) ease;
+}
+
+/* Over the terracotta, "menu" inverts; the mark does not. */
+.headerOpen .menuButton {
+    color: var(--terracotta-fg);
+}
+
+/* ---------- Menu overlay ---------- */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+    background: var(--terracotta);
+    color: var(--terracotta-fg);
+    padding: var(--gutter);
+    display: grid;
+    /* Nav top right, details lower right, slogan bottom left. */
+    grid-template-areas:
+        ". nav"
+        ". details"
+        "slogan .";
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto 1fr auto;
+    column-gap: 2rem;
+    /* Leave room for the fixed header row above. */
+    padding-top: clamp(4.5rem, 9vw, 7rem);
+
     opacity: 0;
-    transform: translateY(-20px);
-    transition: all 0.4s ease;
-    /* Remove fixed width to allow logo to size itself by height */
-    /* width: 100px; */
-    height: 40px;
-    display: flex;
-    align-items: center;
+    visibility: hidden;
+    transition: opacity 0.45s ease, visibility 0s linear 0.45s;
 }
 
-.logoLink {
-    display: flex;
-    /* Ensures the anchor behaves like a container */
-    height: 100%;
-    align-items: center;
-    cursor: pointer;
-}
-
-.logoVisible {
-    pointer-events: auto;
+.overlayOpen {
     opacity: 1;
-    transform: translateY(0);
+    visibility: visible;
+    transition: opacity 0.45s ease, visibility 0s linear 0s;
 }
 
-.logo {
-    height: 100%;
-    /* Fill container height (40px) */
-    width: auto;
-    /* Maintain aspect ratio */
+/* Every line on the right of the overlay ends on the same edge as the
+   "close" control above it — nav, email, phone and address alike. These
+   blocks used to sit right while their text ran left inside them, so only
+   the longest line in each reached the gutter and everything shorter
+   stopped short of it. */
+.nav {
+    grid-area: nav;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    justify-self: end;
+}
+
+.navItem {
+    font-family: var(--font-serif), "Times New Roman", serif;
+    font-size: clamp(1.5rem, 3vw, 2.15rem);
+    line-height: 1.35;
+    opacity: 0.92;
+    transition: opacity var(--duration-hover) ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .navItem:hover {
+        opacity: 1;
+    }
+}
+
+.navItem:focus-visible {
+    opacity: 1;
+}
+
+.details {
+    grid-area: details;
+    justify-self: end;
+    align-self: end;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    /* Tracking leaves a space after the final letter; cancel it so the glyphs
+       align optically with "close" rather than the invisible gap. */
+    margin-right: calc(-1 * var(--track-wide));
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.7rem, 1.1vw, 0.82rem);
+    letter-spacing: var(--track-wide);
+    line-height: 1.9;
+}
+
+.detailLink {
+    /* Existing Sanity content stores the address uppercase; the mockups
+       set email and phone lowercase. */
+    text-transform: lowercase;
+    /* Same padding-out/margin-back trick as the footer links: a bigger tap
+       target without moving the text. */
+    padding: 0.5rem 0.5rem 0.5rem 0;
+    margin: -0.5rem -0.5rem -0.5rem 0;
+    transition: opacity var(--duration-hover) ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .detailLink:hover {
+        opacity: 0.7;
+    }
+}
+
+.detailLink:focus-visible {
+    opacity: 0.7;
+}
+
+/* 0.9, not 0.78. At 0.78 the blend against the terracotta came out at
+   3.96:1 — under the 4.5:1 AA floor for text this small (~10-12px). 0.9
+   reaches ~4.8:1 and still sits back from the links above it. */
+.address {
+    align-items: flex-end;
+    font-style: normal;
+    text-transform: uppercase;
+    font-size: 0.92em;
+    line-height: 1.85;
+    opacity: 0.9;
+    margin-top: 2.2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.addressLine {
     display: block;
 }
 
-.navContainer {
-    pointer-events: auto;
+.slogan {
+    grid-area: slogan;
+    align-self: end;
+    font-family: var(--font-serif), "Times New Roman", serif;
+    font-size: clamp(1.4rem, 3.2vw, 2.35rem);
+    line-height: 1.25;
+    /* Breaks after "thing", as drawn, without hard-coding a <br>. */
+    max-width: 11em;
+}
+
+@media (max-width: 640px) {
+    .overlay {
+        grid-template-areas:
+            "nav"
+            "details"
+            "slogan";
+        grid-template-columns: 1fr;
+        row-gap: 2.5rem;
+    }
+
+    .nav,
+    .details {
+        justify-self: start;
+        align-items: flex-start;
+        text-align: left;
+        margin-right: 0;
+    }
+
+    .address {
+        align-items: flex-start;
+        margin-top: 1.25rem;
+    }
 }

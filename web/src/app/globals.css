@@ -1,8 +1,70 @@
 :root {
-  --background: #fdfbf7;
+  /* Surfaces */
+  --background: #ffffff;
   --foreground: #1a1a1a;
-  --grid-lines: #e6e6e6;
-  --accent: #d4a373;
+
+  /* Blush — the pale warm neutral. Sits behind work thumbnails while their
+     images load, and is the type colour on both dark surfaces. */
+  --blush: #f7efea;
+
+  /* Olive — "our friends" testimonial surface. Dark, so the type inverts to
+     the blush; near-black on it would be about 1.5:1 and unreadable. */
+  --olive: #40392e;
+  --olive-fg: #f7efea;
+
+  /* Terracotta — full-screen menu overlay */
+  --terracotta: #9c4a22;
+  --terracotta-fg: #f7efea;
+
+  /* Hairlines */
+  --rule: #1a1a1a;
+  --rule-soft: #d8d3ce;
+
+  /* Fill behind the scrolled header bar. Kept faint on purpose — the blur
+     does most of the work of holding the mark and "menu" legible. Raise it
+     toward 1 for a more solid bar, drop it toward 0.4 for barely-there. */
+  --header-bar-alpha: 0.7;
+
+  /* The letterspaced-lowercase-sans idiom used for every UI label.
+     Ian's mockups set these very wide and very light. */
+  --track-wide: 0.32em;
+
+  /* Page gutters */
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+
+  /* The header’s own height — its vertical padding twice, plus the mark.
+     Mirrors the values in Header.module.css; change them together.
+
+     The header is in normal flow now, so nothing needs padding to clear it.
+     What this is still for is the hero: it is min-height 100svh, and with a
+     static header above it the first screen would otherwise come to one
+     viewport *plus* the header and push the fold down. */
+  --header-height: calc(2 * clamp(0.7rem, 1.6vw, 1.25rem) + clamp(42px, 4.5vw, 62px));
+
+  /* Shared section rhythm. Every full screen uses these rather than its
+     own clamps, so the overall density is tuned in one place. */
+  --section-top: clamp(4.5rem, 10vh, 6.5rem);
+  --section-bottom: clamp(2.5rem, 6vh, 4.5rem);
+  /* Gap between a section label and the content beneath it. */
+  --label-gap: clamp(2rem, 5vh, 3.25rem);
+
+  /* ---------- Motion ----------
+     Colour, spacing and tracking were all tokenised; motion was the one
+     system still hand-typed, with two near-identical curves copied across
+     eleven declarations. These are those two curves.
+
+     --ease-out       UI responding to you: hover, press, state change.
+     --ease-entrance  Content arriving: the work grid reveal, slide changes.
+
+     Hover is the highest-frequency interaction on the site, so it gets the
+     short duration — at the old 0.55-0.7s the image scale was still moving
+     after the pointer had left, which reads as lag rather than elegance.
+     The long curve stays long: entrances are allowed to take their time. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-hover: 0.25s;
+  --duration-state: 0.4s;
+  --duration-entrance: 0.9s;
 }
 
 /* Base Reset */
@@ -12,11 +74,17 @@
   margin: 0;
 }
 
+/* `overflow-x: hidden` is a safety net, not a fix — it hides horizontal
+   overflow rather than preventing it. The `max-width: 100vw` that used to sit
+   here was actively causing some: 100vw includes the scrollbar width, so on
+   any desktop page with a vertical scrollbar the body was ~15px wider than
+   the viewport and then clipped itself. Removed.
+
+   The remaining rule should come out too, once someone has verified in a
+   browser at 320px that nothing actually overflows. */
 html,
 body {
-  max-width: 100vw;
   overflow-x: hidden;
-  height: 100%;
 }
 
 html {
@@ -26,19 +94,21 @@ html {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-space-mono), monospace;
+  font-family: var(--font-serif), Garamond, "Times New Roman", serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Serif is the reading voice: headings, statements, body copy, quotes. */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-playfair), serif;
-  font-weight: normal;
+  font-family: var(--font-serif), Garamond, "Times New Roman", serif;
+  font-weight: 400;
+  line-height: 1.15;
 }
 
 a {
@@ -46,10 +116,61 @@ a {
   text-decoration: none;
 }
 
-/* Utility Class for grid background */
-.grid-technical {
-  background-image:
-    linear-gradient(to right, var(--grid-lines) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-lines) 1px, transparent 1px);
-  background-size: 40px 40px;
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* One focus ring for the whole site, defined once. `currentColor` means it
+   inverts correctly on the terracotta overlay without a second rule, and the
+   offset keeps it clear of the hairline underlines the links already draw. */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* The geometric sans is the *labelling* voice — never body copy.
+   Always lowercase, always tracked out. */
+.sans {
+  font-family: var(--font-sans), "Century Gothic", sans-serif;
+  font-weight: 300;
+  letter-spacing: var(--track-wide);
+  text-transform: lowercase;
+}
+
+::selection {
+  background: var(--terracotta);
+  color: var(--terracotta-fg);
+}
+
+/* Reduced motion means *less and gentler* motion, not none.
+
+   This used to kill every transition on the page with
+   `transition-duration: 0.01ms !important`, which also overrode components
+   that had thought about it — the testimonial cross-fade at
+   Testimonials.module.css deliberately keeps its opacity fade and drops only
+   the translate, and the blanket rule turned that fade into a hard cut. The
+   jarring change the fade exists to prevent was exactly what a reduced-motion
+   user got.
+
+   So: kill movement, keep opacity and colour. Components that want to drop
+   more than this still can — see SelectedWorks.module.css, which removes its
+   entrance outright rather than playing it at zero duration. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-property: transform, translate, rotate, scale !important;
+    transition-duration: 0.01ms !important;
+  }
 }

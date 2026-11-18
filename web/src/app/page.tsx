@@ -1,36 +1,58 @@
-import Link from "next/link";
-import Image from "next/image";
-import styles from "./page.module.css";
-import Header from "@/components/Header";
+import SiteHeader from "@/components/SiteHeader";
 import Hero from "@/components/Hero";
+import About from "@/components/About";
 import SelectedWorks from "@/components/SelectedWorks";
-import Services from "@/components/Services";
-import Contact from "@/components/Contact";
 import Testimonials from "@/components/Testimonials";
-import Philosophy from "@/components/Philosophy";
+import Contact from "@/components/Contact";
 import { client } from "@/sanity/lib/client";
-import { HOME_QUERY, CONTACT_QUERY, TESTIMONIALS_QUERY, PHILOSOPHY_QUERY } from "@/sanity/lib/queries";
-import { urlFor } from "@/sanity/lib/image";
+import {
+  HOME_QUERY,
+  ABOUT_QUERY,
+  PROJECTS_QUERY,
+  TESTIMONIALS_QUERY,
+  CONTACT_QUERY,
+  SITE_DETAILS_QUERY,
+} from "@/sanity/lib/queries";
+import type {
+  HomeData,
+  AboutData,
+  ProjectSummary,
+  Testimonial,
+  ContactData,
+  SiteDetails,
+} from "@/sanity/contentTypes";
 
-export const revalidate = 30;
+export const revalidate = 3600;
 
 export default async function Home() {
-  const [homeData, contactData, testimonialsData, philosophyData] = await Promise.all([
-    client.fetch(HOME_QUERY),
-    client.fetch(CONTACT_QUERY),
-    client.fetch(TESTIMONIALS_QUERY),
-    client.fetch(PHILOSOPHY_QUERY)
-  ]);
+  const [homeData, aboutData, projects, testimonials, contactData, siteDetails] =
+    await Promise.all([
+      client.fetch<HomeData | null>(HOME_QUERY),
+      client.fetch<AboutData | null>(ABOUT_QUERY),
+      client.fetch<ProjectSummary[]>(PROJECTS_QUERY),
+      client.fetch<Testimonial[]>(TESTIMONIALS_QUERY),
+      client.fetch<ContactData | null>(CONTACT_QUERY),
+      // Contact offers the email and phone as an alternative to the form —
+      // they live on the footer document, same source the menu overlay uses.
+      client.fetch<SiteDetails | null>(SITE_DETAILS_QUERY),
+    ]);
 
   return (
-    <main>
-      <Header />
-      <Hero homeData={homeData} />
-      <Philosophy data={philosophyData} />
-      <SelectedWorks />
-      <Services services={homeData?.services} />
-      <Testimonials testimonials={testimonialsData} />
-      <Contact contactData={contactData} />
-    </main>
+    <>
+      <SiteHeader />
+      <main>
+        <Hero homeData={homeData} />
+        <About data={aboutData} />
+        <SelectedWorks
+          projects={projects}
+          limit={6}
+          moreHref="/projects"
+          swipeOnMobile
+          cardOrigin="home"
+        />
+        <Testimonials testimonials={testimonials} />
+        <Contact contactData={contactData} details={siteDetails} />
+      </main>
+    </>
   );
 }

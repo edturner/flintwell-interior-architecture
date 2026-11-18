@@ -1,55 +1,58 @@
 import Link from "next/link";
-import Image from "next/image";
+import SiteHeader from "@/components/SiteHeader";
+import SelectedWorks from "@/components/SelectedWorks";
+import styles from "./page.module.css";
 import { client } from "@/sanity/lib/client";
 import { PROJECTS_QUERY } from "@/sanity/lib/queries";
-import { urlFor } from "@/sanity/lib/image";
-import styles from "./page.module.css";
+import type { ProjectSummary } from "@/sanity/contentTypes";
 
-export const revalidate = 30;
+export const revalidate = 3600;
+
+export const metadata = {
+    title: "Featured Work",
+    description:
+        "Featured projects by Flintwell Interior Architecture — architecturally led interior design.",
+};
 
 export default async function Projects() {
-    const projects = await client.fetch(PROJECTS_QUERY);
+    const projects = await client.fetch<ProjectSummary[]>(PROJECTS_QUERY);
 
     return (
-        <main className={`grid-technical ${styles.main}`}>
-            <header className={styles.header}>
-                <h1 className={styles.pageTitle}>SELECTED WORKS (2023–2026)</h1>
-                <Link href="/" className={styles.homeLink}>
-                    <Image
-                        src="/logo.jpeg"
-                        alt="Home"
-                        width={80}
-                        height={30}
-                        className={styles.logo}
-                        style={{ objectFit: 'contain' }}
-                    />
-                </Link>
-            </header>
+        <>
+            <SiteHeader />
+            <main className={styles.main}>
+                <header className={styles.header}>
+                    {/* "featured work", not "all work": the studio does not
+                        want a short run of projects read as everything they
+                        have ever built. The page still lists every published
+                        project — the label is about impression, not scope. */}
+                    <h1 className={styles.title}>featured work</h1>
 
-            <div className={styles.grid}>
-                {projects.map((project: any) => (
-                    <Link href={`/projects/${project.slug}`} key={project._id} className={styles.card}>
-                        <div className={styles.imagePlaceholder} style={{ position: 'relative' }}>
-                            {project.mainImage && (
-                                <Image
-                                    src={urlFor(project.mainImage).width(800).height(600).url()}
-                                    alt={project.title}
-                                    fill
-                                    style={{ objectFit: 'cover' }}
-                                />
-                            )}
-                        </div>
-                        <div className={styles.info}>
-                            <h2 className={styles.projectTitle}>{project.title}</h2>
-                            <div className={styles.meta}>
-                                {project.location && <span>{project.location}</span>}
-                                {project.location && project.year && <span>|</span>}
-                                {project.year && <span>{project.year}</span>}
-                            </div>
-                        </div>
+                    <Link href="/" className={styles.backLink}>
+                        back to home
                     </Link>
-                ))}
-            </div>
-        </main>
+                </header>
+
+                {/* SelectedWorks returns null on an empty run, which is right
+                    on the homepage — a section that isn't ready shouldn't
+                    appear. Here it is the entire point of the page, so an
+                    absent grid left a heading, a rule and blank space to the
+                    footer, reading as broken rather than empty. */}
+                {projects.length > 0 ? (
+                    <SelectedWorks projects={projects} showLabel={false} prioritiseFirstRow />
+                ) : (
+                    <div className={styles.empty}>
+                        <p className={styles.emptyCopy}>
+                            New work is being photographed. In the meantime, do get
+                            in touch — we&rsquo;re happy to talk through recent
+                            projects directly.
+                        </p>
+                        <Link href="/contact" className={styles.emptyLink}>
+                            start a conversation
+                        </Link>
+                    </div>
+                )}
+            </main>
+        </>
     );
 }

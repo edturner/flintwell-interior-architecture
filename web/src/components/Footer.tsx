@@ -1,42 +1,58 @@
-import Link from "next/link";
 import styles from "./Footer.module.css";
+import type { SiteDetails } from "@/sanity/contentTypes";
 
 interface FooterProps {
-    footerData?: {
-        location: string;
-        email: string;
-        instagramUrl: string;
-        copyrightText: string;
-    }
+    footerData?: SiteDetails | null;
 }
 
+const INSTAGRAM_FALLBACK = "https://www.instagram.com/flintwell_/";
+/** The legal entity, not the trading name — this is a copyright notice. */
+const COPYRIGHT_FALLBACK = "Flintwell Developments Ltd";
+
 export default function Footer({ footerData }: FooterProps) {
-    // Use a fixed year or client-side effect to avoid hydration mismatch
-    const currentYear = 2026;
+    // Computed, not hard-coded. This was pinned to 2026 with a comment about
+    // server/client hydration mismatch — but Footer is a server component, so
+    // there is no client render to mismatch. Under ISR the value is resolved
+    // at revalidation and the client hydrates the same HTML. Left as it was,
+    // the site would have said "copyright 2026" from January 2027 onward.
+    const currentYear = new Date().getFullYear();
+
+    const email = footerData?.email || "info@flintwell.com";
+    const phone = footerData?.phone || "07891 818682";
 
     return (
         <footer className={styles.footer}>
-            <div className={styles.left}>
-                <div className={styles.contactInfo}>
-                    <p>{footerData?.location || 'LONDON, UK'}</p>
-                    <p>
-                        <a href={`mailto:${footerData?.email || 'INFO@FLINTWELL.COM'}`}>
-                            {footerData?.email || 'INFO@FLINTWELL.COM'}
-                        </a>
-                    </p>
-                </div>
-                <div className={styles.copyright}>
-                    &copy; {currentYear} {footerData?.copyrightText || 'FLINTWELL INTERIOR ARCHITECTURE'}
-                </div>
-            </div>
+            <div className={styles.smallPrint}>
+                {/* One line, not two. It was "copyright 2026" stacked above the
+                    trading name, which read as two unrelated fragments rather
+                    than a notice. */}
+                <span className={styles.legal}>
+                    &copy; {currentYear}{" "}
+                    {footerData?.copyrightText || COPYRIGHT_FALLBACK}
+                </span>
 
-            <div className={styles.right}>
-                <Link href={footerData?.instagramUrl || "https://www.instagram.com/flintwell_/#"} target="_blank" className={styles.link}>
-                    [ INSTAGRAM ]
-                </Link>
-                <Link href="/contact" className={styles.link}>
-                    [ CONTACT ]
-                </Link>
+                <div className={styles.column}>
+                    <a href={`mailto:${email}`} className={styles.link}>
+                        {email}
+                    </a>
+                    <a href={`tel:${phone.replace(/\s/g, "")}`} className={styles.link}>
+                        {phone}
+                    </a>
+                </div>
+
+                <div className={styles.column}>
+                    {/* A plain anchor, not next/link: this leaves the site, so
+                        prefetching and client-side navigation do nothing. */}
+                    <a
+                        href={footerData?.instagramUrl || INSTAGRAM_FALLBACK}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.link}
+                    >
+                        instagram
+                        <span className={styles.srOnly}> (opens in a new tab)</span>
+                    </a>
+                </div>
             </div>
         </footer>
     );

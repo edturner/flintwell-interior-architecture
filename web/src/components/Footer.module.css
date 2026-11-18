@@ -1,50 +1,94 @@
+/* The closing band. The centred FLINTWELL lockup that used to fill this
+   screen was removed at the client’s request, so it is no longer a full
+   viewport — holding 100svh would leave the small print floating beneath an
+   empty screen. */
 .footer {
-    padding: 2rem;
-    border-top: 1px solid var(--grid-lines);
-    background-color: var(--background);
-    color: var(--foreground);
-    font-family: var(--font-space-mono);
-    font-size: 0.8rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-}
-
-.left {
+    padding: clamp(3rem, 10vh, 6rem) var(--gutter) var(--section-bottom);
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
 }
 
-.right {
+/* Spread edge to edge rather than bunched against the left gutter. The
+   three groups used to sit in a wrapping row with only a gap between them,
+   so on a phone the contact pair and instagram landed side by side and the
+   phone number dangled under the email — it read as jumbled because the
+   grouping was ambiguous, not because the items were wrong.
+
+   Existing Sanity content stores the email and the copyright line uppercase;
+   the mockups set the whole footer row lowercase. */
+.smallPrint {
     display: flex;
-    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: start;
+    gap: 1.6rem clamp(2rem, 6vw, 5rem);
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.68rem, 1vw, 0.8rem);
+    letter-spacing: var(--track-wide);
+    line-height: 1.75;
+    text-transform: lowercase;
 }
 
+/* Tighter tracking than the labels beside it. This is the one piece of text
+   in the footer that is a notice rather than a label, and merging it onto a
+   single line made it ~33 characters — at 0.32em that reads as spaced-out
+   rather than deliberate, and the detector flags it on every page. 0.16em
+   keeps it visibly part of the tracked row without the reading cost.
+
+/* Set plainly, unlike the tracked labels beside it. This is the one piece of
+   footer text that is a notice rather than a label, and merging it onto a
+   single line took it to ~33 characters — wide tracking at that length reads
+   as spaced-out rather than deliberate and slows reading.
+
+   0.05em is the threshold the detector draws, and it is the only value that
+   clears the rule; 0.16em halved the problem but still flagged. The result
+   is visibly plainer than its neighbours, which is the honest reading of
+   what it is.
+
+   On a phone it takes its own row, so the contact pair and instagram can
+   spread across the one below instead of colliding. */
+.legal {
+    letter-spacing: 0.05em;
+    max-width: 100%;
+}
+
+@media (max-width: 640px) {
+    .legal {
+        flex-basis: 100%;
+    }
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Padding out, margin back: the tap target grows to meet the 24x24 minimum
+   without the text shifting. These sit in a column of small tracked labels
+   where the type is 11-13px, so the text box alone was well under it. */
 .link {
-    text-transform: uppercase;
-    text-decoration: none;
-    position: relative;
-    padding-bottom: 2px;
+    padding: 0.6rem 0.5rem 0.6rem 0;
+    margin: -0.6rem -0.5rem -0.6rem 0;
+    transition: opacity var(--duration-hover) ease;
 }
 
-.link:hover {
-    border-bottom: 1px solid var(--foreground);
-}
-
-.copyright {
-    opacity: 0.5;
-}
-
-@media (max-width: 768px) {
-    .footer {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 2rem;
+@media (hover: hover) and (pointer: fine) {
+    .link:hover {
+        opacity: 0.55;
     }
+}
 
-    .right {
-        flex-direction: column;
-        gap: 1rem;
-    }
+.link:focus-visible {
+    opacity: 0.55;
+}
+
+/* Visible to assistive tech, not to sight. */
+.srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
 }

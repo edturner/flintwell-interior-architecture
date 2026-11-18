@@ -4,11 +4,22 @@ export const testimonial = defineType({
     name: "testimonial",
     title: "Testimonials",
     type: "document",
+    // The carousel opens on the first one, so the studio decides which
+    // quote leads rather than GROQ's unspecified default order.
+    orderings: [
+        {
+            title: "Display order",
+            name: "displayOrderAsc",
+            by: [{ field: "displayOrder", direction: "asc" }],
+        },
+    ],
     fields: [
         defineField({
             name: "quote",
             title: "Quote",
             type: "text",
+            description:
+                "The words only — the site adds the opening and closing quote marks, so typing your own gives you two sets. No need to add the name here either.",
             validation: (Rule) => Rule.required().max(250).warning("Longer quotes may be truncated on smaller screens."),
         }),
         defineField({
@@ -24,12 +35,12 @@ export const testimonial = defineType({
             description: "e.g. 'Client' or 'Interior Designer'",
         }),
         defineField({
-            name: "image",
-            title: "Author Image",
-            type: "image",
-            options: {
-                hotspot: true,
-            },
+            name: "displayOrder",
+            title: "Display Order",
+            type: "number",
+            description:
+                "Lower numbers come first. The carousel opens on the lowest. Leave blank and the quote falls to the end.",
+            validation: (Rule) => Rule.integer().min(0),
         }),
     ],
 });

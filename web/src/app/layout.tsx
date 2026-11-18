@@ -1,41 +1,73 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Space_Mono } from "next/font/google";
+import { Cormorant_Garamond, Jost } from "next/font/google";
 import Footer from "@/components/Footer";
+import { client } from "@/sanity/lib/client";
+import { SITE_DETAILS_QUERY } from "@/sanity/lib/queries";
+import type { SiteDetails } from "@/sanity/contentTypes";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-export const revalidate = 30; // Revalidate every 30 seconds to sync Sanity changes
+/**
+ * An hour, not 30 seconds. This is a brochure site for a studio that
+ * publishes a project every few months; regenerating every 30s burned ISR
+ * regenerations continuously *and* still made Ian wait after an edit.
+ * `/api/revalidate` is the real answer — a Sanity webhook pushes changes
+ * through instantly, and this is only the safety net behind it.
+ */
+export const revalidate = 3600;
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+// Serif — statements, body copy, quotes, nav. Ian's own body face.
+// Weight 400 only: nothing in the stylesheets sets 300 or 500 on the serif,
+// and each declared weight is a font file downloaded on first load.
+// Italic earns its place on the form placeholders (Contact.module.css).
+const cormorant = Cormorant_Garamond({
+  weight: ["400"],
+  style: ["normal", "italic"],
+  variable: "--font-serif",
   subsets: ["latin"],
 });
 
-const spaceMono = Space_Mono({
-  weight: ["400", "700"],
-  variable: "--font-space-mono",
+// Geometric sans — the tracked-out lowercase labels throughout the mockups.
+// Every sans usage on the site sets `font-weight: 300`; 400 was never used.
+const jost = Jost({
+  weight: ["300"],
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Flintwell Interior Architecture",
+  // Required for the relative OpenGraph image URLs on project pages to
+  // resolve to absolute ones.
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Flintwell Interior Architecture",
+    template: "%s — Flintwell Interior Architecture",
+  },
   description: "Architecturally led interior design.",
+  // Self-referencing canonical on every page. Relative, so each route
+  // resolves it against `metadataBase` and declares itself the original —
+  // which matters most on project pages, where the same content is reachable
+  // with a `?from=home` query string on the end from every homepage card.
+  alternates: {
+    canonical: "./",
+  },
+  openGraph: {
+    siteName: "Flintwell Interior Architecture",
+    locale: "en_GB",
+    type: "website",
+  },
 };
-
-import { client } from "@/sanity/lib/client";
-import { FOOTER_QUERY } from "@/sanity/lib/queries";
-
-// ... existing imports
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const footerData = await client.fetch(FOOTER_QUERY);
+  const footerData = await client.fetch<SiteDetails | null>(SITE_DETAILS_QUERY);
 
   return (
     <html lang="en">
-      <body className={`${playfair.variable} ${spaceMono.variable}`}>
+      <body className={`${cormorant.variable} ${jost.variable}`}>
         {children}
         <Footer footerData={footerData} />
       </body>

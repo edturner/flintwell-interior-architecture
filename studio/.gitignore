@@ -27,3 +27,8 @@
 
 # Dotenv and similar local-only files
 *.local
+
+# Dataset exports from `sanity dataset export`. Point-in-time content dumps —
+# they belong in backup storage, not in the repo, where they would go stale
+# immediately and bloat history.
+backup-*.tar.gz

@@ -1,138 +1,257 @@
 .section {
-    display: flex;
-    min-height: 100vh;
-    border-top: 1px solid var(--grid-lines);
-    position: relative;
-    overflow: hidden;
-    flex-wrap: wrap;
-    /* Allow wrapping for better responsiveness */
-}
-
-.imageSide {
-    flex: 1 1 40%;
-    /* Base 40% width, allow grow/shrink */
-    min-width: 400px;
-    /* Prevent shrinking below 400px width on desktop */
-    background-color: #f7f7f7;
-    /* Light background */
+    min-height: 100svh;
+    padding: var(--section-top) var(--gutter) var(--section-bottom);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    border-right: 1px solid var(--grid-lines);
-    position: relative;
-    /* Ensure height allows filling if stacked, or full height if side-by-side */
-    min-height: 400px;
 }
 
-.toolsText {
-    font-family: var(--font-space-mono);
-    color: var(--foreground);
-    opacity: 0.5;
-    letter-spacing: 0.1em;
-    font-size: 0.9rem;
+.header {
+    margin-bottom: var(--label-gap);
 }
 
-.formSide {
-    flex: 1 1 50%;
-    /* Base 50% width */
-    min-width: 350px;
-    /* Ensure form has space */
-    background-color: var(--background);
+/* Invitation left, form right — the copy is read before the thing it is
+   asking you to do. Departs from the drawing, which put the form bottom left
+   with the intro floating above it and ~590px of empty page between them. */
+.body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    gap: clamp(2rem, 6vw, 5.5rem);
+    align-content: center;
+}
+
+.invitation {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    /* Reduced padding slightly for better fit */
+    flex-direction: column;
+    min-width: 0;
 }
 
-.formContainer {
-    width: 100%;
-    max-width: 500px;
+/* The closing statement of the page, so it runs at display scale like the
+   hero and the testimonial rather than as a 283px ribbon of body copy. No
+   measure set — the column is the measure. */
+.intro {
+    font-size: clamp(1.4rem, 2.8vw, 2.5rem);
+    line-height: 1.25;
+    text-wrap: pretty;
 }
 
-.title {
-    font-family: var(--font-playfair);
-    font-size: 3rem;
-    margin-bottom: 2rem;
-    color: var(--foreground);
+.intro p + p {
+    margin-top: 0.85em;
 }
+
 
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    width: 100%;
+    align-self: center;
 }
 
 .field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    align-items: stretch;
 }
 
-.field label {
-    font-family: var(--font-space-mono);
-    font-size: 0.8rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: var(--foreground);
-}
-
-.field input {
-    padding: 1rem;
-    font-family: var(--font-space-mono);
-    font-size: 1rem;
-    background: transparent;
-    border: 1px solid #ccc;
-    border-radius: 0;
-    color: var(--foreground);
-    transition: border-color 0.3s ease;
-}
-
-.field input:focus {
-    outline: none;
-    border-color: var(--foreground);
-}
-
-.submitButton {
-    margin-top: 1rem;
-    padding: 1.5rem;
-    background: var(--foreground);
-    color: var(--background);
-    border: none;
-    font-family: var(--font-space-mono);
-    font-weight: bold;
-    font-size: 1rem;
+/* The single continuous vertical rule running down the form: drawn on
+   the label cell so it joins up seamlessly between rows. */
+.label {
+    font-family: var(--font-serif), "Times New Roman", serif;
+    font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+    letter-spacing: 0.14em;
+    padding: 0.85rem 1.25rem 0.85rem 0;
+    border-right: 1px solid var(--rule);
     cursor: pointer;
-    text-transform: uppercase;
-    transition: opacity 0.3s;
 }
 
-.submitButton:hover {
-    opacity: 0.9;
+/* Each field gets its own writing line. Ian's drawing shows only the
+   vertical rule, but with no boxes and no lines there is nothing to tell
+   you where to type — these read as a form you write on rather than as
+   input chrome. */
+.inputWrap {
+    display: flex;
+    align-items: stretch;
+    padding-left: 1.25rem;
+    cursor: text;
 }
 
-/* Breakpoint for stacking content */
-@media (max-width: 1024px) {
-    .section {
-        flex-direction: column;
+.input,
+.textarea {
+    font-family: var(--font-serif), "Times New Roman", serif;
+    font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+    color: var(--foreground);
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--rule-soft);
+    outline: none;
+    padding: 0.85rem 0 0.5rem;
+    width: 100%;
+    transition: border-color 0.25s ease;
+}
+
+/* Hover darkens the writing line. Focus does that *and* thickens it, so the
+   two states are distinguishable — previously both drew the same 1px dark
+   rule and a keyboard user could not tell which field was active when the
+   pointer happened to rest on another one. */
+.input:hover,
+.textarea:hover {
+    border-bottom-color: var(--foreground);
+}
+
+.input:focus,
+.textarea:focus {
+    border-bottom-color: var(--foreground);
+    box-shadow: 0 2px 0 var(--foreground);
+}
+
+/* Placeholders carry the hint without adding a second visible label — which
+   makes them content, not decoration, so they have to meet contrast like any
+   other text. At 0.32 this resolved to #b5b5b5 on white: 2.05:1, less than
+   half the 4.5:1 AA floor, leaving the form looking like four empty boxes in
+   sunlight or on a dimmed screen. 0.55 lands at ~4.6:1 and stays visibly
+   lighter than typed input. */
+.input::placeholder,
+.textarea::placeholder {
+    color: var(--foreground);
+    opacity: 0.55;
+    font-style: italic;
+}
+
+.textarea {
+    resize: vertical;
+    min-height: 5.5rem;
+    line-height: 1.5;
+}
+
+.input:disabled,
+.textarea:disabled {
+    opacity: 0.5;
+}
+
+.required {
+    color: var(--terracotta);
+    opacity: 0.75;
+    margin-left: 0.25em;
+}
+
+/* 0.62 keeps this above the 4.5:1 AA floor at this size. */
+.hint {
+    margin-top: 1.25rem;
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.62rem, 0.9vw, 0.72rem);
+    letter-spacing: var(--track-wide);
+    text-transform: lowercase;
+    opacity: 0.62;
+}
+
+/* Hidden from sight, from the tab order and from assistive tech. Not
+   `display: none` — some bots skip fields that aren't rendered, and the
+   point is that they fill it in. */
+.honeypot {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* The page's one conversion action, so it carries the arrow the rest of the
+   site uses for "this takes you somewhere" rather than sitting as a small
+   underlined word. */
+.submit {
+    margin-top: 2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9em;
+    font-family: var(--font-sans), "Century Gothic", sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.85rem, 1.25vw, 1.05rem);
+    letter-spacing: var(--track-wide);
+    text-transform: lowercase;
+    padding: 0.75rem 0 0.55rem;
+    background-image: linear-gradient(var(--rule), var(--rule)),
+        linear-gradient(var(--rule-soft), var(--rule-soft));
+    background-repeat: no-repeat, no-repeat;
+    background-position: 0 100%, 0 100%;
+    background-size: 0% 1px, 100% 1px;
+    transition: background-size 0.3s var(--ease-out), opacity 0.3s ease,
+        transform 160ms var(--ease-out);
+}
+
+/* Cancel the trailing letter-space so the gap to the arrow is the gap. */
+.submit > span {
+    margin-right: calc(-1 * var(--track-wide));
+}
+
+.submitArrow {
+    width: 1.6rem;
+    height: auto;
+    flex: none;
+    transition: transform var(--duration-hover) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .submit:hover:not(:disabled) {
+        background-size: 100% 1px, 100% 1px;
     }
 
-    .imageSide {
-        width: 100%;
-        min-height: 40vh;
-        /* Taller banner on mobile/tablet */
-        border-right: none;
-        border-bottom: 1px solid var(--grid-lines);
-        flex: none;
-        /* Disable flex scaling in column mode */
+    .submit:hover:not(:disabled) .submitArrow {
+        transform: translateX(0.3rem);
     }
+}
 
-    .formSide {
-        width: 100%;
-        padding: 4rem 2rem;
-        /* More vertical padding */
-        flex: none;
+.submit:focus-visible:not(:disabled) {
+    background-size: 100% 1px, 100% 1px;
+}
+
+.submit:focus-visible:not(:disabled) .submitArrow {
+    transform: translateX(0.3rem);
+}
+
+/* The site's one conversion action, and on touch there is no hover to
+   confirm the tap — nothing acknowledged the press until the label changed
+   to "sending". A 0.97 dip at 160ms is the standard press feedback. */
+.submit:active:not(:disabled) {
+    transform: scale(0.97);
+    transition: transform 160ms var(--ease-out);
+}
+
+.submit:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.message {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    max-width: 46ch;
+}
+
+.error {
+    color: var(--terracotta);
+}
+
+/* Underlined so the recovery route is visibly a link, not just coloured
+   text — colour alone can't carry that meaning. */
+.errorLink {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+/* Two columns need the width; below this the invitation reads first and the
+   form follows it. */
+@media (max-width: 900px) {
+    .body {
+        grid-template-columns: 1fr;
+        gap: clamp(2.5rem, 6vh, 4rem);
+        align-content: start;
+    }
+}
+
+@media (max-width: 700px) {
+    .field {
+        grid-template-columns: 6.5rem 1fr;
     }
 }

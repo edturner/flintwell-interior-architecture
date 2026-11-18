@@ -7,34 +7,32 @@ export const contact = defineType({
     fields: [
         defineField({
             name: 'title',
-            title: 'Title',
+            title: 'Section Heading',
             type: 'string',
-            initialValue: "LET'S TALK",
+            description: 'Displayed lowercase; case here is not preserved.',
+            initialValue: "let's talk",
         }),
         defineField({
-            name: 'toolsText',
-            title: 'Tools Side Text',
-            type: 'string',
-            initialValue: '[ TOOLS OF THE TRADE ]',
-        }),
-        defineField({
-            name: 'image',
-            title: 'Image',
-            type: 'image',
-            options: {
-                hotspot: true,
-            },
+            name: 'intro',
+            title: 'Intro Copy',
+            type: 'text',
+            rows: 5,
+            description: 'Separate paragraphs with a blank line.',
+            initialValue:
+                'The starting point is never fixed, we find that almost all of our work starts with a friendly conversation!',
         }),
         defineField({
             name: 'buttonText',
             title: 'Button Text',
             type: 'string',
-            initialValue: '[ SEND INQUIRY ]',
+            initialValue: 'send',
         }),
         defineField({
             name: 'brochure',
             title: 'Brochure PDF',
             type: 'file',
+            description:
+                'Linked from the auto-reply email. Leave blank and the email simply omits the link.',
             options: {
                 accept: '.pdf'
             }
@@ -67,8 +65,8 @@ export const contact = defineType({
             name: 'autoReplyClosing',
             title: 'Auto-Reply Closing',
             type: 'text',
-            description: 'The closing paragraph before the sign-off. Use {responseTime} to insert the response time.',
-            initialValue: 'You can expect a direct response within {responseTime} to discuss the next phase of your project. In the meantime, please find our Studio Profile & Process Brochure attached.',
+            description: 'The closing paragraph before the sign-off. Use {responseTime} to insert the response time. The brochure link is added automatically below this — don\'t mention an attachment.',
+            initialValue: 'You can expect a direct response within {responseTime} to discuss the next phase of your project.',
             group: 'emailTemplate',
         }),
         defineField({

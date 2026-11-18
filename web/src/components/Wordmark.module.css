@@ -1,0 +1,23 @@
+.lockup {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.centred {
+    align-items: center;
+    text-align: center;
+}
+
+/* Ian's outlined Noah artwork rather than live text, so there is no font to
+   load, no tracking to set and no trailing letter-space to cancel — the glyph
+   positions carry his 567 tracking. Sized by width to hold the same footprint
+   the live-text wordmark occupied, which keeps the hero row and the footer
+   block unchanged. The letters read slightly smaller at that width because
+   567 is wider tracking than the 0.42em this was set at. */
+.name {
+    display: block;
+    width: clamp(15.2rem, 39.8vw, 27.5rem);
+    max-width: 100%;
+    height: auto;
+}
