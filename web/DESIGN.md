@@ -148,13 +148,12 @@ blush. Near-black on `#40392e` is about 1.5:1 and unreadable.
 - `project.projectNumber` — drives `PROJECT23 | Dingle`. Captions fall back
   to the name alone when it's blank.
 - `home.statement` — the hero line.
-- `home.heroImage` — **removed from the schema**, not merely unused. The
-  stored field still holds the logo PNG from the old build, which was
-  rendering as the full-size hero image, so the hero points at the local
-  `public/hero-desk.jpeg` instead. Giving it back to the Studio is three
-  steps *in this order*: clear the stale asset on the document, re-add the
-  field to `home.ts`, then restore the one-line binding marked in
-  `Hero.tsx`. Re-adding the field first republishes the logo.
+- `home.heroImage` — **removed from the schema**, not merely unused. It used
+  to hold the logo PNG from the old build, which was rendering as the
+  full-size hero image, so the hero points at the local
+  `public/hero-desk.jpeg` instead. That asset reference has since been unset
+  from the document, so giving it back to the Studio is two steps: re-add the
+  field to `home.ts`, then restore the one-line binding marked in `Hero.tsx`.
 - `home.title` / `subtitle` / `description` — also removed. Never queried,
   but three of them held live-looking values, so they read as load-bearing.
   `home` is now a single-field document.

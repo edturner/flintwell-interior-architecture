@@ -11,17 +11,19 @@ import { defineField, defineType } from 'sanity'
  * nothing teaches an editor that the CMS cannot be trusted, which is the
  * expensive kind of untidiness.
  *
- * Removing a field from the schema does not delete what is stored on the
- * document, so the old values are still in the dataset if they are ever
- * wanted.
+ * Their stored values have been unset from the document as well. Dropping a
+ * field from the schema does not remove what is stored under it, and the
+ * Studio then shows the leftover as a yellow "Unknown field found" panel with
+ * a "Developer info" disclosure — which is exactly the sort of thing Ian
+ * should never be shown. Removing a field is therefore two jobs: take it out
+ * here, and unset the value on every document that carries it.
  *
  * `heroImage` is the one with a real future: the hero photograph is currently
- * the local `web/public/hero-desk.jpeg`, because the Sanity field holds a
- * leftover logo PNG ("F logo") that rendered full-bleed where the photograph
- * belongs. Giving Ian control of it is three steps, in this order — clear the
- * stale asset in the Studio, re-add the field here, then restore the
- * one-line binding marked in `web/src/components/Hero.tsx`. Re-adding the
- * field first would publish the logo to the homepage.
+ * the local `web/public/hero-desk.jpeg`, because the Sanity field used to
+ * hold a leftover logo PNG ("F logo") that rendered full-bleed where the
+ * photograph belongs. That asset reference is now unset, so giving Ian
+ * control of it is two steps: re-add the field here, then restore the
+ * one-line binding marked in `web/src/components/Hero.tsx`.
  */
 export const home = defineType({
     name: 'home',

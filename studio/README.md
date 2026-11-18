@@ -77,6 +77,23 @@ it. Also add its `_type` to the webhook filter — see the web README.
   and changes nothing teaches the client that the CMS cannot be trusted. Four
   such fields were removed at handover (`home.title`, `home.subtitle`,
   `home.description`, `footer.location`), along with the unused `service` type.
+- **Removing a field is two jobs, not one.** Taking it out of the schema does
+  not remove what is stored under it, and the Studio then renders the
+  leftover as a yellow "Unknown field found" panel, complete with a
+  "Developer info" disclosure and a "Remove field" button, on a document the
+  client opens. So unset the value on every affected document too:
+
+  ```bash
+  # read a document in full and compare its keys against the schema
+  npx sanity documents query '*[_id == "<id>"][0]'
+  ```
+
+  The unset itself goes through the mutation API — the CLI has no `unset`
+  command. Take a `sanity dataset export` first and keep it somewhere durable:
+  that export is the thing you can actually restore from, so don't rely on
+  being able to recover the value any other way.
+
+  This was done at handover for all five leftovers from the removals above.
 
 ## Backups
 
